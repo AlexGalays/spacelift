@@ -1,0 +1,38 @@
+{
+  "name": "space-lift",
+  "version": "0.0.1",
+  "description": "JS/TS array, object utils",
+  "main": "lib",
+  "typings": "lib/index.d.ts",
+
+  "files": [ "lib" ],
+
+  "scripts": {
+    "build": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core' --outDir ./lib --declaration --noImplicitAny --strictNullChecks --suppressImplicitAnyIndexErrors",
+    "pretest": "npm run build && tsc test/mocha.d.ts test/global.d.ts test/test.ts --outDir ./test --noImplicitAny --strictNullChecks",
+    "test": "mocha test/test.js",
+    "prepublish": "npm run build"
+  },
+
+  "dependencies": {
+    "immupdate": "1.0.0",
+    "option.ts": "0.1.5"
+  },
+
+  "devDependencies": {
+    "typescript": "2.2.0-dev.20170201",
+    "mocha": "3.0.2",
+    "expect": "1.8.0"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexGalays/spacelift.git"
+  },
+  "author": {
+    "name": "Alexandre Galays",
+    "url": "https://github.com/AlexGalays/"
+  },
+  "homepage": "https://github.com/AlexGalays/spacelift",
+  "keywords": ["typescript", "ts", "TS", "std lib", "collection", "underscore"]
+}

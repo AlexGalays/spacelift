@@ -1,8 +1,10 @@
-# space-lift
+**space-lift**  
+"Lift your values into space for infinite possibilities"  
 
-Lift your values into space for infinite possibilities.  
-Utils for Arrays, Objects  
+![](http://i.imgur.com/DWrI2JY.gif?noredirect)
 
+
+# Utils for Arrays, Objects  
 
 Design goals  
 - 100% immutable, no magic, no overwhelming polymorphism or dynamic operators
@@ -58,7 +60,7 @@ const sortedPeople = lift(people)
 
 By default, the library provides no operators at all. You get to choose what to import.
 
-The easiest is to import everything in a single import (probably in your main file):  
+The fastest way is to install everything in a single import (probably in your main file):  
 
 ```ts
 import 'space-lift/all'
@@ -76,7 +78,7 @@ Note: When using typescript, don't forget to enable (at least) these two flags f
 
 # Auto unwrap
 
-Most of the time, you will have to call `.value()` to read your value back (or just `()` for options (although it is recommended to use `map`/`getOrElse`/etc instead)  
+Most of the time, you will have to call `.value()` to read your value back (or just `()` for options, although it is recommended to use `map`/`getOrElse`/etc instead)  
 Because it's distracting to write `.value()` more than once per chain, some operators will automatically unwrap values returned from their callback.  
 These operators are:  
 

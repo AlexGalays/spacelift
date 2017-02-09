@@ -1,14 +1,23 @@
 {
   "name": "space-lift",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "JS/TS array, object utils",
-  "main": "lib",
-  "typings": "lib/index.d.ts",
+  "main": "index.js",
+  "typings": "index.d.ts",
 
-  "files": [ "lib" ],
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "all.js",
+    "all.d.ts",
+    "transform.js",
+    "transform.d.ts",
+    "array",
+    "object"
+  ],
 
   "scripts": {
-    "build": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core' --outDir ./lib --declaration --noImplicitAny --strictNullChecks --suppressImplicitAnyIndexErrors",
+    "build": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core' --outDir ./ --declaration --noImplicitAny --strictNullChecks --suppressImplicitAnyIndexErrors",
     "pretest": "npm run build && tsc test/mocha.d.ts test/global.d.ts test/test.ts --outDir ./test --noImplicitAny --strictNullChecks",
     "test": "mocha test/test.js",
     "prepublish": "npm run build"

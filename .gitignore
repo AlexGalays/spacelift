@@ -1,2 +1,12 @@
 node_modules
-/lib
+
+/object
+/array
+index.js
+index.d.ts
+all.js
+all.d.ts
+transform.js
+transform.d.ts
+
+test/test.js

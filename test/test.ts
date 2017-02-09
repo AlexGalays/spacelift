@@ -1,9 +1,9 @@
 import { Option, None } from 'option.ts'
 import lift, { ArrayOps, ObjectOps, StringOps } from '../'
-import range from '../lib/array/range'
-import ObjSet from '../lib/object/set'
-import * as is from '../lib/object/is'
-import '../lib/all'
+import range from '../array/range'
+import ObjSet from '../object/set'
+import * as is from '../object/is'
+import '../all'
 const expect = require('expect')
 
 

@@ -1,6 +1,6 @@
 {
   "name": "space-lift",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "JS/TS array, object utils",
   "main": "index.js",
   "typings": "index.d.ts",

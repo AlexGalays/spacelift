@@ -28,6 +28,24 @@ describe('lift', () => {
       expect(mapped).toEqual([2, 4, 6])
       expect(mapped instanceof Array).toBe(true)
       expect(mapped).toNotBe(arr)
+
+      // The map iterator can also return Wrappers
+      const mapped2 = lift(arr).map(x => lift(x * 2)).value()
+      expect(mapped2).toEqual([2, 4, 6])
+    })
+
+    it('can be flatMapped', () => {
+      const arr = [1, 2, 3]
+      const mapped = lift(arr).flatMap(x => [x + 1, x + 2]).value()
+      expect(mapped).toEqual([2, 3, 3, 4, 4, 5])
+
+      // Option can be flattened too
+      const mapped2 = lift(arr).flatMap(x => Option(x + 1)).value()
+      expect(mapped2).toEqual([2, 3, 4])
+
+      // The flatMap iterator can also return Wrappers
+      const mapped3 = lift(arr).flatMap(x => lift([x + 1, x + 2])).value()
+      expect(mapped3).toEqual([2, 3, 3, 4, 4, 5])
     })
 
     it('can be filtered', () => {

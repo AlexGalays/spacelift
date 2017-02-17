@@ -79,8 +79,10 @@ Note: When using typescript, don't forget to enable (at least) these two flags f
 # Auto unwrap
 
 Most of the time, you will have to call `.value()` to read your value back (or just `()` for options, although it is recommended to use `map`/`getOrElse`/etc instead)  
-Because it's distracting to write `.value()` more than once per chain, some operators will automatically unwrap values returned from their callback.  
+Because it's distracting to write `.value()` more than once per chain, some operators will automatically unwrap values returned from their iterators.  
 These operators are:  
 
 - `Option.map`
+- `Array.map`
+- `Array.flatMap`
 - `Array.updateAt`

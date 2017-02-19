@@ -2,6 +2,7 @@ node_modules
 
 /object
 /array
+/function
 index.js
 index.d.ts
 all.js

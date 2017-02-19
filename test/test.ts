@@ -3,6 +3,7 @@ import lift, { ArrayOps, ObjectOps, StringOps } from '../'
 import range from '../array/range'
 import ObjSet from '../object/set'
 import * as is from '../object/is'
+import memoize from '../function/memoize'
 import '../all'
 const expect = require('expect')
 
@@ -505,6 +506,78 @@ describe('lift', () => {
 
   })
 
+  describe('functions', () => {
+
+    it('can memoize a function of arity 0', () => {
+      const memoized = memoize((): {} => ({ x: 33 }))
+      const result1 = memoized()
+      const result2 = memoized()
+
+      expect(result1).toEqual({ x: 33 })
+      expect(result2).toEqual({ x: 33 })
+      expect(result1).toBe(result2)
+    })
+
+    it('can memoize a function of arity 1, by reference', () => {
+      const memoized = memoize((a: number): {} => ({ x: a }))
+      const result1 = memoized(1)
+      const result2 = memoized(2)
+      const result3 = memoized(1)
+      const result4 = memoized(2)
+
+      expect(result1).toEqual({ x: 1 })
+      expect(result2).toEqual({ x: 2 })
+      expect(result1).toBe(result3)
+      expect(result2).toBe(result4)
+    })
+
+    it('can memoize a function of arity 2, by reference', () => {
+      const memoized = memoize((a: number, b: {}): {} => ({ x: a, y: b }))
+      const myObj = {}
+      const result1 = memoized(1, myObj)
+      const result2 = memoized(2, 3)
+      const result3 = memoized(1, myObj)
+      const result4 = memoized(2, 3)
+      const result5 = memoized(1, 3)
+
+      expect(result1).toEqual({ x: 1, y: myObj })
+      expect(result2).toEqual({ x: 2, y: 3 })
+      expect(result5).toEqual({ x: 1, y: 3 })
+      expect(result1).toBe(result3)
+      expect(result2).toBe(result4)
+    })
+
+    it('can memoize a function of arity 2, using a key function', () => {
+      const myObj = { id: 10 }
+      const memoized = memoize(
+        (a: number, b: typeof myObj): {} => ({ x: a, y: b }),
+        { key: (a, b) => `${a}_${b.id}` }
+      )
+
+      // There should be no interference from other memoize'd functions
+      memoize((obj: typeof myObj) => obj)(myObj)
+
+      const result1 = memoized(1, myObj)
+      const result2 = memoized(2, { id: 20 })
+      const result3 = memoized(1, myObj)
+      const result4 = memoized(2, { id: 20 })
+
+      expect(result1).toEqual({ x: 1, y: myObj })
+      expect(result2).toEqual({ x: 2, y: { id: 20 } })
+      expect(result1).toBe(result3)
+      expect(result2).toBe(result4)
+    })
+
+    it('should have a decent running time, even compared to a trivially simple function ', () => {
+      const fn = (obj: {}, key: string, value: number) => Object.assign({}, obj, { [key]: value })
+      const memoized = memoize(fn)
+
+      const obj = {}
+      measureTime('normal function', () => fn(obj, 'key', 1))
+      measureTime('memoized function', () => memoized(obj, 'key', 1))
+    })
+  })
+
   describe('README examples', () => {
 
     it('can run example #1', () => {
@@ -529,3 +602,16 @@ describe('lift', () => {
   })
 
 })
+
+
+function measureTime(name: string, block: Function) {
+  const iterations = 30
+  const iterator = range(iterations).value()
+
+  const before = process.hrtime()
+  iterator.forEach(_ => block())
+  const [secs, nanoSecs] = process.hrtime(before)
+  const diffMs = (secs * 1e9 + nanoSecs) / 1e6 / iterations
+
+  console.log(name, diffMs.toFixed(6))
+}

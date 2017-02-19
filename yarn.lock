@@ -192,9 +192,9 @@ once@^1.3.0:
   dependencies:
     wrappy "1"
 
-option.ts@0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/option.ts/-/option.ts-0.1.5.tgz#abb9499e68edc19f732356d24c7229406557f3c9"
+option.ts@0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/option.ts/-/option.ts-0.1.6.tgz#d3da6c0421cd13da01424beee8e9d77a2d9e98e0"
 
 path-is-absolute@^1.0.0:
   version "1.0.1"
@@ -206,9 +206,9 @@ supports-color@3.1.2:
   dependencies:
     has-flag "^1.0.0"
 
-typescript@2.2.0-dev.20170201:
-  version "2.2.0-dev.20170201"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.2.0-dev.20170201.tgz#3d66dbb15f2f52e4464ca571179c607140cd86f9"
+typescript@next:
+  version "2.3.0-dev.20170219"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.0-dev.20170219.tgz#2ff5f00d0ac017bd2aa398fe98a68d45944bb5fc"
 
 util@0.10.3:
   version "0.10.3"

@@ -1,5 +1,6 @@
-import { Option, None } from 'option.ts'
-import lift, { ArrayOps, ObjectOps, StringOps } from '../'
+process.env.IMMUPDATE_DEEP_FREEZE = process.env.SPACELIFT_DEEP_FREEZE = 'true'
+
+import lift, { ArrayOps, ObjectOps, StringOps, Option, Some, None, update, DELETE } from '../'
 import range from '../array/range'
 import ObjSet from '../object/set'
 import * as is from '../object/is'
@@ -10,8 +11,49 @@ const expect = require('expect')
 
 describe('lift', () => {
 
-  it('can log every operation in a chain', () => {
-    // TODO
+  it('re-exports immupdate and option-ts', () => {
+    expect(Option).toExist()
+    expect(Some).toExist()
+    expect(None).toExist()
+    expect(update).toExist()
+    expect(DELETE).toExist()
+  })
+
+  it('returns deeply frozen objects in dev mode', () => {
+    const result = update({ a: 33, b: { c: 22 } }, { a: 66 })
+    expect(() => { result.a = 88 }).toThrow()
+    expect(() => { result.b.c = 88 }).toThrow()
+
+    expect(() => {
+      lift<number>([]).value()[0] = 1000
+    })
+    .toThrow()
+
+    expect(() => {
+      lift<number>([]).transform(arr => {
+        arr[0] = 1000
+        return arr
+      })
+    })
+    .toThrow()
+
+    expect(() => {
+      lift([{ x: { y: 33 } }]).transform(arr => {
+        arr[0].x.y = 1000
+        return arr
+      })
+    })
+    .toThrow()
+
+    expect(() => {
+      const arr = [1, 2]
+
+      lift(arr).map((num, i) => {
+        arr[i] = 1000
+        return num
+      })
+    })
+    .toThrow()
   })
 
   describe('Array', () => {
@@ -121,11 +163,11 @@ describe('lift', () => {
 
       const item = lift(arr).find(user => user.id === 22)
       expect(item.isDefined()).toBe(true) // Should be a Some()
-      expect(item()).toEqual({ id: 22 })
+      expect(item.get()).toEqual({ id: 22 })
 
       const missingItem = lift(arr).find(user => user.id === 999)
       expect(missingItem.isDefined()).toBe(false) // Should be a None
-      expect(missingItem()).toEqual(undefined)
+      expect(missingItem.get()).toEqual(undefined)
     })
 
     it('can find an item index using a predicate', () => {
@@ -133,11 +175,11 @@ describe('lift', () => {
 
       const maybeIndex = lift(arr).findIndex(user => user.id === 22)
       expect(maybeIndex.isDefined()).toBe(true) // Should be a Some()
-      expect(maybeIndex()).toEqual(1)
+      expect(maybeIndex.get()).toEqual(1)
 
       const noneIndex = lift(arr).findIndex(user => user.id === 999)
       expect(noneIndex.isDefined()).toBe(false) // Should be a None
-      expect(noneIndex()).toEqual(undefined)
+      expect(noneIndex.get()).toEqual(undefined)
     })
 
     it('can be flattened', () => {
@@ -212,25 +254,25 @@ describe('lift', () => {
 
     it('allows its first item to be read', () => {
       const arr = [1, 2, 3, 4]
-      const one = lift(arr).first()()
+      const one = lift(arr).first().get()
       expect(one).toBe(1)
-      expect(lift([]).first()()).toBe(undefined)
+      expect(lift([]).first().get()).toBe(undefined)
     })
 
     it('allows its last item to be read', () => {
       const arr = [1, 2, 3, 4]
-      const four = lift(arr).last()()
+      const four = lift(arr).last().get()
       expect(four).toBe(4)
-      expect(lift([]).last()()).toBe(undefined)
+      expect(lift([]).last().get()).toBe(undefined)
     })
 
     it('allows an item to be read by index', () => {
       const arr = [1, 2, 3, 4]
       const item = lift(arr).get(2)
       expect(item.isDefined()).toBe(true)
-      expect(item()).toBe(3)
+      expect(item.get()).toBe(3)
       expect(lift(arr).get(999).isDefined()).toBe(false)
-      expect(lift(arr).get(999)()).toBe(undefined)
+      expect(lift(arr).get(999).get()).toBe(undefined)
     })
 
     it('can be sorted', () => {
@@ -423,11 +465,11 @@ describe('lift', () => {
     it('can read the value associated to a key', () => {
       const obj = { a: 1, b: '2', c: { d: 10 } }
       const result = lift(obj).get('b')
-      expect(result()).toBe('2')
+      expect(result.get()).toBe('2')
 
       const map: Record<string, number | undefined> = { a: 1, b: 2, c: 3 }
       const result2 = lift(map).get('d').map(x => x.toFixed(3)) // toFixed to prove we got an Option<number> back
-      expect(result2()).toBe(undefined)
+      expect(result2.get()).toBe(undefined)
     })
 
     it('can set a value', () => {
@@ -460,7 +502,7 @@ describe('lift', () => {
     })
 
     it('can be converted to an Array', () => {
-      const obj: Record<string, number> = { a: 1, b: 2, c: 3 }
+      const obj = { a: 1, b: 2, c: 3 }
       const result = lift(obj)
         .toArray()
         .sort({ by: ([k, v]) => k })
@@ -568,7 +610,7 @@ describe('lift', () => {
       expect(result2).toBe(result4)
     })
 
-    it('should have a decent running time, even compared to a trivially simple function ', () => {
+    it('should have good perfs on a memoized function, even compared to a trivially simple function ', () => {
       const fn = (obj: {}, key: string, value: number) => Object.assign({}, obj, { [key]: value })
       const memoized = memoize(fn)
 
@@ -589,7 +631,7 @@ describe('lift', () => {
 
       const updatedPeople = lift(people)
         .findIndex(p => p.id === 2)
-        .map(index => lift(people).updateAt(index, p => lift(p).update({ name: 'Nick' })))
+        .map(index => lift(people).updateAt(index, p => update(p, { name: 'Nick' })))
         .getOrElse(people)
 
       expect(updatedPeople).toEqual([

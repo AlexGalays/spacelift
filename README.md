@@ -14,7 +14,18 @@ Design goals
 - Small set of functions, configurable with lambdas rather than a kitchen sink trying to cater for every single little variation
 
 
-`space-lift` uses [immupdate](https://github.com/AlexGalays/immupdate) and [option.ts](https://github.com/AlexGalays/option.ts) for seamless chaining and type-safety.
+# Importing
+
+For convenience, `space-lift` uses and re-export [immupdate](https://github.com/AlexGalays/immupdate) and [option.ts](https://github.com/AlexGalays/option.ts) for seamless chaining and type-safety.
+
+Here's everything that can be imported from `space-lift`:  
+
+```ts
+import lift, { Option, Some, None, update, DELETE } from 'space-lift'
+```
+
+`Option`, `Some`, `None` come from [option.ts](https://github.com/AlexGalays/option.ts)  
+`update`, `DELETE` come from [immupdate](https://github.com/AlexGalays/immupdate)
 
 
 # Examples  
@@ -22,7 +33,7 @@ Design goals
 ## Update an object inside an Array
 
 ```ts
-import lift from 'space-lift'
+import lift, { update } from 'space-lift'
 // or import _ from 'space-lift'  ʘ‿ʘ
 
 const people = [
@@ -33,7 +44,7 @@ const people = [
 
 const updatedPeople = lift(people)
   .findIndex(p => p.id === 2)
-  .map(index => lift(people).updateAt(index, p => lift(p).update({ name: 'Nick' })))
+  .map(index => lift(people).updateAt(index, p => update(p, { name: 'Nick' })))
   .getOrElse(people)
 ```
 
@@ -78,7 +89,7 @@ Note: When using typescript, don't forget to enable (at least) these two flags f
 
 # Auto unwrap
 
-Most of the time, you will have to call `.value()` to read your value back (or just `()` for options, although it is recommended to use `map`/`getOrElse`/etc instead)  
+Most of the time, you will have to call `.value()` to read your value back (or `.get()` for options, although it is recommended to use `map`/`getOrElse`/etc instead)  
 Because it's distracting to write `.value()` more than once per chain, some operators will automatically unwrap values returned from their iterators.  
 These operators are:  
 
@@ -86,3 +97,11 @@ These operators are:
 - `Array.map`
 - `Array.flatMap`
 - `Array.updateAt`
+
+
+# More safety with Object.freeze
+
+All object and Arrays returned by the API can optionally be deeply frozen.
+This can be useful in development mode, to catch mutation attempts as early as possible.  
+
+To enable this mode, ensure your dev build sets the value of `process.env.SPACELIFT_DEEP_FREEZE` to `'true'`.

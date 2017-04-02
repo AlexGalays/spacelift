@@ -10,7 +10,7 @@ declare module '../' {
  * Reverses the Array.
  */
 export function reverse<A>(this: ArrayOps<A>): ArrayOps<A> {
-  return new ArrayOps(this.value().reverse())
+  return new ArrayOps(this.value().slice().reverse())
 }
 
 

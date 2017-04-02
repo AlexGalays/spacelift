@@ -80,9 +80,9 @@ has-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-1.0.0.tgz#9d9e793165ce017a00f00418c43f942a7b1d11fa"
 
-immupdate@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/immupdate/-/immupdate-1.0.0.tgz#cad372987252d0072f3c366c38c70b11c335416e"
+immupdate@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/immupdate/-/immupdate-1.0.1.tgz#0d172cbd6659343a1919f74163c3b3077009d368"
 
 inflight@^1.0.4:
   version "1.0.6"
@@ -192,9 +192,9 @@ once@^1.3.0:
   dependencies:
     wrappy "1"
 
-option.ts@0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/option.ts/-/option.ts-0.1.6.tgz#d3da6c0421cd13da01424beee8e9d77a2d9e98e0"
+option.ts@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/option.ts/-/option.ts-0.3.0.tgz#21bf1733be89a08817b5a0858e9f86924c2fa694"
 
 path-is-absolute@^1.0.0:
   version "1.0.1"
@@ -207,8 +207,8 @@ supports-color@3.1.2:
     has-flag "^1.0.0"
 
 typescript@next:
-  version "2.3.0-dev.20170219"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.0-dev.20170219.tgz#2ff5f00d0ac017bd2aa398fe98a68d45944bb5fc"
+  version "2.3.0-dev.20170330"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.0-dev.20170330.tgz#84b28bd284f7c8f2c4aca69006ffa66ba721d23a"
 
 util@0.10.3:
   version "0.10.3"

@@ -17,7 +17,7 @@ export function flatten<A, B>(this: ArrayOps<A[] | Option<A>>): ArrayOps<A> {
     const item = arr[i]
 
     if (Option.isOption(item))
-      item.isDefined() && result.push(item())
+      item.isDefined() && result.push(item.get())
     else
       result.push.apply(result, item)
   }

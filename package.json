@@ -1,6 +1,6 @@
 {
   "name": "space-lift",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "JS/TS array, object utils",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -26,7 +26,7 @@
 
   "dependencies": {
     "immupdate": "1.0.1",
-    "option.ts": "0.1.6"
+    "option.ts": "0.3.0"
   },
 
   "devDependencies": {

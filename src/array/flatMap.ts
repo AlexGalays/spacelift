@@ -17,7 +17,7 @@ export function flatMap<A, B>(this: ArrayOps<A>, fun: (item: A, index: number) =
     const item = fun(arr[i], i)
 
     if (Option.isOption(item))
-      item.isDefined() && result.push(item())
+      item.isDefined() && result.push(item.get())
     else
       result.push.apply(result, getValue(item))
   }

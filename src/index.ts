@@ -29,27 +29,6 @@ export default lift
 
 
 //--------------------------------------
-//  Freezing
-//--------------------------------------
-
-// Do not deep freeze by default as it's slow
-let deepFreeze: <A>(obj: A) => A
-
-declare const process: any
-if (typeof process === 'object' && process && process.env && process.env.SPACELIFT_DEEP_FREEZE === 'true') {
-
-  deepFreeze = function(obj: any) {
-    Object.getOwnPropertyNames(obj).forEach(name => {
-      const prop = obj[name]
-      if (typeof prop === 'object' && prop !== null) deepFreeze(prop)
-    })
-    Object.freeze(obj)
-    return obj
-  }
-}
-
-
-//--------------------------------------
 //  Array
 //--------------------------------------
 
@@ -62,7 +41,7 @@ export class ArrayOps<A> {
   private _isLiftWrapper = true
   private _value: A[]
 
-  value() { return deepFreeze ? deepFreeze(this._value) : this._value }
+  value() { return this._value }
 }
 
 //--------------------------------------
@@ -78,7 +57,7 @@ export class ObjectOps<A> {
   private _isLiftWrapper = true
   private _value: A
 
-  value() { return deepFreeze ? deepFreeze(this._value) : this._value }
+  value() { return this._value }
 }
 
 //--------------------------------------
@@ -94,7 +73,7 @@ export class NumberOps {
   private _isLiftWrapper = true
   private _value: number
 
-  value() { return deepFreeze ? deepFreeze(this._value) : this._value }
+  value() { return this._value }
 }
 
 //--------------------------------------
@@ -110,7 +89,7 @@ export class StringOps {
   private _isLiftWrapper = true
   private _value: string
 
-  value() { return deepFreeze ? deepFreeze(this._value) : this._value }
+  value() { return this._value }
 }
 
 //--------------------------------------
@@ -127,7 +106,7 @@ export class BoolOps {
   private _isLiftWrapper = true
   private _value: boolean
 
-  value() { return deepFreeze ? deepFreeze(this._value) : this._value }
+  value() { return this._value }
 }
 
 //--------------------------------------

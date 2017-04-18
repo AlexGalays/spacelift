@@ -80,9 +80,9 @@ has-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-1.0.0.tgz#9d9e793165ce017a00f00418c43f942a7b1d11fa"
 
-immupdate@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/immupdate/-/immupdate-1.0.1.tgz#0d172cbd6659343a1919f74163c3b3077009d368"
+immupdate@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/immupdate/-/immupdate-1.0.2.tgz#9720e545b4d2a8e2a22e6b35c67684f3b34c893d"
 
 inflight@^1.0.4:
   version "1.0.6"

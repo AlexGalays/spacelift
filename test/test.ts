@@ -1,5 +1,3 @@
-process.env.IMMUPDATE_DEEP_FREEZE = process.env.SPACELIFT_DEEP_FREEZE = 'true'
-
 import lift, { ArrayOps, ObjectOps, StringOps, Option, Some, None, update, DELETE } from '../'
 import range from '../array/range'
 import ObjSet from '../object/set'
@@ -17,43 +15,6 @@ describe('lift', () => {
     expect(None).toExist()
     expect(update).toExist()
     expect(DELETE).toExist()
-  })
-
-  it('returns deeply frozen objects in dev mode', () => {
-    const result = update({ a: 33, b: { c: 22 } }, { a: 66 })
-    expect(() => { result.a = 88 }).toThrow()
-    expect(() => { result.b.c = 88 }).toThrow()
-
-    expect(() => {
-      lift<number>([]).value()[0] = 1000
-    })
-    .toThrow()
-
-    expect(() => {
-      lift<number>([]).transform(arr => {
-        arr[0] = 1000
-        return arr
-      })
-    })
-    .toThrow()
-
-    expect(() => {
-      lift([{ x: { y: 33 } }]).transform(arr => {
-        arr[0].x.y = 1000
-        return arr
-      })
-    })
-    .toThrow()
-
-    expect(() => {
-      const arr = [1, 2]
-
-      lift(arr).map((num, i) => {
-        arr[i] = 1000
-        return num
-      })
-    })
-    .toThrow()
   })
 
   describe('Array', () => {

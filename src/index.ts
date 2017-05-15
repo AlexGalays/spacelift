@@ -32,13 +32,13 @@ export default lift
 //  Array
 //--------------------------------------
 
-export class ArrayOps<A> {
+export class ArrayOps<A> implements Wrapper<A[]> {
 
   constructor(array: A[]) {
     this._value = array
   }
 
-  private _isLiftWrapper = true
+  _isLiftWrapper = true
   private _value: A[]
 
   value() { return this._value }
@@ -48,13 +48,13 @@ export class ArrayOps<A> {
 //  Object
 //--------------------------------------
 
-export class ObjectOps<A> {
+export class ObjectOps<A> implements Wrapper<A> {
 
   constructor(object: A) {
     this._value = object
   }
 
-  private _isLiftWrapper = true
+  _isLiftWrapper = true
   private _value: A
 
   value() { return this._value }
@@ -64,13 +64,13 @@ export class ObjectOps<A> {
 //  Number
 //--------------------------------------
 
-export class NumberOps {
+export class NumberOps implements Wrapper<number> {
 
   constructor(num: number) {
     this._value = num
   }
 
-  private _isLiftWrapper = true
+  _isLiftWrapper = true
   private _value: number
 
   value() { return this._value }
@@ -80,13 +80,13 @@ export class NumberOps {
 //  String
 //--------------------------------------
 
-export class StringOps {
+export class StringOps implements Wrapper<string> {
 
   constructor(str: string) {
     this._value = str
   }
 
-  private _isLiftWrapper = true
+  _isLiftWrapper = true
   private _value: string
 
   value() { return this._value }
@@ -97,13 +97,13 @@ export class StringOps {
 //--------------------------------------
 
 // Not that we expect to expand on the boolean capabilities... But for completeness sake.
-export class BoolOps {
+export class BoolOps implements Wrapper<boolean> {
 
   constructor(value: boolean) {
     this._value = value
   }
 
-  private _isLiftWrapper = true
+  _isLiftWrapper = true
   private _value: boolean
 
   value() { return this._value }
@@ -114,11 +114,12 @@ export class BoolOps {
 //--------------------------------------
 
 export interface Wrapper<A> {
+  _isLiftWrapper: {}
   value(): A
 }
 
 export function getValue<A>(input: A | Wrapper<A>): A {
-  return input['_isLiftWrapper']
+  return input && input['_isLiftWrapper']
     ? (input as Wrapper<A>).value()
     : input as A
 }
@@ -129,4 +130,5 @@ export function getValue<A>(input: A | Wrapper<A>): A {
 //--------------------------------------
 
 export { update, DELETE } from 'immupdate'
-export { Option, None, Some } from 'option.ts'
+export { Option, None, Some } from './option'
+export { Result, Ok, Err } from './result'

@@ -1,4 +1,4 @@
-import { Option, None } from 'option.ts'
+import { Option, None } from '../option'
 import { ArrayOps } from '../'
 
 declare module '../' {

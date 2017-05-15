@@ -1,7 +1,7 @@
 {
   "name": "space-lift",
-  "version": "0.1.1",
-  "description": "JS/TS array, object utils",
+  "version": "0.2.0",
+  "description": "Idiomatic TS array, object utils, Option, Result monads",
   "main": "index.js",
   "typings": "index.d.ts",
 
@@ -14,23 +14,24 @@
     "transform.d.ts",
     "array",
     "object",
-    "function"
+    "function",
+    "option",
+    "result"
   ],
 
   "scripts": {
     "build": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core' --outDir ./ --declaration --noImplicitAny --strictNullChecks --suppressImplicitAnyIndexErrors",
-    "pretest": "npm run build && tsc --lib 'es5,es2015.core' test/mocha.d.ts test/global.d.ts test/test.ts --outDir ./test --noImplicitAny --strictNullChecks",
-    "test": "mocha test/test.js",
+    "pretest": "npm run build && tsc --lib 'es5,es2015.core' test/expect.d.ts test/mocha.d.ts test/global.d.ts test/test.ts test/option.ts test/result.ts --outDir ./test --noImplicitAny --strictNullChecks",
+    "test": "mocha test/test.js && mocha --ui tdd test/option.js && mocha --ui tdd test/result.js",
     "prepublish": "npm run build"
   },
 
   "dependencies": {
-    "immupdate": "1.0.2",
-    "option.ts": "0.3.0"
+    "immupdate": "1.0.2"
   },
 
   "devDependencies": {
-    "typescript": "next",
+    "typescript": "2.3.2",
     "mocha": "3.0.2",
     "expect": "1.8.0"
   },
@@ -44,5 +45,5 @@
     "url": "https://github.com/AlexGalays/"
   },
   "homepage": "https://github.com/AlexGalays/spacelift",
-  "keywords": ["typescript", "ts", "TS", "std lib", "collection", "underscore"]
+  "keywords": ["typescript", "ts", "TS", "std lib", "collection", "underscore", "monad", "option", "maybe", "result"]
 }

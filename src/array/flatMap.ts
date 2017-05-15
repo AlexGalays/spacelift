@@ -1,4 +1,4 @@
-import { Option } from 'option.ts'
+import { Option } from '../option'
 import { ArrayOps, Wrapper, getValue } from '../'
 
 declare module '../' {

@@ -4,7 +4,7 @@ import ObjSet from '../object/set'
 import * as is from '../object/is'
 import memoize from '../function/memoize'
 import '../all'
-const expect = require('expect')
+import * as expect from 'expect'
 
 
 describe('lift', () => {
@@ -116,7 +116,7 @@ describe('lift', () => {
       const updated = lift(arr).compact().value()
 
       expect(updated).toEqual(['a', 'b', 'c', 'd', 'e', 'f'])
-      expect(updated).toNotBe(arr)
+      expect(updated).toNotBe(arr as any)
     })
 
     it('can find an item using a predicate', () => {
@@ -468,21 +468,22 @@ describe('lift', () => {
         .toArray()
         .sort({ by: ([k, v]) => k })
         .value()
-      expect(result).toNotBe(obj)
+
+      expect(result).toNotBe(obj as any)
       expect(result).toEqual([[ 'a', 1], ['b', 2], ['c', 3]])
     })
 
     it('can convert is keys to an Array', () => {
       const obj: Record<string, number> = { a: 1, b: 2, c: 3 }
       const result = lift(obj).keys().sort().value()
-      expect(result).toNotBe(obj)
+      expect(result).toNotBe(obj as any)
       expect(result).toEqual(['a', 'b', 'c'])
     })
 
     it('can convert is values to an Array', () => {
       const obj: Record<string, number> = { a: 1, b: 2, c: 3 }
       const result = lift(obj).values().sort().value()
-      expect(result).toNotBe(obj)
+      expect(result).toNotBe(obj as any)
       expect(result).toEqual([1, 2, 3])
     })
 

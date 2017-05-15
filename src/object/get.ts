@@ -1,5 +1,5 @@
-import { Option } from 'option.ts'
-import { ObjectOps } from '../'
+import { Option } from '../option'
+import { ObjectOps } from '..'
 
 declare module '../' {
   interface ObjectOps<A> {

@@ -1,3 +1,5 @@
+import { Wrapper, getValue } from '../'
+
 
 export interface ResultOps<E, A> {
 
@@ -94,9 +96,7 @@ _Ok.prototype = {
   },
 
   map(fn: any) {
-    let result = fn(this._value)
-    if (result && result['_isLiftWrapper']) result = result.value()
-    return Ok(result)
+    return Ok(getValue(fn(this._value)))
   },
 
   mapError(fn: any) {
@@ -155,13 +155,6 @@ _Err.prototype = {
   get() {
     return this._error
   }
-}
-
-
-/* Interop with space-lift */
-export interface Wrapper<A> {
-  _isLiftWrapper: {}
-  value(): A
 }
 
 

@@ -129,6 +129,6 @@ export function getValue<A>(input: A | Wrapper<A>): A {
 //  Re-exported
 //--------------------------------------
 
-export { update, DELETE } from 'immupdate'
+export { update, deepUpdate, DELETE } from 'immupdate'
 export { Option, None, Some } from './option'
 export { Result, Ok, Err } from './result'

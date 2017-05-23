@@ -33,11 +33,11 @@ Design goals
 Here's everything that can be imported from `space-lift`:  
 
 ```ts
-import lift, { Option, Some, None, Result, Ok, Err, update, DELETE } from 'space-lift'
+import lift, { Option, Some, None, Result, Ok, Err, update, deepUpdate, DELETE } from 'space-lift'
 ```
 
 `lift` is a generic function that can wrap an Array or Object and give it extra functionalities  
-`update`, `DELETE` come from [immupdate](https://github.com/AlexGalays/immupdate)  
+`update`, `deepUpdate`, `DELETE` come from [immupdate](https://github.com/AlexGalays/immupdate)  
 `Option`, `Some`, `None` are used to work with optional values  
 `Result`, `Ok`, `Err` are used to work with computation that may fail  
 
@@ -172,7 +172,6 @@ TODO: Detail and examples
 * [remove](#object.remove)
 * [set](#object.set)
 * [toArray](#object.toArray)
-* [update](#object.update)
 * [values](#object.values)
 
 TODO: Detail and examples

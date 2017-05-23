@@ -1,4 +1,4 @@
-import lift, { ArrayOps, ObjectOps, StringOps, Option, Some, None, update, DELETE } from '../'
+import lift, { ArrayOps, ObjectOps, StringOps, Option, Some, None, Ok, Err, update, deepUpdate, DELETE } from '../'
 import range from '../array/range'
 import ObjSet from '../object/set'
 import * as is from '../object/is'
@@ -9,11 +9,14 @@ import * as expect from 'expect'
 
 describe('lift', () => {
 
-  it('re-exports immupdate and option-ts', () => {
+  it('re-exports immupdate, Option, Result', () => {
     expect(Option).toExist()
     expect(Some).toExist()
     expect(None).toExist()
+    expect(Ok).toExist()
+    expect(Err).toExist()
     expect(update).toExist()
+    expect(deepUpdate).toExist()
     expect(DELETE).toExist()
   })
 
@@ -443,16 +446,6 @@ describe('lift', () => {
 
       expect(result).toNotBe(obj)
       expect(result).toEqual({ a: 1, b: 3, c: 222, newKey: 10 })
-    })
-
-    it('can update an object', () => {
-      const obj = { a: 1, b: 2, c: '3' }
-      const result = lift(obj)
-        .update({ a: 10, c: '33' })
-        .update({ c: '333' })
-        .value()
-      expect(result).toNotBe(obj)
-      expect(result).toEqual({ a: 10, b: 2, c: '333' })
     })
 
     it('can map the values of an object', () => {

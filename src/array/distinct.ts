@@ -13,8 +13,8 @@ declare module '../' {
  */
 export function distinct<A>(this: ArrayOps<A>, getKey?: (item: A, index: number) => string | number): ArrayOps<A> {
   const arr = this.value(), result: A[] = []
-  let keySet
-  let refList
+  let keySet: Record<string, 1>
+  let refList: A[]
 
   if (getKey)
     keySet = {}

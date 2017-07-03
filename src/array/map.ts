@@ -6,6 +6,10 @@ declare module '../' {
   }
 }
 
+
+export function map<A, B>(this: ArrayOps<A>, fun: (item: A, index: number) => B | Wrapper<B>): ArrayOps<B>
+export function map<A, B>(this: ArrayOps<A>, fun: (item: A, index: number) => B): ArrayOps<B>
+
 /**
  * Maps this Array using a mapper function.
  */

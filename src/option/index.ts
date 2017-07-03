@@ -19,6 +19,9 @@ export interface Option<A> {
    */
   forEach(fn: (a: A) => void): void
 
+
+  map<B>(fn: (a: A) => Wrapper<B> | null | undefined): Option<B>
+  map<B>(fn: (a: A) => B | null | undefined): Option<B>
   /**
    * Maps the value contained in this Some, else returns None.
    * Depending on the map function return value, a Some could be tranformed into a None.

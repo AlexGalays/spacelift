@@ -6,6 +6,10 @@ declare module '../' {
   }
 }
 
+
+export function updateAt<A>(this: ArrayOps<A>, index: number, updater: (item: A) => Wrapper<A>): ArrayOps<A>
+export function updateAt<A>(this: ArrayOps<A>, index: number, updater: (item: A) => A): ArrayOps<A>
+
 /**
  * Updates an item at the specified index.
  */

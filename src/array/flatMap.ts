@@ -1,5 +1,5 @@
 import { Option } from '../option'
-import { ArrayOps, Wrapper, getValue } from '../'
+import { ArrayOps, getValue } from '../'
 
 declare module '../' {
   interface ArrayOps<A> {
@@ -7,10 +7,15 @@ declare module '../' {
   }
 }
 
+
+export function flatMap<A, B>(this: ArrayOps<A>, fun: (item: A, index: number) => B[]): ArrayOps<B>
+export function flatMap<A, B>(this: ArrayOps<A>, fun: (item: A, index: number) => ArrayOps<B>): ArrayOps<B>
+export function flatMap<A, B>(this: ArrayOps<A>, fun: (item: A, index: number) => Option<B>): ArrayOps<B>
+
 /**
- * Maps this Array to an Array of Array | Option | Wrapper using a mapper function then flattens it.
+ * Maps this Array to an Array of Array | Option | ArrayOps using a mapper function then flattens it.
  */
-export function flatMap<A, B>(this: ArrayOps<A>, fun: (item: A, index: number) => B[] | Option<B> | Wrapper<B[]>): ArrayOps<B> {
+export function flatMap<A, B>(this: ArrayOps<A>, fun: (item: A, index: number) => B[] | Option<B> | ArrayOps<B>): ArrayOps<B> {
   const arr = this.value(), result = []
 
   for (let i = 0; i < arr.length; i++) {

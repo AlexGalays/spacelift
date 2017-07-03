@@ -1,6 +1,6 @@
 {
   "name": "space-lift",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Idiomatic TS array, object utils, Option, Result monads",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -31,7 +31,7 @@
   },
 
   "devDependencies": {
-    "typescript": "2.3.2",
+    "typescript": "2.4.1",
     "mocha": "3.0.2",
     "expect": "1.8.0"
   },

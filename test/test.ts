@@ -53,6 +53,14 @@ describe('lift', () => {
       // The flatMap iterator can also return Wrappers
       const mapped3 = lift(arr).flatMap(x => lift([x + 1, x + 2])).value()
       expect(mapped3).toEqual([2, 3, 3, 4, 4, 5])
+
+      // Intermediary chaining, test inference
+      const mapped4 = lift([1, 2, 3, 2, 1])
+        .flatMap(x => lift([x + 1, x + 2]))
+        .map(y => y + 1)
+        .distinct()
+        .value()
+      expect(mapped4).toEqual([3, 4, 5, 6])
     })
 
     it('can be filtered', () => {

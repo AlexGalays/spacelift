@@ -1,33 +1,28 @@
 {
   "name": "space-lift",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Idiomatic TS array, object utils, Option, Result monads",
-  "main": "index.js",
-  "typings": "index.d.ts",
+
+  "main": "commonjs/index.js",
+  "module": "es/index.js",
+  "typings": "commonjs/index.d.ts",
 
   "files": [
-    "index.js",
-    "index.d.ts",
-    "all.js",
-    "all.d.ts",
-    "transform.js",
-    "transform.d.ts",
-    "array",
-    "object",
-    "function",
-    "option",
-    "result"
+    "es",
+    "commonjs"
   ],
 
   "scripts": {
-    "build": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core' --outDir ./ --declaration --noImplicitAny --strictNullChecks --suppressImplicitAnyIndexErrors",
+    "build": "npm run build-commonjs && npm run build-es",
+    "build-es": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core' --outDir ./es --declaration --strict --suppressImplicitAnyIndexErrors --module es6 --moduleResolution node",
+    "build-commonjs": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core' --outDir ./commonjs --declaration --strict --suppressImplicitAnyIndexErrors",
     "pretest": "npm run build && tsc --lib 'es5,es2015.core' test/expect.d.ts test/mocha.d.ts test/global.d.ts test/test.ts test/option.ts test/result.ts --outDir ./test --noImplicitAny --strictNullChecks",
     "test": "mocha test/test.js && mocha --ui tdd test/option.js && mocha --ui tdd test/result.js",
     "prepublish": "npm run build"
   },
 
   "dependencies": {
-    "immupdate": "1.1.0"
+    "immupdate": "1.1.3"
   },
 
   "devDependencies": {

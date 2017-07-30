@@ -1,7 +1,8 @@
 import { Option } from '../option'
-import { ArrayOps, getValue } from '../'
+import { ArrayOps, getValue } from '../wrapper'
 
-declare module '../' {
+
+declare module '../wrapper' {
   interface ArrayOps<A> {
     flatMap: typeof flatMap
   }

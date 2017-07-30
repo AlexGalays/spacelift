@@ -1,7 +1,7 @@
 import { Option } from '../option'
-import { ObjectOps } from '..'
+import { ObjectOps } from '../wrapper'
 
-declare module '../' {
+declare module '../wrapper' {
   interface ObjectOps<A> {
     get: typeof get
   }

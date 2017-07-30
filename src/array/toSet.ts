@@ -1,6 +1,6 @@
-import { ArrayOps, ObjectOps } from '../'
+import { ArrayOps, ObjectOps } from '../wrapper'
 
-declare module '../' {
+declare module '../wrapper' {
   interface ArrayOps<A> {
     toSet: typeof toSet
   }

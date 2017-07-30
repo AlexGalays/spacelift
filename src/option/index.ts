@@ -1,4 +1,4 @@
-import lift, { Wrapper, ArrayOps, getValue } from '../'
+import lift, { Wrapper, getValue, ArrayOps } from '../wrapper'
 
 
 export interface Option<A> {
@@ -146,7 +146,7 @@ function makeNone() {
   return self as None
 }
 
-function _Some<T>(value: T) {
+function _Some<T>(this: Some<T> & { value: T }, value: T) {
   this.value = value
 }
 

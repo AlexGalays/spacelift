@@ -1,6 +1,7 @@
-import { ArrayOps, Wrapper, getValue } from '../'
+import { ArrayOps, Wrapper, getValue } from '../wrapper'
 
-declare module '../' {
+
+declare module '../wrapper' {
   interface ArrayOps<A> {
     map: typeof map
   }

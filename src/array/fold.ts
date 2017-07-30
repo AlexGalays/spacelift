@@ -1,7 +1,7 @@
 import { Option, None } from '../option'
-import lift, { ArrayOps, ObjectOps, NumberOps, StringOps, BoolOps } from '../'
+import lift, { ArrayOps, ObjectOps, NumberOps, StringOps, BoolOps } from '../wrapper'
 
-declare module '../' {
+declare module '../wrapper' {
   interface ArrayOps<A> {
     fold: typeof fold
   }

@@ -1,4 +1,4 @@
-import { Wrapper, getValue } from '../'
+import { Wrapper, getValue } from '../wrapper'
 
 
 export interface ResultOps<E, A> {
@@ -84,7 +84,7 @@ ResultObject.isResult = function(value: any): value is Result<{}, {}> {
 }
 
 
-function _Ok<T>(value: T) {
+function _Ok<T>(this: Ok<{}, T> & { _value: T }, value: T) {
   this._value = value
 }
 
@@ -121,7 +121,7 @@ _Ok.prototype = {
 }
 
 
-function _Err<E>(error: E) {
+function _Err<E>(this: Ok<E, {}> & { _error: E }, error: E) {
   this._error = error
 }
 

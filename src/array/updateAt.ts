@@ -1,6 +1,7 @@
-import { ArrayOps, getValue, Wrapper } from '../'
+import { ArrayOps, Wrapper, getValue } from '../wrapper'
 
-declare module '../' {
+
+declare module '../wrapper' {
   interface ArrayOps<A> {
     updateAt: typeof updateAt
   }

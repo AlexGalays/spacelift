@@ -1,9 +1,6 @@
-import lift, { ArrayOps, ObjectOps, StringOps, Option, Some, None, Ok, Err, update, deepUpdate, DELETE } from '../'
-import range from '../array/range'
-import ObjSet from '../object/set'
-import * as is from '../object/is'
-import memoize from '../function/memoize'
-import '../all'
+import lift, { ArrayOps, ObjectOps, StringOps, Option, Some, None, Ok, Err, update, deepUpdate, DELETE, range, Set, memoize, is } from '..'
+
+import '../commonjs/all'
 import * as expect from 'expect'
 
 
@@ -496,7 +493,7 @@ describe('lift', () => {
     })
 
     it('can be created as a Set-like object', () => {
-      const obj = ObjSet('a', 'b', 'c').value()
+      const obj = Set('a', 'b', 'c').value()
       expect(obj).toEqual({ a: true, b: true, c: true })
     })
 

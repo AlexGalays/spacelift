@@ -16,11 +16,11 @@ export interface Options<KeyFn> {
   key?: KeyFn
 }
 
-export default function memoize<R>(fun: Fn0<R>): Fn0<R>
-export default function memoize<A, R>(fun: Fn1<A, R>, options?: Options<Fn1<A, string>>): Fn1<A, R>
-export default function memoize<A, B, R>(fun: Fn2<A, B, R>, options?: Options<Fn2<A, B, string>>): Fn2<A, B, R>
-export default function memoize<A, B, C, R>(fun: Fn3<A, B, C, R>, options?: Options<Fn3<A, B, C, string>>): Fn3<A, B, C, R>
-export default function memoize<A, B, C, D, R>(fun: Fn4<A, B, C, D, R>, options?: Options<Fn4<A, B, C, D, string>>): Fn4<A, B, C, D, R>
+export function memoize<R>(fun: Fn0<R>): Fn0<R>
+export function memoize<A, R>(fun: Fn1<A, R>, options?: Options<Fn1<A, string>>): Fn1<A, R>
+export function memoize<A, B, R>(fun: Fn2<A, B, R>, options?: Options<Fn2<A, B, string>>): Fn2<A, B, R>
+export function memoize<A, B, C, R>(fun: Fn3<A, B, C, R>, options?: Options<Fn3<A, B, C, string>>): Fn3<A, B, C, R>
+export function memoize<A, B, C, D, R>(fun: Fn4<A, B, C, D, R>, options?: Options<Fn4<A, B, C, D, string>>): Fn4<A, B, C, D, R>
 
 /**
  * Memoizes a function of arbitrary arity.
@@ -30,7 +30,7 @@ export default function memoize<A, B, C, D, R>(fun: Fn4<A, B, C, D, R>, options?
  *
  * Memoized functions keep internal state. If you wish to clear that state entirely, you can recreate the function.
  */
-export default function memoize<A extends Function>(fun: A, options?: Options<A>) {
+export function memoize<A extends Function>(fun: A, options?: Options<A>) {
   // The unique property name used by this memoize function instance.
   // This is used to store the id/reference of object arguments, as Weak maps/sets are very limited.
   const memoKey = `__memo__${currentMemoId++}`
@@ -55,12 +55,12 @@ export default function memoize<A extends Function>(fun: A, options?: Options<A>
     // custom key function
     else if (keyFunction) {
       keyCache = keyCache || {}
-      const key = keyFunction.apply(this, args)
+      const key = keyFunction.apply(null, args)
       let result = keyCache[key]
       if (!result) {
         lastArgKeys.push(key)
         limitCacheSize(keyCache, lastArgKeys, cacheSize)
-        result = keyCache[key] = fun.apply(this, args)
+        result = keyCache[key] = fun.apply(null, args)
       }
       return result
     }
@@ -91,7 +91,7 @@ export default function memoize<A extends Function>(fun: A, options?: Options<A>
       if (!result) {
         lastArgKeys.push(key)
         limitCacheSize(arityNCache, lastArgKeys, cacheSize)
-        result = arityNCache[key] = fun.apply(this, args)
+        result = arityNCache[key] = fun.apply(null, args)
       }
 
       return result

@@ -1,6 +1,6 @@
-import { ArrayOps, NumberOps } from '../'
+import { ArrayOps, NumberOps } from '../wrapper'
 
-declare module '../' {
+declare module '../wrapper' {
   interface ArrayOps<A> {
     count: typeof count
   }

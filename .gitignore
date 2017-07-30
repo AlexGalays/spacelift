@@ -1,13 +1,6 @@
 node_modules
-
-/object
-/array
-/function
-index.js
-index.d.ts
-all.js
-all.d.ts
-transform.js
-transform.d.ts
-
+commonjs
+es
 test/test.js
+test/option.js
+test/result.js

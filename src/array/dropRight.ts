@@ -1,6 +1,6 @@
-import { ArrayOps } from '../'
+import { ArrayOps } from '../wrapper'
 
-declare module '../' {
+declare module '../wrapper' {
   interface ArrayOps<A> {
     dropRight: typeof dropRight
   }

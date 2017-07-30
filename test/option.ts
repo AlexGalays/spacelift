@@ -1,5 +1,5 @@
 import * as expect from 'expect'
-import '../all'
+import '../commonjs/all'
 import { Option, None, Some, ArrayOps } from '..'
 
 

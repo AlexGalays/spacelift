@@ -1,6 +1,6 @@
-import { ObjectOps, ArrayOps } from '../'
+import { ObjectOps, ArrayOps } from '../wrapper'
 
-declare module '../' {
+declare module '../wrapper' {
   interface ObjectOps<A> {
     keys: typeof keys
   }

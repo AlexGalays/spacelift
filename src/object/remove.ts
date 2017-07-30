@@ -1,6 +1,6 @@
-import { ObjectOps } from '../'
+import { ObjectOps } from '../wrapper'
 
-declare module '../' {
+declare module '../wrapper' {
   interface ObjectOps<A> {
     remove: typeof remove
   }

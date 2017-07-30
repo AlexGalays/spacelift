@@ -33,28 +33,32 @@ Design goals
 Here's everything that can be imported from `space-lift`:  
 
 ```ts
-import lift, { Option, Some, None, Result, Ok, Err, update, deepUpdate, DELETE } from 'space-lift'
+import lift, { Option, Some, None, Result, Ok, Err, update, deepUpdate, DELETE, range, Set, memoize, is } from 'space-lift'
 ```
 
 `lift` is a generic function that can wrap an Array or Object and give it extra functionalities  
 `update`, `deepUpdate`, `DELETE` come from [immupdate](https://github.com/AlexGalays/immupdate)  
 `Option`, `Some`, `None` are used to work with optional values  
 `Result`, `Ok`, `Err` are used to work with computation that may fail  
-
+`range` is a factory function for Arrays of numbers
+`Set` is a factory function for objects acting as Sets
+`is` is a helper used to determine if an instance is of a particular type (e.g `is.array([]) === true`)
 
 By default, the library provides no operators to the Wrapped Arrays/Objects at all. You get to choose what to import.
 
 The fastest way is to install everything in a single import (probably in your main file):  
 
 ```ts
-import 'space-lift/all'
+import 'space-lift/es/all' // For bundlers who work more efficiently with ECMAScript modules
+
+import 'space-lift/commonjs/all' // To use the legacy commonjs modules
 ```
 
 But you can also choose exactly what to import:  
 
 ```ts
-import 'space-lift/array/map'
-import 'space-lift/object/mapValues'
+import 'space-lift/es/array/map'
+import 'space-lift/es/object/mapValues'
 ```
 
 Note: When using typescript, don't forget to enable (at least) these two flags for better type-safety: `noImplicitAny`, `strictNullChecks`
@@ -184,7 +188,7 @@ TODO: Detail and examples
 ### memoize
 
 ```ts
-import memoize from 'space-lift/function/memoize'
+import { memoize } from 'space-lift'
 
 function multiply(a: number, b: number) {
   return a * b

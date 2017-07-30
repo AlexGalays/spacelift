@@ -1,7 +1,7 @@
 import { Option } from '../option'
-import { ArrayOps } from '../'
+import { ArrayOps } from '../wrapper'
 
-declare module '../' {
+declare module '../wrapper' {
   interface ArrayOps<A> {
     last: typeof last
   }

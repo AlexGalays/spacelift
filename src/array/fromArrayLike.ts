@@ -1,8 +1,8 @@
-import { ArrayOps } from '../'
+import { ArrayOps } from '../wrapper'
 
 /**
  * Converts an Array-like object (such as an arguments or NodeList instance) to a regular Array
  */
-export default function<T>(arrayLike: ArrayLike<T>): ArrayOps<T> {
+export function fromArrayLike<T>(arrayLike: ArrayLike<T>): ArrayOps<T> {
   return new ArrayOps([].slice.call(arrayLike)) as ArrayOps<T>
 }

@@ -1,7 +1,7 @@
 import { Option, None } from '../option'
-import { ArrayOps } from '../'
+import { ArrayOps } from '../wrapper'
 
-declare module '../' {
+declare module '../wrapper' {
   interface ArrayOps<A> {
     find: typeof find
   }

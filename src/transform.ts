@@ -1,30 +1,30 @@
-import lift, { ArrayOps, ObjectOps, NumberOps, StringOps, BoolOps, Wrapper } from './'
+import lift, { ArrayOps, ObjectOps, NumberOps, StringOps, BoolOps, Wrapper } from './wrapper'
 
-declare module './' {
+declare module './wrapper' {
   interface ArrayOps<A> {
     transform: typeof transform
   }
 }
 
-declare module './' {
+declare module './wrapper' {
   interface ObjectOps<A> {
     transform: typeof transform
   }
 }
 
-declare module './' {
+declare module './wrapper' {
   interface NumberOps {
     transform: typeof transform
   }
 }
 
-declare module './' {
+declare module './wrapper' {
   interface StringOps {
     transform: typeof transform
   }
 }
 
-declare module './' {
+declare module './wrapper' {
   interface BoolOps {
     transform: typeof transform
   }
@@ -40,7 +40,7 @@ export function transform<A, B>(this: Wrapper<A>, func: (source: A) => B): Objec
 /**
  * Runs an arbitrary transformation.
  */
-export function transform(func: (source: any) => any): any {
+export function transform<A>(this: Wrapper<A>, func: (source: any) => any): any {
   return lift(func(this.value()))
 }
 

@@ -1,7 +1,7 @@
 import { Option } from '../option'
-import { ArrayOps } from '../wrapper'
+import { ArrayOps } from '../lift'
 
-declare module '../wrapper' {
+declare module '../../wrapper' {
   interface ArrayOps<A> {
     flatten: typeof flatten
   }

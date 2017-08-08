@@ -1,6 +1,6 @@
-import { ObjectOps, ArrayOps } from '../wrapper'
+import { ObjectOps, ArrayOps } from '../lift'
 
-declare module '../wrapper' {
+declare module '../../wrapper' {
   interface ObjectOps<A> {
     toArray: typeof toArray
   }

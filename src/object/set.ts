@@ -1,4 +1,4 @@
-import { ObjectOps } from '../wrapper'
+import { ObjectOps } from '../lift'
 
 /**
  * Creates a Set-like object (string keys, true values) from a list of keys

@@ -1,4 +1,4 @@
-import { ArrayOps } from '../wrapper'
+import { ArrayOps } from '../lift'
 
 
 /*

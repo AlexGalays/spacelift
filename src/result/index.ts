@@ -1,4 +1,4 @@
-import { Wrapper, getValue } from '../wrapper'
+import { Wrapper, getValue } from '../lift'
 
 
 export interface ResultOps<E, A> {

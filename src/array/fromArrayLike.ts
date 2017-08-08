@@ -1,4 +1,4 @@
-import { ArrayOps } from '../wrapper'
+import { ArrayOps } from '../lift'
 
 /**
  * Converts an Array-like object (such as an arguments or NodeList instance) to a regular Array

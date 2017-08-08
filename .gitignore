@@ -1,6 +1,4 @@
 node_modules
 commonjs
 es
-test/test.js
-test/option.js
-test/result.js
+test/*.js

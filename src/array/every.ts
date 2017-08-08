@@ -1,6 +1,6 @@
-import { ArrayOps, BoolOps } from '../wrapper'
+import { ArrayOps, BoolOps } from '../lift'
 
-declare module '../wrapper' {
+declare module '../../wrapper' {
   interface ArrayOps<A> {
     every: typeof every
   }

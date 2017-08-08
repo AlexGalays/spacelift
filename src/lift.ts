@@ -1,3 +1,13 @@
+import {
+  Wrapper,
+  ArrayOpsConstructor, ArrayOps as IArrayOps,
+  ObjectOpsConstructor, ObjectOps as IObjectOps,
+  NumberOpsConstructor, NumberOps as INumberOps,
+  StringOpsConstructor, StringOps as IStringOps,
+  BoolOpsConstructor, BoolOps as IBoolOps
+} from '../wrapper'
+export { Wrapper } from '../wrapper'
+
 
 export interface Lift {
   /** Wraps a Number to provide a richer API. Unwrap with .value() **/
@@ -28,11 +38,6 @@ const lift: Lift = function(obj: any): any {
 export default lift
 
 
-export interface Wrapper<A> {
-  _isLiftWrapper: {}
-  value(): A
-}
-
 export function getValue<A>(input: A | Wrapper<A>): A {
   return input && input['_isLiftWrapper']
     ? (input as Wrapper<A>).value()
@@ -40,83 +45,49 @@ export function getValue<A>(input: A | Wrapper<A>): A {
 }
 
 
+function makeOps(): {} {
+  class Ops {
+    constructor(private _value: any) {}
+    _isLiftWrapper = true
+    value() { return this._value }
+  }
+
+  return Ops
+}
+
+
 //--------------------------------------
 //  Array
 //--------------------------------------
 
-export class ArrayOps<A> implements Wrapper<A[]> {
-
-  constructor(array: A[]) {
-    this._value = array
-  }
-
-  _isLiftWrapper = true
-  private _value: A[]
-
-  value() { return this._value }
-}
+export type ArrayOps<A> = IArrayOps<A>
+export const ArrayOps = makeOps() as ArrayOpsConstructor
 
 //--------------------------------------
 //  Object
 //--------------------------------------
 
-export class ObjectOps<A> implements Wrapper<A> {
-
-  constructor(object: A) {
-    this._value = object
-  }
-
-  _isLiftWrapper = true
-  private _value: A
-
-  value() { return this._value }
-}
+export type ObjectOps<A> = IObjectOps<A>
+export const ObjectOps = makeOps() as ObjectOpsConstructor
 
 //--------------------------------------
 //  Number
 //--------------------------------------
 
-export class NumberOps implements Wrapper<number> {
-
-  constructor(num: number) {
-    this._value = num
-  }
-
-  _isLiftWrapper = true
-  private _value: number
-
-  value() { return this._value }
-}
+export type NumberOps = INumberOps
+export const NumberOps = makeOps() as NumberOpsConstructor
 
 //--------------------------------------
 //  String
 //--------------------------------------
 
-export class StringOps implements Wrapper<string> {
-
-  constructor(str: string) {
-    this._value = str
-  }
-
-  _isLiftWrapper = true
-  private _value: string
-
-  value() { return this._value }
-}
+export type StringOps = IStringOps
+export const StringOps = makeOps() as StringOpsConstructor
 
 //--------------------------------------
 //  Boolean
 //--------------------------------------
 
 // Not that we expect to expand on the boolean capabilities... But for completeness sake.
-export class BoolOps implements Wrapper<boolean> {
-
-  constructor(value: boolean) {
-    this._value = value
-  }
-
-  _isLiftWrapper = true
-  private _value: boolean
-
-  value() { return this._value }
-}
+export type BoolOps = IBoolOps
+export const BoolOps = makeOps() as BoolOpsConstructor

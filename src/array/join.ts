@@ -1,6 +1,6 @@
-import { ArrayOps, StringOps } from '../wrapper'
+import { ArrayOps, StringOps } from '../lift'
 
-declare module '../wrapper' {
+declare module '../../wrapper' {
   interface ArrayOps<A> {
     join: typeof join
   }

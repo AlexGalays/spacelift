@@ -1,4 +1,4 @@
-import lift, { Wrapper, getValue, ArrayOps } from '../wrapper'
+import lift, { Wrapper, getValue, ArrayOps } from '../lift'
 
 
 export interface Option<A> {

@@ -1,7 +1,7 @@
-import lift from './wrapper'
+import lift from './lift'
 
 export default lift
-export { ArrayOps, ObjectOps, BoolOps, NumberOps, StringOps, Wrapper, getValue } from './wrapper'
+export { ArrayOps, ObjectOps, BoolOps, NumberOps, StringOps, Wrapper, getValue } from './lift'
 export { update, deepUpdate, DELETE } from 'immupdate'
 export { Option, None, Some } from './option'
 export { Result, Ok, Err } from './result'

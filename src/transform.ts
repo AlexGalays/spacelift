@@ -1,30 +1,30 @@
-import lift, { ArrayOps, ObjectOps, NumberOps, StringOps, BoolOps, Wrapper } from './wrapper'
+import lift, { ArrayOps, ObjectOps, NumberOps, StringOps, BoolOps, Wrapper } from './lift'
 
-declare module './wrapper' {
+declare module '../wrapper' {
   interface ArrayOps<A> {
     transform: typeof transform
   }
 }
 
-declare module './wrapper' {
+declare module '../wrapper' {
   interface ObjectOps<A> {
     transform: typeof transform
   }
 }
 
-declare module './wrapper' {
+declare module '../wrapper' {
   interface NumberOps {
     transform: typeof transform
   }
 }
 
-declare module './wrapper' {
+declare module '../wrapper' {
   interface StringOps {
     transform: typeof transform
   }
 }
 
-declare module './wrapper' {
+declare module '../wrapper' {
   interface BoolOps {
     transform: typeof transform
   }

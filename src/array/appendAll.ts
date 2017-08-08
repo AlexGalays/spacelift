@@ -1,6 +1,6 @@
-import { ArrayOps } from '../wrapper'
+import { ArrayOps } from '../lift'
 
-declare module '../wrapper' {
+declare module '../../wrapper' {
   interface ArrayOps<A> {
     appendAll: typeof appendAll
   }

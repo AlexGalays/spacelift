@@ -1,7 +1,7 @@
-import { ArrayOps } from '../wrapper'
+import { ArrayOps } from '../lift'
 import { filter } from './filter'
 
-declare module '../wrapper' {
+declare module '../../wrapper' {
   interface ArrayOps<A> {
     compact: typeof compact
   }

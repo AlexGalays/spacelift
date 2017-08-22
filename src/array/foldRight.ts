@@ -1,5 +1,5 @@
 import { Option, None } from '../option'
-import lift, { ArrayOps, ObjectOps, NumberOps, StringOps, BoolOps } from '../lift'
+import lift, { ArrayOps, ObjectOps, NumberOps, StringOps, BoolOps, DateOps } from '../lift'
 
 declare module '../../wrapper' {
   interface ArrayOps<A> {
@@ -7,11 +7,34 @@ declare module '../../wrapper' {
   }
 }
 
-// All these overloads are here so that we return the proper Wrapper and can continue to chain.
+/**
+ * Folds this Array into a single value, using a starting value, from the right.
+ */
 export function foldRight<A>(this: ArrayOps<A>, startValue: number, func: (acc: number, value: A, index: number) => number): NumberOps
+
+/**
+ * Folds this Array into a single value, using a starting value, from the right.
+ */
 export function foldRight<A>(this: ArrayOps<A>, startValue: string, func: (acc: string, value: A, index: number) => string): StringOps
+
+/**
+ * Folds this Array into a single value, using a starting value, from the right.
+ */
 export function foldRight<A>(this: ArrayOps<A>, startValue: boolean, func: (acc: boolean, value: A, index: number) => boolean): BoolOps
+
+/**
+ * Folds this Array into a single value, using a starting value, from the right.
+ */
+export function foldRight<A, B>(this: ArrayOps<A>, startValue: Date, func: (acc: B, value: A, index: number) => Date): DateOps
+
+/**
+ * Folds this Array into a single value, using a starting value, from the right.
+ */
 export function foldRight<A, B>(this: ArrayOps<A>, startValue: B[], func: (acc: B[], value: A, index: number) => B[]): ArrayOps<B>
+
+/**
+ * Folds this Array into a single value, using a starting value, from the right.
+ */
 export function foldRight<A, B>(this: ArrayOps<A>, startValue: B, func: (acc: B, value: A, index: number) => B): ObjectOps<B>
 
 /**

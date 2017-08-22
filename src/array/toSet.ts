@@ -6,8 +6,14 @@ declare module '../../wrapper' {
   }
 }
 
-
+/**
+ * Converts this Array of numbers or strings to a Set-like object where values are all truthy.
+ */
 export function toSet(this: ArrayOps<string>): ObjectOps<{ [key: string]: boolean }>
+
+/**
+ * Converts this Array of numbers or strings to a Set-like object where values are all truthy.
+ */
 export function toSet(this: ArrayOps<number>): ObjectOps<{ [key: number]: boolean }>
 
 /**

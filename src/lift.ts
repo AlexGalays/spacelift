@@ -4,8 +4,10 @@ import {
   ObjectOpsConstructor, ObjectOps as IObjectOps,
   NumberOpsConstructor, NumberOps as INumberOps,
   StringOpsConstructor, StringOps as IStringOps,
-  BoolOpsConstructor, BoolOps as IBoolOps
+  BoolOpsConstructor, BoolOps as IBoolOps,
+  DateOpsConstructor, DateOps as IDateOps
 } from '../wrapper'
+
 export { Wrapper } from '../wrapper'
 
 
@@ -19,6 +21,9 @@ export interface Lift {
   /** Wraps a boolean to provide a richer API. Unwrap with .value() **/
   (obj: boolean): BoolOps
 
+  /** Wraps a Date to provide a richer API. Unwrap with .value() **/
+  (obj: Date): DateOps
+
   /** Wraps an Array to provide a richer API. Unwrap with .value() **/
   <T>(obj: T[]): ArrayOps<T>
 
@@ -29,9 +34,13 @@ export interface Lift {
 
 const lift: Lift = function(obj: any): any {
   if (obj instanceof Array) return new ArrayOps(obj)
+  if (obj instanceof Date) return new DateOps(obj)
+
   if (typeof obj === 'string') return new StringOps(obj)
   if (typeof obj === 'number') return new NumberOps(obj)
+  
   if (obj === true || obj === false) return new BoolOps(obj)
+
   return new ObjectOps(obj)
 }
 
@@ -83,6 +92,13 @@ export const NumberOps = makeOps() as NumberOpsConstructor
 
 export type StringOps = IStringOps
 export const StringOps = makeOps() as StringOpsConstructor
+
+//--------------------------------------
+//  Date
+//--------------------------------------
+
+export type DateOps = IDateOps
+export const DateOps = makeOps() as DateOpsConstructor
 
 //--------------------------------------
 //  Boolean

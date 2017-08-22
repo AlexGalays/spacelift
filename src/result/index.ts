@@ -46,8 +46,23 @@ export interface ResultObject {
    * else returns the first encountered Err.
    */
   all<A, B, E1, E2>(a: Result<E1, A>, b: Result<E2, B>): Result<E1 | E2, [A, B]>
+
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok,
+   * else returns the first encountered Err.
+   */
   all<A, B, C, E1, E2, E3>(a: Result<E1, A>, b: Result<E2, B>, c: Result<E3, C>): Result<E1 | E2 | E3, [A, B, C]>
+
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok,
+   * else returns the first encountered Err.
+   */
   all<A, B, C, D, E1, E2, E3, E4>(a: Result<E1, A>, b: Result<E2, B>, c: Result<E3, C>, d: Result<E4, D>): Result<E1 | E2 | E3 | E4, [A, B, C, D]>
+
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok,
+   * else returns the first encountered Err.
+   */
   all<A, E>(...results: Result<E, A>[]): Result<E, A[]>
 }
 

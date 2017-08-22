@@ -1,4 +1,4 @@
-import lift, { ArrayOps, ObjectOps, StringOps, Option, Some, None, Ok, Err, update, deepUpdate, DELETE, range, Set, memoize, is } from '..'
+import lift, { ArrayOps, ObjectOps, StringOps, DateOps, Option, Some, None, Ok, Err, update, deepUpdate, DELETE, range, Set, memoize, is } from '..'
 
 import '../commonjs/all'
 import * as expect from 'expect'
@@ -414,17 +414,33 @@ describe('lift', () => {
           return arr.map(n => n * 2)
         })
         .value()
+
       expect(result).toEqual([2, 4, 6])
 
-      // transform will use the correct wrapper depending on the return type. Array -> Object
+      // Array -> Object
       const result2 = lift(arr).transform(arr => ({ a: 1, b: 2 }))
       expect(result2 instanceof ObjectOps).toBe(true)
       expect(result2.value()).toEqual({ a: 1, b: 2 })
 
-      // transform will use the correct wrapper depending on the return type. Array -> string
+      // Array -> string
       const result3 = lift(arr).transform(arr => 'ohoh')
       expect(result3 instanceof StringOps).toBe(true)
       expect(result3.value()).toBe('ohoh')
+
+      // Object -> Array
+      const result4 = lift({ a: 1, b: 2 }).transform(obj => lift(obj).keys().sort().value())
+      expect(result4 instanceof ArrayOps).toBe(true)
+      expect(result4.value()).toEqual(['a', 'b'])
+
+      // Object -> ArrayOps
+      const result5 = lift({ a: 1, b: 2 }).transform(obj => lift(obj).keys().sort())
+      expect(result5 instanceof ArrayOps).toBe(true)
+      expect(result5.value()).toEqual(['a', 'b'])
+
+      // string -> Date
+      const result6 = lift('2017-08-22T14:27:23.634Z').transform(ts => new Date(ts))
+      expect(result6 instanceof DateOps).toBe(true)
+      expect(result6.value().getFullYear()).toEqual(2017)
     })
 
   })

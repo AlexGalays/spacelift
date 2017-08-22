@@ -19,9 +19,18 @@ export interface Option<A> {
    */
   forEach(fn: (a: A) => void): void
 
-
+  /**
+   * Maps the value contained in this Some, else returns None.
+   * Depending on the map function return value, a Some could be tranformed into a None.
+   */
   map<B>(fn: (a: A) => Wrapper<B> | null | undefined): Option<B>
+
+  /**
+   * Maps the value contained in this Some, else returns None.
+   * Depending on the map function return value, a Some could be tranformed into a None.
+   */
   map<B>(fn: (a: A) => B | null | undefined): Option<B>
+
   /**
    * Maps the value contained in this Some, else returns None.
    * Depending on the map function return value, a Some could be tranformed into a None.
@@ -96,9 +105,29 @@ export interface OptionObject {
    * else returns None
    */
   all<T1, T2>(t1: NullableValue<T1>, t2: NullableValue<T2>): Option<[T1, T2]>
+
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
   all<T1, T2, T3>(t1: NullableValue<T1>, t2: NullableValue<T2>, t3: NullableValue<T3>): Option<[T1, T2, T3]>
+
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
   all<T1, T2, T3, T4>(t1: NullableValue<T1>, t2: NullableValue<T2>, t3: NullableValue<T3>, t4: NullableValue<T4>): Option<[T1, T2, T3, T4]>
+
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
   all<T1, T2, T3, T4, T5>(t1: NullableValue<T1>, t2: NullableValue<T2>, t3: NullableValue<T3>, t4: NullableValue<T4>, t5: NullableValue<T5>): Option<[T1, T2, T3, T4, T5]>
+
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
   all<T>(...ts: Array<NullableValue<T>>): Option<T[]>
 }
 

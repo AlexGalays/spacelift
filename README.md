@@ -108,13 +108,14 @@ const sortedPeople = lift(people)
 # Auto unwrap
 
 Most of the time, you will have to call `.value()` to read your value back (or `.get()` for options, although it is recommended to use `map`/`getOrElse`/etc instead)  
-Because it's distracting to write `.value()` more than once per chain, some operators will automatically unwrap values returned from their iterators.  
+Because it's distracting to write `.value()` more than once per chain, some operators will automatically unwrap values returned from their iterators (like Promise->then).  
 These operators are:  
 
 - `Option.map`
 - `Array.map`
 - `Array.flatMap`
 - `Array.updateAt`
+- `transform`
 
 
 <a name="api"></a>

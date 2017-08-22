@@ -46,3 +46,13 @@ export interface BoolOpsConstructor {
 }
 
 export interface BoolOps extends Wrapper<boolean> {}
+
+
+export interface DateOpsConstructor {
+  new(value: Date): DateOps
+  readonly prototype: DateOps
+}
+
+export interface DateOps extends Wrapper<Date> {}
+
+

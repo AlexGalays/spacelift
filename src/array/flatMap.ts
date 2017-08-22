@@ -8,9 +8,19 @@ declare module '../../wrapper' {
   }
 }
 
-
+/**
+ * Maps this Array to an Array of Array | Option | ArrayOps using a mapper function then flattens it.
+ */
 export function flatMap<A, B>(this: ArrayOps<A>, fun: (item: A, index: number) => B[]): ArrayOps<B>
+
+/**
+ * Maps this Array to an Array of Array | Option | ArrayOps using a mapper function then flattens it.
+ */
 export function flatMap<A, B>(this: ArrayOps<A>, fun: (item: A, index: number) => ArrayOps<B>): ArrayOps<B>
+
+/**
+ * Maps this Array to an Array of Array | Option | ArrayOps using a mapper function then flattens it.
+ */
 export function flatMap<A, B>(this: ArrayOps<A>, fun: (item: A, index: number) => Option<B>): ArrayOps<B>
 
 /**

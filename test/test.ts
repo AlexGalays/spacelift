@@ -457,16 +457,76 @@ describe('lift', () => {
       expect(result2.get()).toBe(undefined)
     })
 
-    it('can set a value', () => {
-      const obj: Record<string, number> = { a: 1, b: 2, c: 22 }
+    it('can add a key/value', () => {
+      // Map-type objects (uniform key values)
+      const obj: Record<string, number | undefined> = { a: 1, b: 2, c: 22 }
       const result = lift(obj)
-        .add('b', 3)
-        .add('c', 222)
-        .add('newKey', 10)
+        .assoc('b', 3)
+        .assoc('c', 222)
+        .assoc('newKey', 10)
         .value()
 
       expect(result).toNotBe(obj)
       expect(result).toEqual({ a: 1, b: 3, c: 222, newKey: 10 })
+
+      // Heterogeneous objects
+      const obj2 = { a: 1, b: 2 }
+      const result2 = lift(obj2)
+        .add('c', 3)
+        .add('d', 'ohhhh')
+        .value()
+
+      const y = lift(obj2).add('AA', 3)
+
+      expect(result2).toEqual({ a: 1, b: 2, c: 3, d: 'ohhhh' })
+    })
+
+    it('can remove a key', () => {
+      // Map-type objects (uniform key values)
+      const obj: Record<string, number> = { a: 1, b: 2, c: 3 }
+      const result = lift(obj)
+        .dissoc('a')
+        .dissoc('c')
+        .value()
+
+      expect(result).toNotBe(obj)
+      expect(result).toEqual({ b: 2 })
+
+      // Heterogeneous objects
+      const obj2 = { a: 1, b: 2, c: 'aaa', d: [1, 2] }
+      const result2 = lift(obj2)
+        .remove('c')
+        .remove('d')
+        .value()
+
+      expect(result2).toEqual({ a: 1, b: 2 })
+    })
+
+    it('can add and remove keys on the same host', () => {
+      // Map-type objects (uniform key values)
+      const obj: Record<string, number> = { a: 1, b: 2, c: 3, d: 4 }
+      const result = lift(obj)
+        .dissoc('a')
+        .dissoc('c')
+        .assoc('e', 5)
+        .dissoc('d')
+        .assoc('f', 6)
+        .value()
+
+      expect(result).toNotBe(obj)
+      expect(result).toEqual({ b: 2, e: 5, f: 6 })
+
+      // Heterogeneous objects
+      const obj2 = { a: 1, b: 2, c: 'aaa', d: [1, 2], e: true }
+      const result2 = lift(obj2)
+        .remove('c')
+        .add('f', [3, 4])
+        .remove('d')
+        .add('g', [3, 4])
+        .remove('f')
+        .value()
+
+      expect(result2).toEqual({ a: 1, b: 2, e: true, g: [3, 4] })
     })
 
     it('can map the values of an object', () => {
@@ -499,13 +559,6 @@ describe('lift', () => {
       const result = lift(obj).values().sort().value()
       expect(result).toNotBe(obj as any)
       expect(result).toEqual([1, 2, 3])
-    })
-
-    it('can remove a key', () => {
-      const obj: Record<string, number> = { a: 1, b: 2, c: 3 }
-      const result = lift(obj).remove('a', 'c').value()
-      expect(result).toNotBe(obj)
-      expect(result).toEqual({ b: 2 })
     })
 
     it('can be created as a Set-like object', () => {

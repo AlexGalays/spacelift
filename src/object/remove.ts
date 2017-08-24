@@ -6,14 +6,18 @@ declare module '../../wrapper' {
   }
 }
 
+export type Diff<T extends string, U extends string> = ({ [P in T]: P } & { [P in U]: never } & { [x: string]: never })[T]
+export type Omit<T, K extends keyof T> = { [P in Diff<keyof T, K>]: T[P] }
+
 /**
- * Returns an Object where the given keys are removed.
- * To delete a nullable key from an object while preserving its type, use "update()"
+ * Removes a key/value from this heterogeneous object.
+ * To remove a (nullable) key from an object while preserving its type, use "update()" instead.
+ * To remove a key from a homogeneous key/value object, use "dissoc" instead.
  */
-export function remove<K extends string, V>(this: ObjectOps<Record<K, V>>, ...keys: K[]): ObjectOps<Record<K, V>> {
-  const obj = this.value(), result = {} as Record<K, V>
-  Object.keys(obj).forEach((key: K) => { if (keys.indexOf(key) === -1) result[key] = obj[key] })
-  return new ObjectOps(result)
+export function remove<A, K extends keyof A, V>(this: ObjectOps<A>, keyToRemove: K): ObjectOps<Omit<A, K>> {
+  const obj = this.value(), result = {}
+  Object.keys(obj).forEach(key => { if (key !== keyToRemove) result[key] = obj[key] })
+  return new ObjectOps(result) as any
 }
 
 ObjectOps.prototype.remove = remove

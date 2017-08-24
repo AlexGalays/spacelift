@@ -169,6 +169,8 @@ TODO: Detail and examples
 
 * [lift(object)](#lift.object)
 * [add](#object.add)
+* [assoc](#object.assoc)
+* [dissoc](#object.dissoc)
 * [filter](#object.filter)
 * [get](#object.get)
 * [is](#object.is)

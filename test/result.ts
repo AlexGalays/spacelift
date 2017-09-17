@@ -3,7 +3,7 @@ import '../commonjs/all'
 import { Result, Ok, Err } from '..'
 
 
-suite('option', () => {
+suite('result', () => {
 
   // Type checking
 
@@ -150,6 +150,19 @@ suite('option', () => {
     )
     expect(result.isOk()).toBe(false)
     expect(result.get()).toEqual('20')
+  })
+
+  test('Result.all - 10 Ok', () => {
+    const result = Result.all(Ok(1), Ok('2'), Ok(3), Ok('4'), Ok(5), Ok(true), Ok(7), Ok(8), Ok(9), Ok(10))
+    const result2 = Result.all([Ok(1), Ok('2'), Ok(3), Ok('4'), Ok(5), Ok(true), Ok(7), Ok(8), Ok(9), Ok(10)])
+    const result3 =  Result.all([Ok(1), Ok('2'), Ok(3), Ok('4'), Ok(5), Ok(true)])
+
+    expect(result.get()[2] + result.get()[9] === 13).toBe(true)
+    expect(result.get()).toEqual([1, '2', 3, '4', 5, true, 7, 8, 9, 10])
+
+    expect(result2.get()[2] + result2.get()[9] === 13).toBe(true)
+
+    expect(result3.get()[0] + result3.get()[4] === 6).toBe(true)
   })
 
 

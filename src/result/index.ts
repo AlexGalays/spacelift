@@ -42,28 +42,94 @@ export interface ResultObject {
   isResult(value: any): value is Result<{}, {}>
 
   /**
-   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok,
-   * else returns the first encountered Err.
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
    */
-  all<A, B, E1, E2>(a: Result<E1, A>, b: Result<E2, B>): Result<E1 | E2, [A, B]>
+  all<A, B, C, D, E, F, G, H, I, J, E1, E2, E3, E4, E5, E6, E7, E8, E9, E10>(a: Result<E1, A>, b: Result<E2, B>, c: Result<E3, C>, d: Result<E4, D>, e: Result<E5, E>, f: Result<E6, F>, g: Result<E7, G>, h: Result<E8, H>, i: Result<E9, I>, j: Result<E10, J>): Result<E1 | E2 | E3 | E4 | E5 | E6 | E7 | E8 | E9 | E10, [A, B, C, D, E, F, G, H, I, J]>
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, C, D, E, F, G, H, I, J, E1, E2, E3, E4, E5, E6, E7, E8, E9, E10>(xs: [Result<E1, A>, Result<E2, B>, Result<E3, C>, Result<E4, D>, Result<E5, E>, Result<E6, F>, Result<E7, G>, Result<E8, H>, Result<E9, I>, Result<E10, J>]): Result<E1 | E2 | E3 | E4 | E5 | E6 | E7 | E8 | E9 | E10, [A, B, C, D, E, F, G, H, I, J]>
 
   /**
-   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok,
-   * else returns the first encountered Err.
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
    */
-  all<A, B, C, E1, E2, E3>(a: Result<E1, A>, b: Result<E2, B>, c: Result<E3, C>): Result<E1 | E2 | E3, [A, B, C]>
+  all<A, B, C, D, E, F, G, H, I, E1, E2, E3, E4, E5, E6, E7, E8, E9>(a: Result<E1, A>, b: Result<E2, B>, c: Result<E3, C>, d: Result<E4, D>, e: Result<E5, E>, f: Result<E6, F>, g: Result<E7, G>, h: Result<E8, H>, i: Result<E9, I>): Result<E1 | E2 | E3 | E4 | E5 | E6 | E7 | E8 | E9, [A, B, C, D, E, F, G, H, I]>
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, C, D, E, F, G, H, I, E1, E2, E3, E4, E5, E6, E7, E8, E9>(xs: [Result<E1, A>, Result<E2, B>, Result<E3, C>, Result<E4, D>, Result<E5, E>, Result<E6, F>, Result<E7, G>, Result<E8, H>, Result<E9, I>]): Result<E1 | E2 | E3 | E4 | E5 | E6 | E7 | E8 | E9, [A, B, C, D, E, F, G, H, I]>
 
   /**
-   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok,
-   * else returns the first encountered Err.
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, C, D, E, F, G, H, E1, E2, E3, E4, E5, E6, E7, E8>(a: Result<E1, A>, b: Result<E2, B>, c: Result<E3, C>, d: Result<E4, D>, e: Result<E5, E>, f: Result<E6, F>, g: Result<E7, G>, h: Result<E8, H>): Result<E1 | E2 | E3 | E4 | E5 | E6 | E7 | E8, [A, B, C, D, E, F, G, H]>
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, C, D, E, F, G, H, E1, E2, E3, E4, E5, E6, E7, E8>(xs: [Result<E1, A>, Result<E2, B>, Result<E3, C>, Result<E4, D>, Result<E5, E>, Result<E6, F>, Result<E7, G>, Result<E8, H>]): Result<E1 | E2 | E3 | E4 | E5 | E6 | E7 | E8, [A, B, C, D, E, F, G, H]>
+
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, C, D, E, F, G, E1, E2, E3, E4, E5, E6, E7>(a: Result<E1, A>, b: Result<E2, B>, c: Result<E3, C>, d: Result<E4, D>, e: Result<E5, E>, f: Result<E6, F>, g: Result<E7, G>): Result<E1 | E2 | E3 | E4 | E5 | E6 | E7, [A, B, C, D, E, F, G]>
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, C, D, E, F, G, E1, E2, E3, E4, E5, E6, E7>(xs: [Result<E1, A>, Result<E2, B>, Result<E3, C>, Result<E4, D>, Result<E5, E>, Result<E6, F>, Result<E7, G>]): Result<E1 | E2 | E3 | E4 | E5 | E6 | E7, [A, B, C, D, E, F, G]>
+
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, C, D, E, F, E1, E2, E3, E4, E5, E6>(a: Result<E1, A>, b: Result<E2, B>, c: Result<E3, C>, d: Result<E4, D>, e: Result<E5, E>, f: Result<E6, F>): Result<E1 | E2 | E3 | E4 | E5 | E6, [A, B, C, D, E, F]>
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, C, D, E, F, E1, E2, E3, E4, E5, E6>(xs: [Result<E1, A>, Result<E2, B>, Result<E3, C>, Result<E4, D>, Result<E5, E>, Result<E6, F>]): Result<E1 | E2 | E3 | E4 | E5 | E6, [A, B, C, D, E, F]>
+
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, C, D, E, E1, E2, E3, E4, E5>(a: Result<E1, A>, b: Result<E2, B>, c: Result<E3, C>, d: Result<E4, D>, e: Result<E5, E>): Result<E1 | E2 | E3 | E4 | E5, [A, B, C, D, E]>
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, C, D, E, E1, E2, E3, E4, E5>(xs: [Result<E1, A>, Result<E2, B>, Result<E3, C>, Result<E4, D>, Result<E5, E>]): Result<E1 | E2 | E3 | E4 | E5, [A, B, C, D, E]>
+
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
    */
   all<A, B, C, D, E1, E2, E3, E4>(a: Result<E1, A>, b: Result<E2, B>, c: Result<E3, C>, d: Result<E4, D>): Result<E1 | E2 | E3 | E4, [A, B, C, D]>
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, C, D, E1, E2, E3, E4>(xs: [Result<E1, A>, Result<E2, B>, Result<E3, C>, Result<E4, D>]): Result<E1 | E2 | E3 | E4, [A, B, C, D]>
 
   /**
-   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok,
-   * else returns the first encountered Err.
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, C, E1, E2, E3>(a: Result<E1, A>, b: Result<E2, B>, c: Result<E3, C>): Result<E1 | E2 | E3, [A, B, C]>
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, C, E1, E2, E3>(xs: [Result<E1, A>, Result<E2, B>, Result<E3, C>]): Result<E1 | E2 | E3, [A, B, C]>
+
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, E1, E2>(a: Result<E1, A>, b: Result<E2, B>): Result<E1 | E2, [A, B]>
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, B, E1, E2>(xs: [Result<E1, A>, Result<E2, B>]): Result<E1 | E2, [A, B]>
+
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
    */
   all<A, E>(...results: Result<E, A>[]): Result<E, A[]>
+  /**
+   * Creates a new Ok Result holding the tuple of all the passed values if they were all Ok, else returns the first encountered Err.
+   */
+  all<A, E>(results: Result<E, A>[]): Result<E, A[]>
 }
 
 export interface Ok<E, T> extends ResultOps<E, T> {
@@ -83,10 +149,11 @@ const ResultObject = {} as ResultObject
 
 ResultObject.all = (...args: any[]): any => {
   const okValues: any[] = []
+  const arr = Array.isArray(args[0]) ? args[0] : args 
   let currentResult
 
-  for (let i = 0; i < args.length; i++) {
-    let currentResult = args[i]
+  for (let i = 0; i < arr.length; i++) {
+    let currentResult = arr[i]
     if (!currentResult.isOk()) return currentResult
     okValues.push(currentResult.get())
   }

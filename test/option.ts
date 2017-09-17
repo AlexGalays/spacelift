@@ -244,6 +244,19 @@ suite('option', () => {
     })
   })
 
+  test('Option.all - 10 Some', () => {
+    const result = Option.all(Some(1), Some('2'), Some(3), Some('4'), Some(5), Some(true), Some(7), Some(8), Some(9), Some(10))
+    const result2 = Option.all([Some(1), Some('2'), Some(3), Some('4'), Some(5), Some(true), Some(7), Some(8), Some(9), Some(10)])
+    const result3 =  Option.all([Some(1), Some('2'), Some(3), Some('4'), Some(5), Some(true)])
+
+    expect(result.isDefined() && result.get()[2] + result.get()[9] === 13).toBe(true)
+    expect(result.get()).toEqual([1, '2', 3, '4', 5, true, 7, 8, 9, 10])
+
+    expect(result2.isDefined() && result2.get()[2] + result2.get()[9] === 13).toBe(true)
+
+    expect(result3.isDefined() && result3.get()[0] + result3.get()[4] === 6).toBe(true)
+  })
+
 
   // Option.isOption
 

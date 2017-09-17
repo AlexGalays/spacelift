@@ -104,31 +104,111 @@ export interface OptionObject {
    * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
    * else returns None
    */
-  all<T1, T2>(t1: NullableValue<T1>, t2: NullableValue<T2>): Option<[T1, T2]>
+  all<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(t1: NullableValue<T1>, t2: NullableValue<T2>, t3: NullableValue<T3>, t4: NullableValue<T4>, t5: NullableValue<T5>, t6: NullableValue<T6>, t7: NullableValue<T7>, t8: NullableValue<T8>, t9: NullableValue<T9>, t10: NullableValue<T10>): Option<[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10]>
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(xs: [NullableValue<T1>, NullableValue<T2>, NullableValue<T3>, NullableValue<T4>, NullableValue<T5>, NullableValue<T6>, NullableValue<T7>, NullableValue<T8>, NullableValue<T9>, NullableValue<T10>]): Option<[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10]>
 
   /**
    * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
    * else returns None
    */
-  all<T1, T2, T3>(t1: NullableValue<T1>, t2: NullableValue<T2>, t3: NullableValue<T3>): Option<[T1, T2, T3]>
+  all<T1, T2, T3, T4, T5, T6, T7, T8, T9>(t1: NullableValue<T1>, t2: NullableValue<T2>, t3: NullableValue<T3>, t4: NullableValue<T4>, t5: NullableValue<T5>, t6: NullableValue<T6>, t7: NullableValue<T7>, t8: NullableValue<T8>, t9: NullableValue<T9>): Option<[T1, T2, T3, T4, T5, T6, T7, T8, T9]>
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2, T3, T4, T5, T6, T7, T8, T9>(xs: [NullableValue<T1>, NullableValue<T2>, NullableValue<T3>, NullableValue<T4>, NullableValue<T5>, NullableValue<T6>, NullableValue<T7>, NullableValue<T8>, NullableValue<T9>]): Option<[T1, T2, T3, T4, T5, T6, T7, T8, T9]>
 
   /**
    * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
    * else returns None
    */
-  all<T1, T2, T3, T4>(t1: NullableValue<T1>, t2: NullableValue<T2>, t3: NullableValue<T3>, t4: NullableValue<T4>): Option<[T1, T2, T3, T4]>
+  all<T1, T2, T3, T4, T5, T6, T7, T8>(t1: NullableValue<T1>, t2: NullableValue<T2>, t3: NullableValue<T3>, t4: NullableValue<T4>, t5: NullableValue<T5>, t6: NullableValue<T6>, t7: NullableValue<T7>, t8: NullableValue<T8>): Option<[T1, T2, T3, T4, T5, T6, T7, T8]>
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2, T3, T4, T5, T6, T7, T8>(xs: [NullableValue<T1>, NullableValue<T2>, NullableValue<T3>, NullableValue<T4>, NullableValue<T5>, NullableValue<T6>, NullableValue<T7>, NullableValue<T8>]): Option<[T1, T2, T3, T4, T5, T6, T7, T8]>
+
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2, T3, T4, T5, T6, T7>(t1: NullableValue<T1>, t2: NullableValue<T2>, t3: NullableValue<T3>, t4: NullableValue<T4>, t5: NullableValue<T5>, t6: NullableValue<T6>, t7: NullableValue<T7>): Option<[T1, T2, T3, T4, T5, T6, T7]>
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2, T3, T4, T5, T6, T7>(xs: [NullableValue<T1>, NullableValue<T2>, NullableValue<T3>, NullableValue<T4>, NullableValue<T5>, NullableValue<T6>, NullableValue<T7>]): Option<[T1, T2, T3, T4, T5, T6, T7]>
+
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2, T3, T4, T5, T6>(t1: NullableValue<T1>, t2: NullableValue<T2>, t3: NullableValue<T3>, t4: NullableValue<T4>, t5: NullableValue<T5>, t6: NullableValue<T6>): Option<[T1, T2, T3, T4, T5, T6]>
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2, T3, T4, T5, T6>(xs: [NullableValue<T1>, NullableValue<T2>, NullableValue<T3>, NullableValue<T4>, NullableValue<T5>, NullableValue<T6>]): Option<[T1, T2, T3, T4, T5, T6]>
 
   /**
    * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
    * else returns None
    */
   all<T1, T2, T3, T4, T5>(t1: NullableValue<T1>, t2: NullableValue<T2>, t3: NullableValue<T3>, t4: NullableValue<T4>, t5: NullableValue<T5>): Option<[T1, T2, T3, T4, T5]>
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2, T3, T4, T5>(xs: [NullableValue<T1>, NullableValue<T2>, NullableValue<T3>, NullableValue<T4>, NullableValue<T5>]): Option<[T1, T2, T3, T4, T5]>
+
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2, T3, T4>(t1: NullableValue<T1>, t2: NullableValue<T2>, t3: NullableValue<T3>, t4: NullableValue<T4>): Option<[T1, T2, T3, T4]>
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2, T3, T4>(xs: [NullableValue<T1>, NullableValue<T2>, NullableValue<T3>, NullableValue<T4>]): Option<[T1, T2, T3, T4]>
+
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2, T3>(t1: NullableValue<T1>, t2: NullableValue<T2>, t3: NullableValue<T3>): Option<[T1, T2, T3]>
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2, T3>(xs: [NullableValue<T1>, NullableValue<T2>, NullableValue<T3>]): Option<[T1, T2, T3]>
+
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2>(t1: NullableValue<T1>, t2: NullableValue<T2>): Option<[T1, T2]>
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T1, T2>(xs: [NullableValue<T1>, NullableValue<T2>]): Option<[T1, T2]>
 
   /**
    * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
    * else returns None
    */
   all<T>(...ts: Array<NullableValue<T>>): Option<T[]>
+  /**
+   * Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,
+   * else returns None
+   */
+  all<T>(ts: Array<NullableValue<T>>): Option<T[]>
 }
 
 // The Option factory / static object
@@ -138,9 +218,10 @@ const OptionObject = function<T>(value: T): Option<T> {
 
 OptionObject.all = (...args: any[]): any => {
   const values: any[] = []
+  const arr = Array.isArray(args[0]) ? args[0] : args
 
-  for (let i = 0; i < args.length; i++) {
-    let value = args[i]
+  for (let i = 0; i < arr.length; i++) {
+    let value = arr[i]
     if (Option.isOption(value)) value = value.get()
     if (!isDef(value)) return None
     values.push(value)

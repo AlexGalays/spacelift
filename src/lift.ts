@@ -4,7 +4,6 @@ import {
   ObjectOpsConstructor, ObjectOps as IObjectOps,
   NumberOpsConstructor, NumberOps as INumberOps,
   StringOpsConstructor, StringOps as IStringOps,
-  BoolOpsConstructor, BoolOps as IBoolOps,
   DateOpsConstructor, DateOps as IDateOps
 } from '../wrapper'
 
@@ -17,9 +16,6 @@ export interface Lift {
 
   /** Wraps a String to provide a richer API. Unwrap with .value() **/
   (obj: string): StringOps
-
-  /** Wraps a boolean to provide a richer API. Unwrap with .value() **/
-  (obj: boolean): BoolOps
 
   /** Wraps a Date to provide a richer API. Unwrap with .value() **/
   (obj: Date): DateOps
@@ -38,8 +34,6 @@ const lift: Lift = function(obj: any): any {
 
   if (typeof obj === 'string') return new StringOps(obj)
   if (typeof obj === 'number') return new NumberOps(obj)
-  
-  if (obj === true || obj === false) return new BoolOps(obj)
 
   return new ObjectOps(obj)
 }
@@ -99,11 +93,3 @@ export const StringOps = makeOps() as StringOpsConstructor
 
 export type DateOps = IDateOps
 export const DateOps = makeOps() as DateOpsConstructor
-
-//--------------------------------------
-//  Boolean
-//--------------------------------------
-
-// Not that we expect to expand on the boolean capabilities... But for completeness sake.
-export type BoolOps = IBoolOps
-export const BoolOps = makeOps() as BoolOpsConstructor

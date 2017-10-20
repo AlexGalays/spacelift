@@ -1,4 +1,4 @@
-import { ArrayOps, BoolOps } from '../lift'
+import { ArrayOps } from '../lift'
 
 declare module '../../wrapper' {
   interface ArrayOps<A> {
@@ -9,14 +9,14 @@ declare module '../../wrapper' {
 /**
  * Returns whether all items satisfies the predicate.
  */
-export function every<A>(this: ArrayOps<A>, predicate: (item: A, index: number) => boolean): BoolOps {
+export function every<A>(this: ArrayOps<A>, predicate: (item: A, index: number) => boolean): boolean {
   const arr = this.value()
 
   for (let i = 0; i < arr.length; i++) {
-    if (!predicate(arr[i], i)) return new BoolOps(false)
+    if (!predicate(arr[i], i)) return false
   }
 
-  return new BoolOps(true)
+  return true
 }
 
 

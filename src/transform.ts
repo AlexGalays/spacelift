@@ -1,4 +1,4 @@
-import lift, { ArrayOps, ObjectOps, NumberOps, StringOps, DateOps, BoolOps, Wrapper, getValue } from './lift'
+import lift, { ArrayOps, ObjectOps, NumberOps, StringOps, DateOps, Wrapper, getValue } from './lift'
 
 declare module '../wrapper' {
   interface ArrayOps<A> {
@@ -30,12 +30,6 @@ declare module '../wrapper' {
   }
 }
 
-declare module '../wrapper' {
-  interface BoolOps {
-    transform: typeof transform
-  }
-}
-
 /**
  * Runs an arbitrary function to transform this wrapper into a Number wrapper
  */
@@ -57,11 +51,7 @@ export function transform<A>(this: Wrapper<A>, func: (source: A) => StringOps): 
 /**
  * Runs an arbitrary function to transform this wrapper into a boolean wrapper
  */
-export function transform<A>(this: Wrapper<A>, func: (source: A) => boolean): BoolOps
-/**
- * Runs an arbitrary function to transform this wrapper into a boolean wrapper
- */
-export function transform<A>(this: Wrapper<A>, func: (source: A) => BoolOps): BoolOps
+export function transform<A>(this: Wrapper<A>, func: (source: A) => boolean): boolean
 
 /**
  * Runs an arbitrary function to transform this wrapper into a date wrapper
@@ -97,7 +87,6 @@ export function transform<A>(this: Wrapper<A>, func: (source: any) => any): any 
 
 NumberOps.prototype.transform = transform
 StringOps.prototype.transform = transform
-BoolOps.prototype.transform = transform
 ArrayOps.prototype.transform = transform
 ObjectOps.prototype.transform = transform
 DateOps.prototype.transform = transform

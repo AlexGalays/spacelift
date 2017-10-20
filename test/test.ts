@@ -322,19 +322,19 @@ describe('lift', () => {
 
     it('can tell whether at least one item satisfy a predicate', () => {
       const arr = [1, 2, 3, 4]
-      const result = lift(arr).some(n => n > 2).value()
+      const result = lift(arr).some(n => n > 2)
       expect(result).toBe(true)
 
-      const result2 = lift(arr).some(n => n > 1000).value()
+      const result2 = lift(arr).some(n => n > 1000)
       expect(result2).toBe(false)
     })
 
     it('can tell whether all items satisfy a predicate', () => {
       const arr = [1, 2, 3, 4]
-      const result = lift(arr).every(n => n > 2).value()
+      const result = lift(arr).every(n => n > 2)
       expect(result).toBe(false)
 
-      const result2 = lift(arr).every(n => n < 1000).value()
+      const result2 = lift(arr).every(n => n < 1000)
       expect(result2).toBe(true)
     })
 
@@ -455,6 +455,12 @@ describe('lift', () => {
       const map: Record<string, number | undefined> = { a: 1, b: 2, c: 3 }
       const result2 = lift(map).get('d').map(x => x.toFixed(3)) // toFixed to prove we got an Option<number> back
       expect(result2.get()).toBe(undefined)
+
+      const set = Set<string>('1', '2', '3')
+      const result3 = set.get('2').get()
+      expect(result3).toBe(true)
+      const result4 = set.get('4').get()
+      expect(result4).toBe(undefined)
     })
 
     it('can add a key/value', () => {
@@ -573,6 +579,12 @@ describe('lift', () => {
 
       expect(is.func({})).toBe(false)
       expect(is.func(() => {})).toBe(true)
+    })
+
+    it('can return whether it\'s empty', () => {
+      expect(lift({}).isEmpty()).toBe(true)
+      expect(lift({ a: undefined }).isEmpty()).toBe(false)
+      expect(lift({ a: 10 }).isEmpty()).toBe(false)
     })
 
   })

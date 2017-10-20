@@ -13,7 +13,7 @@ Design goals
 - Tiny and performant
 - Small set of functions, configurable with lambdas
 - Cover 95% of frontend data transformation needs without becoming a bloated lib just to cover the remaining 5%
-- The Array/Object wrappers use an OO style as it's the most convenient without an `|>` operator directly in the language
+- Use an OO style as it's the most convenient one without an `|>` operator directly in the language (fingers crossed)
 
 
 * [How to use](#howtouse)
@@ -33,7 +33,7 @@ Design goals
 Here's everything that can be imported from `space-lift`:  
 
 ```ts
-import lift, { Option, Some, None, Result, Ok, Err, update, deepUpdate, DELETE, range, Set, memoize, is } from 'space-lift'
+import lift, { Option, Some, None, Result, Ok, Err, update, deepUpdate, DELETE, range, Set, memoize, is, fromArrayLike tuple } from 'space-lift'
 ```
 
 `lift` is a generic function that can wrap an Array or Object and give it extra functionalities  
@@ -43,6 +43,8 @@ import lift, { Option, Some, None, Result, Ok, Err, update, deepUpdate, DELETE, 
 `range` is a factory function for Arrays of numbers
 `Set` is a factory function for objects acting as Sets
 `is` is a helper used to determine if an instance is of a particular type (e.g `is.array([]) === true`)
+`fromArrayLike` converts an Array like object (FileList, HTMLCollection, etc) into a standard Array
+`tuple` creates a properly typed tuple
 
 By default, the library provides no operators to the Wrapped Arrays/Objects at all. You get to choose what to import.
 
@@ -174,6 +176,7 @@ TODO: Detail and examples
 * [filter](#object.filter)
 * [get](#object.get)
 * [is](#object.is)
+* [isEmpty](#object.isEmpty)
 * [keys](#object.keys)
 * [mapValues](#object.mapValues)
 * [remove](#object.remove)

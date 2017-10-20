@@ -1,5 +1,5 @@
 import { Option, None } from '../option'
-import lift, { ArrayOps, ObjectOps, NumberOps, StringOps, BoolOps, DateOps } from '../lift'
+import lift, { ArrayOps, ObjectOps, NumberOps, StringOps, DateOps } from '../lift'
 
 declare module '../../wrapper' {
   interface ArrayOps<A> {
@@ -20,7 +20,7 @@ export function fold<A>(this: ArrayOps<A>, startValue: string, func: (acc: strin
 /**
  * Folds this Array into a single value, using a starting value.
  */
-export function fold<A>(this: ArrayOps<A>, startValue: boolean, func: (acc: boolean, value: A, index: number) => boolean): BoolOps
+export function fold<A>(this: ArrayOps<A>, startValue: boolean, func: (acc: boolean, value: A, index: number) => boolean): boolean
 
 /**
  * Folds this Array into a single value, using a starting value.

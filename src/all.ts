@@ -43,6 +43,7 @@ import './array/updateAt'
 
 import './object/add'
 import './object/assoc'
+import './object/contains'
 import './object/dissoc'
 import './object/filter'
 import './object/get'

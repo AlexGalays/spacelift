@@ -175,6 +175,7 @@ TODO: Detail and examples
 * [dissoc](#object.dissoc)
 * [filter](#object.filter)
 * [get](#object.get)
+* [has](#object.has)
 * [is](#object.is)
 * [isEmpty](#object.isEmpty)
 * [keys](#object.keys)

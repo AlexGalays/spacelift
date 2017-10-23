@@ -587,6 +587,14 @@ describe('lift', () => {
       expect(lift({ a: 10 }).isEmpty()).toBe(false)
     })
 
+    it('can return whether it contains a key', () => {
+      expect(lift({}).contains('a')).toBe(false)
+      expect(lift({ b: 10 }).contains('a')).toBe(false)
+      expect(lift({ b: 10 }).contains('b')).toBe(true)
+      expect(lift({ b: undefined }).contains('b')).toBe(true)
+      expect(lift({ b: null }).contains('b')).toBe(true)
+    })
+
   })
 
   describe('functions', () => {

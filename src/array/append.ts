@@ -10,7 +10,7 @@ declare module '../../wrapper' {
  * Appends one item at the end of the Array.
  */
 export function append<A>(this: ArrayOps<A>, item: A): ArrayOps<A> {
-  return new ArrayOps(this.value().concat(item))
+  return new ArrayOps([...this.value(), item])
 }
 
 ArrayOps.prototype.append = append

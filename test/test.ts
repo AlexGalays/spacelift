@@ -78,6 +78,13 @@ describe('lift', () => {
       expect(updated).toNotBe(arr)
     })
 
+    it('can append an Array item', () => {
+      const arr = [[1], [2], [3], [4], [5], [6]]
+      const updated = lift(arr).append([7]).value()
+      expect(updated).toEqual([[1], [2], [3], [4], [5], [6], [7]])
+      expect(updated).toNotBe(arr)
+    })
+
     it('can append an Array of items', () => {
       const arr = [1, 2, 3, 4, 5, 6]
       const updated = lift(arr).appendAll([7, 8, 9, 10]).value()

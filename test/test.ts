@@ -66,9 +66,29 @@ describe('lift', () => {
         .map(n => n * 2)
         .filter(n => n > 6)
         .value()
+
       expect(filtered).toEqual([8, 10, 12])
       expect(filtered instanceof Array).toBe(true)
       expect(filtered).toNotBe(arr)
+
+      type A = { type: 'a', a: number }
+      type B = { type: 'b', b: string }
+      type Union = A | B
+      const isA = (u: Union): u is A => u.type === 'a'
+
+      const arr2: Union[] = [
+        { type: 'a', a: 10 },
+        { type: 'a', a: 20 },
+        { type: 'b', b: '30' }
+      ]
+
+      // It should now have been refined as an Array of as, but is not
+      const filtered2: A[] = arr2.filter(isA)
+
+      expect(filtered2).toEqual([
+        { type: 'a', a: 10 },
+        { type: 'a', a: 20 }
+      ])
     })
 
     it('can append an item', () => {

@@ -12,7 +12,7 @@ declare module '../../wrapper' {
 export function mapValues<K extends string, V, W>(this: ObjectOps<Record<K, V>>, mapper: (key: K, value: V) => W): ObjectOps<Record<K, W>> {
   const obj = this.value(), result = {} as Record<K, W>
 
-  Object.keys(obj).forEach((key: K) => {
+  (Object.keys(obj) as K[]).forEach(key => {
     const value = mapper(key, obj[key])
     result[key] = value
   })

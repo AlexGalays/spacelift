@@ -13,7 +13,7 @@ declare module '../../wrapper' {
  * Usage 2: read an optional value from a domain object
  */
 export function get<A, K extends keyof A>(this: ObjectOps<OptionalMap<A>>, key: K): Option<A[K]> {
-  return Option(this.value()[key])
+  return Option(this.value()[key]) as Option<A[K]>
 }
 
 /* This type is used to remove all null/undefined values from the passed Object's values,

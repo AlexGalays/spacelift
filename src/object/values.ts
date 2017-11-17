@@ -12,7 +12,7 @@ declare module '../../wrapper' {
 export function values<K extends string, V, W>(this: ObjectOps<Record<K, V>>): ArrayOps<V> {
   const obj = this.value(), result = [] as V[]
 
-  Object.keys(obj).forEach((key: K) => {
+  (Object.keys(obj) as K[]).forEach(key => {
     result.push(obj[key])
   })
 

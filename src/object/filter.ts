@@ -12,7 +12,7 @@ declare module '../../wrapper' {
 export function filter<K extends string, V>(this: ObjectOps<Record<K, V>>, predicate: (key: K, value: V) => boolean): ObjectOps<Record<K, V>> {
   const obj = this.value(), result = {} as Record<K, V>
 
-  Object.keys(obj).forEach((key: K) => {
+  (Object.keys(obj) as K[]).forEach(key => {
     const value = obj[key]
     if (predicate(key, value)) result[key] = value
   })

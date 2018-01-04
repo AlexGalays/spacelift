@@ -33,7 +33,7 @@ Design goals
 Here's everything that can be imported from `space-lift`:  
 
 ```ts
-import lift, { Option, Some, None, Result, Ok, Err, update, deepUpdate, DELETE, range, Set, memoize, is, fromArrayLike tuple } from 'space-lift'
+import lift, { Option, Some, None, Result, Ok, Err, update, deepUpdate, DELETE, range, Set, memoize, is, fromArrayLike, tuple } from 'space-lift'
 ```
 
 `lift` is a generic function that can wrap an Array or Object and give it extra functionalities  

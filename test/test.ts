@@ -146,6 +146,13 @@ describe('lift', () => {
       expect(updated).toNotBe(arr)
     })
 
+    it('won\'t remove an item if the given index is negative', () => {
+      const arr = ['a', 'b', 'c', 'd', 'e', 'f']
+      const updated = lift(arr).removeAt(-1).value()
+
+      expect(updated).toEqual(arr)
+    })
+
     it('can remove all falsy values', () => {
       const arr = [undefined, 'a', '', 'b', false, 'c', undefined, 'd', 'e', null, null, 'f', 0]
       const updated = lift(arr).compact().value()

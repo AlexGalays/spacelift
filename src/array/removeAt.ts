@@ -11,7 +11,7 @@ declare module '../../wrapper' {
  */
 export function removeAt<A>(this: ArrayOps<A>, index: number): ArrayOps<A> {
   const result = this.value().slice()
-  result.splice(index, 1)
+  result.splice(index, index < 0 ? 0 : 1);
   return new ArrayOps(result)
 }
 

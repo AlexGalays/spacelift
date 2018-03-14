@@ -208,34 +208,34 @@ suite('option', () => {
   // Option.all
 
   test('Option.all - 2 Some', () => {
-    const some = Option.all(Option('a'), Option('b'))
+    const some = Option.all([Option('a'), Option('b')])
     expect(some.isDefined() && some.get().join(',') === 'a,b').toBe(true)
   })
 
   test('Option.all - 1 Some, 1 defined value', () => {
-    const some = Option.all(Option('a'), 'b')
+    const some = Option.all([Option('a'), 'b'])
     expect(some.isDefined() && some.get().join(',') === 'a,b').toBe(true)
   })
 
   test('Option.all - 3 Some', () => {
-    const some = Option.all(Option('a'), Option('b'), Option('c'))
+    const some = Option.all([Option('a'), Option('b'), Option('c')])
     expect(some.isDefined() && some.get().join(',') === 'a,b,c').toBe(true)
   })
 
   test('Option.all - 1 Some, 1 None', () => {
-    const none = Option.all(Option('a'), Option(undefined))
+    const none = Option.all([Option('a'), Option(undefined)])
     expect(!none.isDefined() && none.get() === undefined).toBe(true)
   })
 
   test('Option.all - 1 Some, 1 undefined', () => {
-    const none = Option.all(Option('a'), undefined)
+    const none = Option.all([Option('a'), undefined])
     expect(!none.isDefined() && none.get() === undefined).toBe(true)
   })
 
   test('Option.all - values in the result tuple are refined to be non nullable', () => {
     const nullableString = 'a' as string | null | undefined
 
-    Option.all(Option(nullableString), undefined, nullableString).map(([a, b, c]) => {
+    Option.all([Option(nullableString), undefined, nullableString]).map(([a, b, c]) => {
       // Just testing the compilation here
       a.charCodeAt(10)
       c.charCodeAt(10)
@@ -245,7 +245,7 @@ suite('option', () => {
   })
 
   test('Option.all - 10 Some', () => {
-    const result = Option.all(Some(1), Some('2'), Some(3), Some('4'), Some(5), Some(true), Some(7), Some(8), Some(9), Some(10))
+    const result = Option.all([Some(1), Some('2'), Some(3), Some('4'), Some(5), Some(true), Some(7), Some(8), Some(9), Some(10)])
     const result2 = Option.all([Some(1), Some('2'), Some(3), Some('4'), Some(5), Some(true), Some(7), Some(8), Some(9), Some(10)])
     const result3 =  Option.all([Some(1), Some('2'), Some(3), Some('4'), Some(5), Some(true)])
 

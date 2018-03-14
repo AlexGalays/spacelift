@@ -125,35 +125,35 @@ suite('result', () => {
   // Result.all
 
   test('Result.all - 2 Ok', () => {
-    const result = Result.all(
+    const result = Result.all([
       Ok(10),
       Ok('20')
-    )
+    ])
     expect(result.isOk()).toBe(true)
     expect(result.get()).toEqual([10, '20'])
   })
 
   test('Result.all - 1 Ok, 1 Err', () => {
-    const result = Result.all(
+    const result = Result.all([
       Ok(10),
       Err('20')
-    )
+    ])
     expect(result.isOk()).toBe(false)
     expect(result.get()).toEqual('20')
   })
 
   test('Result.all - 1 Ok, 2 Err', () => {
-    const result = Result.all(
+    const result = Result.all([
       Ok(10),
       Err('20'),
       Err({ error: 'oops' })
-    )
+    ])
     expect(result.isOk()).toBe(false)
     expect(result.get()).toEqual('20')
   })
 
   test('Result.all - 10 Ok', () => {
-    const result = Result.all(Ok(1), Ok('2'), Ok(3), Ok('4'), Ok(5), Ok(true), Ok(7), Ok(8), Ok(9), Ok(10))
+    const result = Result.all([Ok(1), Ok('2'), Ok(3), Ok('4'), Ok(5), Ok(true), Ok(7), Ok(8), Ok(9), Ok(10)])
     const result2 = Result.all([Ok(1), Ok('2'), Ok(3), Ok('4'), Ok(5), Ok(true), Ok(7), Ok(8), Ok(9), Ok(10)])
     const result3 =  Result.all([Ok(1), Ok('2'), Ok(3), Ok('4'), Ok(5), Ok(true)])
 

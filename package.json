@@ -1,6 +1,6 @@
 {
   "name": "space-lift",
-  "version": "0.6.5",
+  "version": "0.7.0",
   "description": "Idiomatic TS array, object utils, Option, Result monads",
 
   "main": "commonjs/index.js",

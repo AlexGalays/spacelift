@@ -1,12 +1,12 @@
-**space-lift**  
-"Lift your values into space for infinite possibilities"  
+**space-lift**
+"Lift your values into space for infinite possibilities"
 
 ![](http://i.imgur.com/DWrI2JY.gif?noredirect)
 
 
 # Rich Array/Object wrapper, Option, Result monads
 
-Design goals  
+Design goals
 - 100% immutable, no magic, no overwhelming polymorphism or dynamic operators
 - Fun to use
 - Correctness and proper typescript typings
@@ -30,16 +30,16 @@ Design goals
 <a name="howtouse"></a>
 # How to use
 
-Here's everything that can be imported from `space-lift`:  
+Here's everything that can be imported from `space-lift`:
 
 ```ts
 import lift, { Option, Some, None, Result, Ok, Err, update, deepUpdate, DELETE, range, Set, memoize, is, fromArrayLike, tuple } from 'space-lift'
 ```
 
-`lift` is a generic function that can wrap an Array or Object and give it extra functionalities  
-`update`, `deepUpdate`, `DELETE` come from [immupdate](https://github.com/AlexGalays/immupdate)  
-`Option`, `Some`, `None` are used to work with optional values  
-`Result`, `Ok`, `Err` are used to work with computation that may fail  
+`lift` is a generic function that can wrap an Array or Object and give it extra functionalities
+`update`, `deepUpdate`, `DELETE` come from [immupdate](https://github.com/AlexGalays/immupdate)
+`Option`, `Some`, `None` are used to work with optional values
+`Result`, `Ok`, `Err` are used to work with computation that may fail
 `range` is a factory function for Arrays of numbers
 `Set` is a factory function for objects acting as Sets
 `is` is a helper used to determine if an instance is of a particular type (e.g `is.array([]) === true`)
@@ -48,7 +48,7 @@ import lift, { Option, Some, None, Result, Ok, Err, update, deepUpdate, DELETE, 
 
 By default, the library provides no operators to the Wrapped Arrays/Objects at all. You get to choose what to import.
 
-The fastest way is to install everything in a single import (probably in your main file):  
+The fastest way is to install everything in a single import (probably in your main file):
 
 ```ts
 import 'space-lift/es/all' // For bundlers who work more efficiently with ECMAScript modules
@@ -56,7 +56,7 @@ import 'space-lift/es/all' // For bundlers who work more efficiently with ECMASc
 import 'space-lift/commonjs/all' // To use the legacy commonjs modules
 ```
 
-But you can also choose exactly what to import:  
+But you can also choose exactly what to import:
 
 ```ts
 import 'space-lift/es/array/map'
@@ -68,7 +68,7 @@ Note: When using typescript, don't forget to enable (at least) these two flags f
 
 
 <a name="examples"></a>
-# Examples  
+# Examples
 
 ## Update an object inside an Array
 
@@ -109,9 +109,9 @@ const sortedPeople = lift(people)
 <a name="autounwrap"></a>
 # Auto unwrap
 
-Most of the time, you will have to call `.value()` to read your value back (or `.get()` for options, although it is recommended to use `map`/`getOrElse`/etc instead)  
-Because it's distracting to write `.value()` more than once per chain, some operators will automatically unwrap values returned from their iterators (like Promise->then).  
-These operators are:  
+Most of the time, you will have to call `.value()` to read your value back (or `.get()` for options, although it is recommended to use `map`/`getOrElse`/etc instead)
+Because it's distracting to write `.value()` more than once per chain, some operators will automatically unwrap values returned from their iterators (like Promise->then).
+These operators are:
 
 - `Option.map`
 - `Array.map`
@@ -217,7 +217,7 @@ const memoized = memoize(
 
 
 <a name="api.option"></a>
-## Option 
+## Option
 
 * [Option()](#Option())
 * [Option.all()](#Option.all)
@@ -248,7 +248,7 @@ const some = Option(33) // some === Some(33)
 const none = Option(null) // none === None
 ```
 
-If you already know the value is defined for sure (not nullable) or not, you can create a `Some` or `None` directly:  
+If you already know the value is defined for sure (not nullable) or not, you can create a `Some` or `None` directly:
 
 ```ts
 const some = Some(33) // Some(null | undefined) wouldn't compile.
@@ -257,25 +257,25 @@ const none = None
 
 
 <a name="Option.all"></a>
-#### Option.all(...optionsOrValues)
+#### Option.all([...optionsOrValues])
 
-Creates a new Option holding the tuple of all the passed values if they were all Some or non null/undefined values,  
+Creates a new Option holding the tuple of all the values contained in the passed array if they were all Some or non null/undefined values,
 else returns None
 
 ```ts
-const some = Option.all(
+const some = Option.all([
   Option(10),
   20,
   Option(5)
-)
+])
 // some === Some([10, 20, 5])
 
-const none = Option.all(
+const none = Option.all([
   Option(10),
   None,
   Option(5),
   null
-)
+])
 // none === None
 ```
 
@@ -337,7 +337,7 @@ const some = Option(33).filter(x => x > 32)
 <a name="option.fold"></a>
 #### fold
 
-Applies the first function if this is a None, else applies the second function.  
+Applies the first function if this is a None, else applies the second function.
 Note: Since this method creates 2 functions everytime it runs, don't use in tight loops; use isDefined() instead.
 
 ```ts
@@ -368,7 +368,7 @@ const some = Option(null).orElse(() => Option(33))
 <a name="option.get"></a>
 #### get
 
-`Some` instances return their value, whereas `None` always return `undefined`.  
+`Some` instances return their value, whereas `None` always return `undefined`.
 This method never throws.
 
 ```ts
@@ -379,7 +379,7 @@ const value = Some(33).get()
 <a name="option.isDefined"></a>
 #### isDefined
 
-Returns whether this Option has a defined value (i.e, it's a Some(value))  
+Returns whether this Option has a defined value (i.e, it's a Some(value))
 Note: this refines the type of the Option to be a Some so it's guaranteed its value is not null/undefined.
 
 
@@ -421,13 +421,13 @@ Option(33).forEach(x => console.log(x))
 * [fold](#result.fold)
 
 
-A `Result` is the result of a computation that may fail. An `Ok` represents a successful computation, while an `Err` represent the error case.  
+A `Result` is the result of a computation that may fail. An `Ok` represents a successful computation, while an `Err` represent the error case.
 
 
 <a name="Result"></a>
 ### Importing Result
 
-Here's everything that can be imported to use Results:  
+Here's everything that can be imported to use Results:
 
 ```ts
 import { Result, Ok, Err } from 'space-lift'
@@ -450,18 +450,18 @@ Result.isResult(Ok(10)) // true
 <a name="Result.all"></a>
 ### Result.all
 
-Creates a new Ok Result holding the tuple of all the passed values if they were all Ok,
+Creates a new Ok Result holding the tuple of all the values contained in the passed array if they were all Ok,
 else returns the first encountered Err.
 
 ```ts
 import { Result, Ok, Err } from 'space-lift'
 
-const result = Result.all(
+const result = Result.all([
   Ok(20),
   Err('nooo'),
   Ok(200),
   Err('oops')
-) // Err('nooo')
+]) // Err('nooo')
 ```
 
 

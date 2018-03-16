@@ -125,44 +125,41 @@ suite('result', () => {
   // Result.all
 
   test('Result.all - 2 Ok', () => {
-    const result = Result.all(
+    const result = Result.all([
       Ok(10),
       Ok('20')
-    )
+    ])
     expect(result.isOk()).toBe(true)
     expect(result.get()).toEqual([10, '20'])
   })
 
   test('Result.all - 1 Ok, 1 Err', () => {
-    const result = Result.all(
+    const result = Result.all([
       Ok(10),
       Err('20')
-    )
+    ])
     expect(result.isOk()).toBe(false)
     expect(result.get()).toEqual('20')
   })
 
   test('Result.all - 1 Ok, 2 Err', () => {
-    const result = Result.all(
+    const result = Result.all([
       Ok(10),
       Err('20'),
       Err({ error: 'oops' })
-    )
+    ])
     expect(result.isOk()).toBe(false)
     expect(result.get()).toEqual('20')
   })
 
   test('Result.all - 10 Ok', () => {
-    const result = Result.all(Ok(1), Ok('2'), Ok(3), Ok('4'), Ok(5), Ok(true), Ok(7), Ok(8), Ok(9), Ok(10))
-    const result2 = Result.all([Ok(1), Ok('2'), Ok(3), Ok('4'), Ok(5), Ok(true), Ok(7), Ok(8), Ok(9), Ok(10)])
-    const result3 =  Result.all([Ok(1), Ok('2'), Ok(3), Ok('4'), Ok(5), Ok(true)])
+    const result = Result.all([Ok(1), Ok('2'), Ok(3), Ok('4'), Ok(5), Ok(true), Ok(7), Ok(8), Ok(9), Ok(10)])
+    const result2 =  Result.all([Ok(1), Ok('2'), Ok(3), Ok('4'), Ok(5), Ok(true)])
 
     expect(result.get()[2] + result.get()[9] === 13).toBe(true)
     expect(result.get()).toEqual([1, '2', 3, '4', 5, true, 7, 8, 9, 10])
 
-    expect(result2.get()[2] + result2.get()[9] === 13).toBe(true)
-
-    expect(result3.get()[0] + result3.get()[4] === 6).toBe(true)
+    expect(result2.get()[0] + result2.get()[4] === 6).toBe(true)
   })
 
 

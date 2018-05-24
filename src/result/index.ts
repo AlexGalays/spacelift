@@ -46,6 +46,13 @@ export interface ResultObject {
    * if they were all Ok,
    * else returns the first encountered Err.
    */
+  all<A, B, C, D, E, F, G, H, I, J, K, E1, E2, E3, E4, E5, E6, E7, E8, E9, E10, E11>(xs: [Result<E1, A>, Result<E2, B>, Result<E3, C>, Result<E4, D>, Result<E5, E>, Result<E6, F>, Result<E7, G>, Result<E8, H>, Result<E9, I>, Result<E10, J>, Result<E11, K>]): Result<E1 | E2 | E3 | E4 | E5 | E6 | E7 | E8 | E9 | E10 | E11, [A, B, C, D, E, F, G, H, I, J, K]>
+
+  /**
+   * Creates a new Ok Result holding the tuple of all the values contained in the passed array
+   * if they were all Ok,
+   * else returns the first encountered Err.
+   */
   all<A, B, C, D, E, F, G, H, I, J, E1, E2, E3, E4, E5, E6, E7, E8, E9, E10>(xs: [Result<E1, A>, Result<E2, B>, Result<E3, C>, Result<E4, D>, Result<E5, E>, Result<E6, F>, Result<E7, G>, Result<E8, H>, Result<E9, I>, Result<E10, J>]): Result<E1 | E2 | E3 | E4 | E5 | E6 | E7 | E8 | E9 | E10, [A, B, C, D, E, F, G, H, I, J]>
 
   /**

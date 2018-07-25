@@ -40,6 +40,17 @@ suite('option', () => {
   })
 
 
+  test('Manipulating a None', () => {
+    const none = None
+    const anOption: Option<number> = none
+
+    const x: never = none.get()
+    const y: number | undefined = anOption.get()
+
+    x
+    y
+  })
+
   // forEach
 
   test('Some.forEach', () => {
@@ -202,6 +213,18 @@ suite('option', () => {
     const result = Option(null).toArray()
     expect(result instanceof ArrayOps).toBe(true)
     expect(result.value()).toEqual([])
+  })
+
+  // toResult
+
+  test('Some.toResult', () => {
+    const result = Option(10).toResult(() => 'nope')
+    expect(result.isOk() && result.get()).toBe(10)
+  })
+
+  test('None.toResult', () => {
+    const result = Option(null).toResult(() => 'error')
+    expect(!result.isOk() && result.get()).toBe('error')
   })
 
 

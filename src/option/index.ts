@@ -1,4 +1,5 @@
 import lift, { Wrapper, getValue, ArrayOps } from '../lift'
+import { Err, Ok, Result } from '../result'
 
 
 export interface Option<A> {
@@ -72,6 +73,11 @@ export interface Option<A> {
    */
   toArray(): ArrayOps<A>
 
+  /**
+   * Converts this Option to a Result.
+   */
+  toResult<ERR>(ifLeft: () => ERR): Result<ERR, A>
+
   toString(): string
 }
 
@@ -82,7 +88,7 @@ export interface Some<T> extends Option<T> {
 
 export interface None extends Option<never> {
   type: 'none'
-  get(): undefined
+  get(): never
 }
 
 
@@ -209,6 +215,7 @@ function makeNone() {
   self.orElse = (alt: Function) => alt()
   self.getOrElse = (alt: any) => alt
   self.toArray = () => lift([])
+  self.toResult = (ifNone: Function) => Err(ifNone())
   self.toString = () => 'None'
   self.toJSON = () => null
 
@@ -261,6 +268,10 @@ _Some.prototype = {
 
   toArray() {
     return lift([this.value])
+  },
+
+  toResult() {
+    return Ok(this.value)
   },
 
   toString() {

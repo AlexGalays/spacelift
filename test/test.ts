@@ -540,6 +540,24 @@ describe('lift', () => {
         .value()
 
       expect(result2).toEqual({ a: 1, b: 2 })
+
+      // Map with Number keys
+      const obj3: Record<number, number> = { 0: 1, 1: 2, 2: 3 }
+      const result3 = lift(obj3)
+        .dissoc(0)
+        .dissoc(1)
+        .value()
+
+      expect(result3).toEqual({ 2: 3 })
+
+      // Heterogeneous objects with number keys
+      const obj4 = { 0: 1, 1: 2, 2: 'aaa', 3: [1, 2] }
+      const result4 = lift(obj4)
+        .remove(2)
+        .remove(3)
+        .value()
+
+      expect(result4).toEqual({ 0: 1, 1: 2 })
     })
 
     it('can add and remove keys on the same host', () => {

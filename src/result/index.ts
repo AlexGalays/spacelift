@@ -1,4 +1,5 @@
 import { Wrapper, getValue } from '../lift'
+import { Option, Some, None } from '../option'
 
 
 export interface ResultOps<E, A> {
@@ -32,6 +33,11 @@ export interface ResultOps<E, A> {
     ifErr: (err: E) => B,
     ifOk: (value: A) => C
   ): B | C
+
+  /**
+   * Transforms this Result into an Option.
+   */
+  toOption(): Option<A>
 }
 
 export interface ResultObject {
@@ -179,6 +185,10 @@ _Ok.prototype = {
     return ifOk(this._value)
   },
 
+  toOption() {
+    return Some(this._value)
+  },
+
   toString() {
     return `Ok(${this._value})`
   },
@@ -214,6 +224,10 @@ _Err.prototype = {
 
   fold(ifErr: any, ifOk: any) {
     return ifErr(this._error)
+  },
+
+  toOption() {
+    return None
   },
 
   toString() {

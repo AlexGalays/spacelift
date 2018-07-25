@@ -122,6 +122,18 @@ suite('result', () => {
   })
 
 
+  // toOption
+
+  test('Ok.toOption', () => {
+    const option = Ok(10).toOption()
+    expect(option.isDefined() && option.get()).toBe(10)
+  })
+
+  test('Err.toOption', () => {
+    const option = Err('error').toOption()
+    expect(option.isDefined()).toBe(false)
+  })
+
   // Result.all
 
   test('Result.all - 2 Ok', () => {

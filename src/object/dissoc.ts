@@ -13,7 +13,7 @@ declare module '../../wrapper' {
  * To remove a (nullable) key from an object while preserving its type, use "update()" instead.
  * To remove a key from an object and create a new type, use "remove()"
  */
-export function dissoc<K extends string, V>(this: ObjectOps<Record<K, V>>, key: K): ObjectOps<Record<K, V>> {
+export function dissoc<K extends string | number | symbol, V>(this: ObjectOps<Record<K, V>>, key: K): ObjectOps<Record<K, V>> {
   return {} as any
 }
 

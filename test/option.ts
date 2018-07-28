@@ -278,6 +278,32 @@ suite('option', () => {
   })
 
 
+  // Option.allObject
+
+  test('Option.allObject - 2 Some', () => {
+    const some = Option.allObject({a: Some('a'), b: Some('b')});
+    expect(some.isDefined()).toBe(true);
+    expect(some.get()).toEqual({a: 'a', b: 'b'});
+  });
+
+  test('Option.allObject - 1 Some, 1 None', () => {
+    const some = Option.allObject({a: Some('a'), b: None});
+    expect(some).toEqual(None);
+  });
+
+  test('Option.allObject - values in the result have correct inference', () => {
+    const some = Option.allObject({
+      a: Some('a'),
+      b: Some(2),
+      c: Some([1, 2, 3]),
+    });
+    // Just testing typechecker here
+    (some.getE().a as string);
+    (some.getE().b as number);
+    (some.getE().c as number[]);
+  });
+
+
   // Option.isOption
 
   test('Option.isOption', () => {

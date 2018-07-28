@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var expect = require("expect");
-require("../all");
+require("../commonjs/all");
 var __1 = require("..");
 suite('option', function () {
     // isDefined
@@ -30,6 +30,14 @@ suite('option', function () {
         var none = __1.Option(undefined);
         expect(none.isDefined()).toBe(false);
         expect(none.get()).toBe(undefined);
+    });
+    test('Manipulating a None', function () {
+        var none = __1.None;
+        var anOption = none;
+        var x = none.get();
+        var y = anOption.get();
+        x;
+        y;
     });
     // forEach
     test('Some.forEach', function () {
@@ -148,36 +156,73 @@ suite('option', function () {
         expect(result instanceof __1.ArrayOps).toBe(true);
         expect(result.value()).toEqual([]);
     });
+    // toResult
+    test('Some.toResult', function () {
+        var result = __1.Option(10).toResult(function () { return 'nope'; });
+        expect(result.isOk() && result.get()).toBe(10);
+    });
+    test('None.toResult', function () {
+        var result = __1.Option(null).toResult(function () { return 'error'; });
+        expect(!result.isOk() && result.get()).toBe('error');
+    });
     // Option.all
     test('Option.all - 2 Some', function () {
-        var some = __1.Option.all(__1.Option('a'), __1.Option('b'));
+        var some = __1.Option.all([__1.Option('a'), __1.Option('b')]);
         expect(some.isDefined() && some.get().join(',') === 'a,b').toBe(true);
     });
     test('Option.all - 1 Some, 1 defined value', function () {
-        var some = __1.Option.all(__1.Option('a'), 'b');
+        var some = __1.Option.all([__1.Option('a'), 'b']);
         expect(some.isDefined() && some.get().join(',') === 'a,b').toBe(true);
     });
     test('Option.all - 3 Some', function () {
-        var some = __1.Option.all(__1.Option('a'), __1.Option('b'), __1.Option('c'));
+        var some = __1.Option.all([__1.Option('a'), __1.Option('b'), __1.Option('c')]);
         expect(some.isDefined() && some.get().join(',') === 'a,b,c').toBe(true);
     });
     test('Option.all - 1 Some, 1 None', function () {
-        var none = __1.Option.all(__1.Option('a'), __1.Option(undefined));
+        var none = __1.Option.all([__1.Option('a'), __1.Option(undefined)]);
         expect(!none.isDefined() && none.get() === undefined).toBe(true);
     });
     test('Option.all - 1 Some, 1 undefined', function () {
-        var none = __1.Option.all(__1.Option('a'), undefined);
+        var none = __1.Option.all([__1.Option('a'), undefined]);
         expect(!none.isDefined() && none.get() === undefined).toBe(true);
     });
     test('Option.all - values in the result tuple are refined to be non nullable', function () {
         var nullableString = 'a';
-        __1.Option.all(__1.Option(nullableString), undefined, nullableString).map(function (_a) {
+        __1.Option.all([__1.Option(nullableString), undefined, nullableString]).map(function (_a) {
             var a = _a[0], b = _a[1], c = _a[2];
             // Just testing the compilation here
             a.charCodeAt(10);
             c.charCodeAt(10);
             return 0;
         });
+    });
+    test('Option.all - 10 Some', function () {
+        var result = __1.Option.all([__1.Some(1), __1.Some('2'), __1.Some(3), __1.Some('4'), __1.Some(5), __1.Some(true), __1.Some(7), __1.Some(8), __1.Some(9), __1.Some(10)]);
+        var result2 = __1.Option.all([__1.Some(1), __1.Some('2'), __1.Some(3), __1.Some('4'), __1.Some(5), __1.Some(true)]);
+        expect(result.isDefined() && result.get()[2] + result.get()[9] === 13).toBe(true);
+        expect(result.get()).toEqual([1, '2', 3, '4', 5, true, 7, 8, 9, 10]);
+        expect(result2.isDefined() && result2.get()[0] + result2.get()[4] === 6).toBe(true);
+    });
+    // Option.allObject
+    test('Option.allObject - 2 Some', function () {
+        var some = __1.Option.allObject({ a: __1.Some('a'), b: __1.Some('b') });
+        expect(some.isDefined()).toBe(true);
+        expect(some.get()).toEqual({ a: 'a', b: 'b' });
+    });
+    test('Option.allObject - 1 Some, 1 None', function () {
+        var some = __1.Option.allObject({ a: __1.Some('a'), b: __1.None });
+        expect(some).toEqual(__1.None);
+    });
+    test('Option.allObject - values in the result have correct inference', function () {
+        var some = __1.Option.allObject({
+            a: __1.Some('a'),
+            b: __1.Some(2),
+            c: __1.Some([1, 2, 3])
+        });
+        // Just testing typechecker here
+        some.getE().a;
+        some.getE().b;
+        some.getE().c;
     });
     // Option.isOption
     test('Option.isOption', function () {

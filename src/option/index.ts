@@ -11,6 +11,11 @@ export interface Option<A> {
   get(): A | undefined
 
   /**
+   * Returns the value contained in this Option, throwing if it is None.
+   */
+  getE(): A
+
+  /**
    * Returns whether this Option has a defined value (i.e, it's a Some(value))
    */
   isDefined(): this is Some<A>
@@ -175,6 +180,12 @@ export interface OptionObject {
    * else returns None
    */
   all<T>(ts: Array<NullableValue<T>>): Option<T[]>
+
+  /**
+   * Given an object whose values are options, creates a new Option holding an object with
+   * interior values if they were all Some or None otherwise.
+   */
+  allObject<O>(obj: {[K in keyof O]: Option<O[K]>}): Option<O>
 }
 
 // The Option factory / static object
@@ -195,6 +206,19 @@ OptionObject.all = (arr: any[]): any => {
   return Some(values)
 }
 
+OptionObject.allObject = <O>(obj: {[K in keyof O]: Option<O[K]>}): Option<O> => {
+  const result: any = {};
+  for (let key in obj) {
+    const value = obj[key];
+    if (value.isDefined()) {
+      result[key] = value.get();
+    } else {
+      return None;
+    }
+  }
+  return Some(result);
+};
+
 OptionObject.isOption = function(value: any): value is Option<{}> {
   return !!value && (value.type === 'some' || value.type === 'none')
 }
@@ -206,6 +230,7 @@ function makeNone() {
 
   self.type = 'none'
   self.get = () => undefined
+  self.getE = () => {throw new Error('Called getE on None')}
   self.isDefined = () => false
   self.forEach = () => {}
   self.map = returnNone
@@ -231,6 +256,10 @@ _Some.prototype = {
   type: 'some',
 
   get() {
+    return this.value
+  },
+
+  getE() {
     return this.value
   },
 

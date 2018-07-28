@@ -1,9 +1,9 @@
 "use strict";
 exports.__esModule = true;
 var expect = require("expect");
-require("../all");
+require("../commonjs/all");
 var __1 = require("..");
-suite('option', function () {
+suite('result', function () {
     // Type checking
     test('An Ok can be assigned to any Result with a compatible Ok type', function () {
         var result = __1.Ok(10);
@@ -82,21 +82,47 @@ suite('option', function () {
         var err = __1.Err(10).fold(function (err) { return 20; }, function (val) { return 30; });
         expect(err).toBe(20);
     });
+    // toOption
+    test('Ok.toOption', function () {
+        var option = __1.Ok(10).toOption();
+        expect(option.isDefined() && option.get()).toBe(10);
+    });
+    test('Err.toOption', function () {
+        var option = __1.Err('error').toOption();
+        expect(option.isDefined()).toBe(false);
+    });
     // Result.all
     test('Result.all - 2 Ok', function () {
-        var result = __1.Result.all(__1.Ok(10), __1.Ok('20'));
+        var result = __1.Result.all([
+            __1.Ok(10),
+            __1.Ok('20')
+        ]);
         expect(result.isOk()).toBe(true);
         expect(result.get()).toEqual([10, '20']);
     });
     test('Result.all - 1 Ok, 1 Err', function () {
-        var result = __1.Result.all(__1.Ok(10), __1.Err('20'));
+        var result = __1.Result.all([
+            __1.Ok(10),
+            __1.Err('20')
+        ]);
         expect(result.isOk()).toBe(false);
         expect(result.get()).toEqual('20');
     });
     test('Result.all - 1 Ok, 2 Err', function () {
-        var result = __1.Result.all(__1.Ok(10), __1.Err('20'), __1.Err({ error: 'oops' }));
+        var result = __1.Result.all([
+            __1.Ok(10),
+            __1.Err('20'),
+            __1.Err({ error: 'oops' })
+        ]);
         expect(result.isOk()).toBe(false);
         expect(result.get()).toEqual('20');
+    });
+    test('Result.all - 10 Ok', function () {
+        var result = __1.Result.all([__1.Ok(1), __1.Ok('2'), __1.Ok(3), __1.Ok('4'), __1.Ok(5), __1.Ok(true), __1.Ok(7), __1.Ok(8), __1.Ok(9), __1.Ok(10)]);
+        var result2 = __1.Result.all([__1.Ok(1), __1.Ok('2'), __1.Ok(3), __1.Ok('4'), __1.Ok(5), __1.Ok(true)]);
+        expect(result.get()[2] + result.get()[9] === 13).toBe(true);
+        expect(result.get()).toEqual([1, '2', 3, '4', 5, true, 7, 8, 9, 10]);
+        expect(result2.get()[0] + result2.get()[4] === 6).toBe(true);
     });
     // test('should not compile', () => {
     //   const test1 = Ok(10).flatMap(x => Ok(String(x * 2)))

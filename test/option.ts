@@ -295,6 +295,10 @@ suite('option', () => {
   test('Some toString', () => {
     const str = Option(10).toString()
     expect(str).toBe('Some(10)')
+
+    const obj = { a: 1, toString() { return `{a:${this.a}}` } }
+    const str2 = Option(obj).toString()
+    expect(str2).toBe('Some({a:1})')
   })
 
   test('None toString', () => {

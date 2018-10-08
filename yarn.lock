@@ -80,9 +80,9 @@ has-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-1.0.0.tgz#9d9e793165ce017a00f00418c43f942a7b1d11fa"
 
-immupdate@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/immupdate/-/immupdate-1.2.0.tgz#19576ba1fdaf55c9a1d6586d0a21788699a21541"
+immupdate@1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/immupdate/-/immupdate-1.2.3.tgz#f051f390fb0369cd4db33a35cb42f98d84b25d28"
 
 inflight@^1.0.4:
   version "1.0.6"
@@ -202,9 +202,9 @@ supports-color@3.1.2:
   dependencies:
     has-flag "^1.0.0"
 
-typescript@2.9.2:
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
+typescript@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.1.tgz#3362ba9dd1e482ebb2355b02dfe8bcd19a2c7c96"
 
 util@0.10.3:
   version "0.10.3"

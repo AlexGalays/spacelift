@@ -23,11 +23,11 @@
   },
 
   "dependencies": {
-    "immupdate": "1.2.0"
+    "immupdate": "1.2.3"
   },
 
   "devDependencies": {
-    "typescript": "2.9.2",
+    "typescript": "3.1.1",
     "mocha": "3.0.2",
     "expect": "1.8.0"
   },

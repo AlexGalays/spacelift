@@ -201,6 +201,18 @@ suite('option', () => {
   })
 
 
+  // exists
+
+  test('Some.exists', () => {
+    expect(Some(10).exists(n => n == 10)).toBe(true)
+    expect(Some([]).exists(arr => arr.length > 0)).toBe(false)
+  })
+
+  test('None.exists', () => {
+    expect(Option(null).exists(_ => true)).toBe(false)
+  })
+
+
   // toArray
 
   test('Some.toArray', () => {

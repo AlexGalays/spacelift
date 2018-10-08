@@ -232,6 +232,7 @@ const memoized = memoize(
 * [get](#option.get)
 * [getOrElse](#option.getOrElse)
 * [forEach](#option.forEach)
+* [exists](#option.exists)
 * [toArray](#option.toArray)
 
 
@@ -404,7 +405,14 @@ Applies the given procedure to the option's value, if it is non empty.
 Option(33).forEach(x => console.log(x))
 ```
 
+<a name="option.exists"></a>
+#### exists
 
+Returns whether this option is a Some with a value satisfying the predicate.
+
+```ts
+Option(30).exists(n => n > 10) // true
+```
 
 
 

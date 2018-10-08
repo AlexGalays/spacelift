@@ -69,6 +69,11 @@ export interface Option<A> {
   getOrElse(alternative: A): A
 
   /**
+   * Returns whether this option is a Some with a value satisfying the predicate.
+   */
+  exists(predicate: (a: A) => boolean): boolean
+
+  /**
    * Converts this Option to an Array.
    */
   toArray(): ArrayOps<A>
@@ -214,6 +219,7 @@ function makeNone() {
   self.fold = (ifEmpty: Function) => ifEmpty()
   self.orElse = (alt: Function) => alt()
   self.getOrElse = (alt: any) => alt
+  self.exists = () => false
   self.toArray = () => lift([])
   self.toResult = (ifNone: Function) => Err(ifNone())
   self.toString = () => 'None'
@@ -264,6 +270,10 @@ _Some.prototype = {
 
   getOrElse() {
     return this.value
+  },
+
+  exists(predicate: any) {
+    return predicate(this.value)
   },
 
   toArray() {

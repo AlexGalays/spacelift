@@ -289,7 +289,7 @@ _Some.prototype = {
   },
 
   toJSON() {
-    return this.value
+    return this.value.toJSON ? this.value.toJSON() : this.value
   }
 }
 

@@ -129,6 +129,7 @@ describe('lift', () => {
     it('can replace an item at a given index', () => {
       const arr = [1, 2, 3, 4, 5, 6]
       const updated = lift(arr)
+        .updateAt(-1, n => n * 2)
         .updateAt(2, n => lift(n * 1000)) // test that we can return a lifted value as well
         .updateAt(5, n => n * 100)
         .updateAt(1000, n => n / 10)
@@ -136,6 +137,19 @@ describe('lift', () => {
 
       expect(updated).toEqual([1, 2, 3000, 4, 5, 600])
       expect(updated).toNotBe(arr)
+    })
+
+    it('won\'t replace an item if the given index is out of bounds', () => {
+      const arr = [
+        { id: 1, label: 'one'},
+        { id: 2, label: 'two'}
+      ]
+      const updated = lift(arr)
+        .updateAt(-1, item => update(item, { label: item.label.toUpperCase() }))
+        .updateAt(1000, item => update(item, { label: item.label.toUpperCase() }))
+        .value()
+
+      expect(updated).toEqual(arr)
     })
 
     it('can remove an item at a given index', () => {

@@ -23,7 +23,7 @@ export function updateAt<A>(this: ArrayOps<A>, index: number, updater: (item: A)
 export function updateAt<A>(this: ArrayOps<A>, index: number, updater: (item: A) => A | Wrapper<A>): ArrayOps<A> {
   const result = this.value().slice()
 
-  if (result.length > index)
+  if (result.length > index && index > -1)
     result[index] = getValue(updater(result[index]))
 
   return new ArrayOps(result)

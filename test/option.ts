@@ -326,6 +326,11 @@ suite('option', () => {
     expect(obj.x).toBe(10)
   })
 
+  test('Some toJSON with implicit json for contained object', () => {
+    const obj = JSON.parse(JSON.stringify({ x: Option({ toJSON() { return 10} }) }))
+    expect(obj.x).toBe(10)
+  })
+
   test('None toJSON', () => {
     const obj = JSON.parse(JSON.stringify({ x: Option(undefined) }))
     expect(obj.x).toBe(null)

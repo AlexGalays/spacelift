@@ -210,6 +210,7 @@ function makeNone() {
   function returnNone() { return None }
 
   self.type = 'none'
+  self.Option = OptionObject
   self.get = () => undefined
   self.isDefined = () => false
   self.forEach = () => {}
@@ -235,6 +236,8 @@ function _Some<T>(this: Some<T> & { value: T }, value: T) {
 _Some.prototype = {
 
   type: 'some',
+
+  Option: OptionObject,
 
   get() {
     return this.value

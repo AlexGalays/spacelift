@@ -39,6 +39,17 @@ suite('option', () => {
     expect(none.get()).toBe(undefined)
   })
 
+  test('Some and None have a hidden back reference to Option for use in other libs without an explicit dep', () => {
+    const some = Option(1)
+    const some2 = (some as any).Option(10)
+
+    const none = Option(null)
+    const none2 = (none as any).Option(undefined)
+
+    expect(some2.get()).toBe(10)
+    expect(none2).toBe(None)
+  })
+
 
   test('Manipulating a None', () => {
     const none = None

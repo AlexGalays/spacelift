@@ -1,6 +1,6 @@
 {
   "name": "space-lift",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "Idiomatic TS array, object utils, Option, Result monads",
 
   "main": "commonjs/index.js",
@@ -23,7 +23,7 @@
   },
 
   "dependencies": {
-    "immupdate": "1.2.3"
+    "immupdate": "1.3.0"
   },
 
   "devDependencies": {

@@ -212,6 +212,19 @@ suite('option', () => {
   })
 
 
+  // contains
+
+  test('Some.contains', () => {
+    expect(Some('🍔').contains('🍔')).toBe(true)
+    expect(Some('🍔').contains('🥗')).toBe(false)
+  })
+
+  test('None.contains', () => {
+    const none = None as Option<'🍔'>
+    expect(none.contains('🍔')).toBe(false)
+  })
+
+
   // exists
 
   test('Some.exists', () => {

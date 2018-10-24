@@ -74,6 +74,11 @@ export interface Option<A> {
   exists(predicate: (a: A) => boolean): boolean
 
   /**
+   * Returns whether this option is a Some that contain a specific value, using ===
+   */
+  contains(a: A): boolean
+
+  /**
    * Converts this Option to an Array.
    */
   toArray(): ArrayOps<A>
@@ -81,7 +86,7 @@ export interface Option<A> {
   /**
    * Converts this Option to a Result.
    */
-  toResult<ERR>(ifLeft: () => ERR): Result<ERR, A>
+  toResult<ERR>(ifNone: () => ERR): Result<ERR, A>
 
   toString(): string
 }
@@ -208,11 +213,12 @@ function makeNone() {
   const self: any = {}
 
   function returnNone() { return None }
+  function returnFalse() { return false }
 
   self.type = 'none'
   self.Option = OptionObject
   self.get = () => undefined
-  self.isDefined = () => false
+  self.isDefined = returnFalse
   self.forEach = () => {}
   self.map = returnNone
   self.flatMap = returnNone
@@ -220,7 +226,8 @@ function makeNone() {
   self.fold = (ifEmpty: Function) => ifEmpty()
   self.orElse = (alt: Function) => alt()
   self.getOrElse = (alt: any) => alt
-  self.exists = () => false
+  self.contains = returnFalse
+  self.exists = returnFalse
   self.toArray = () => lift([])
   self.toResult = (ifNone: Function) => Err(ifNone())
   self.toString = () => 'None'
@@ -273,6 +280,10 @@ _Some.prototype = {
 
   getOrElse() {
     return this.value
+  },
+
+  contains(value: any) {
+    return this.value === value
   },
 
   exists(predicate: any) {

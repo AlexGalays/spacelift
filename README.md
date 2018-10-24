@@ -232,6 +232,7 @@ const memoized = memoize(
 * [get](#option.get)
 * [getOrElse](#option.getOrElse)
 * [forEach](#option.forEach)
+* [contains](#option.contains)
 * [exists](#option.exists)
 * [toArray](#option.toArray)
 
@@ -403,6 +404,15 @@ Applies the given procedure to the option's value, if it is non empty.
 
 ```ts
 Option(33).forEach(x => console.log(x))
+```
+
+<a name="option.contains"></a>
+#### contains
+
+Returns whether this option is a Some that contain a specific value, using ===
+
+```ts
+Option(30).contains(30) // true
 ```
 
 <a name="option.exists"></a>

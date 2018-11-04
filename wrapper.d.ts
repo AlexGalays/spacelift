@@ -13,7 +13,7 @@ export interface ArrayOpsConstructor {
   readonly prototype: ArrayOps<any>
 }
 
-export interface ArrayOps<A> extends Wrapper<A[]> {}
+export interface ArrayOps<A> extends Wrapper<A[]>, Iterable<A> {}
 
 
 export interface ObjectOpsConstructor {
@@ -21,7 +21,7 @@ export interface ObjectOpsConstructor {
   readonly prototype: ObjectOps<any>
 }
 
-export interface ObjectOps<A> extends Wrapper<A> {}
+export interface ObjectOps<A> extends Wrapper<A>, Iterable<A> {}
 
 
 export interface NumberOpsConstructor {
@@ -29,7 +29,7 @@ export interface NumberOpsConstructor {
   readonly prototype: NumberOps
 }
 
-export interface NumberOps extends Wrapper<number> {}
+export interface NumberOps extends Wrapper<number>, Iterable<number> {}
 
 
 export interface StringOpsConstructor {
@@ -37,15 +37,7 @@ export interface StringOpsConstructor {
   readonly prototype: StringOps
 }
 
-export interface StringOps extends Wrapper<string> {}
-
-
-export interface BoolOpsConstructor {
-  new(value: boolean): BoolOps
-  readonly prototype: BoolOps
-}
-
-export interface BoolOps extends Wrapper<boolean> {}
+export interface StringOps extends Wrapper<string>, Iterable<string> {}
 
 
 export interface DateOpsConstructor {
@@ -53,6 +45,6 @@ export interface DateOpsConstructor {
   readonly prototype: DateOps
 }
 
-export interface DateOps extends Wrapper<Date> {}
+export interface DateOps extends Wrapper<Date>, Iterable<Date> {}
 
 

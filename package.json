@@ -15,9 +15,9 @@
 
   "scripts": {
     "build": "npm run build-commonjs && npm run build-es",
-    "build-es": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core' --outDir ./es --declaration --strict --suppressImplicitAnyIndexErrors --module es6 --moduleResolution node",
-    "build-commonjs": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core' --outDir ./commonjs --declaration --strict --suppressImplicitAnyIndexErrors",
-    "pretest": "npm run build && tsc --lib 'es5,es2015.core' test/expect.d.ts test/mocha.d.ts test/global.d.ts test/test.ts test/option.ts test/result.ts --outDir ./test --noImplicitAny --strictNullChecks",
+    "build-es": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core,es2015.iterable' --outDir ./es --declaration --strict --suppressImplicitAnyIndexErrors --module es6 --moduleResolution node",
+    "build-commonjs": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core,es2015.iterable' --outDir ./commonjs --declaration --strict --suppressImplicitAnyIndexErrors",
+    "pretest": "npm run build && tsc --lib 'es5,es2015.core,es2015.iterable' test/expect.d.ts test/mocha.d.ts test/global.d.ts test/test.ts test/option.ts test/result.ts --outDir ./test --noImplicitAny --strictNullChecks --downlevelIteration",
     "test": "mocha test/test.js && mocha --ui tdd test/option.js && mocha --ui tdd test/result.js",
     "prepublish": "npm run build"
   },

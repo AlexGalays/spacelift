@@ -491,6 +491,21 @@ describe('lift', () => {
       expect(result6.value().getFullYear()).toEqual(2017)
     })
 
+    it('implements the iterator protocol', () => {
+      const arr = lift([1, 2, 3])
+      const acc = []
+
+      for (let i of arr) {
+        acc.push(i)
+      }
+
+      for (let i of lift([])) {
+        acc.push(i)
+      }
+
+      expect(acc).toEqual([1, 2, 3])
+    })
+
   })
 
   describe('Object', () => {
@@ -754,6 +769,34 @@ describe('lift', () => {
         { id: 2, name: 'Nick' },
         { id: 3, name: 'nina' }
       ])
+    })
+
+  })
+
+  describe('lift(primitive)', () => {
+
+    it('is an iterable', () => {
+      const acc = []
+      const d = new Date()
+      const obj = {}
+
+      for (let i of lift(1)) {
+        acc.push(i)
+      }
+
+      for (let i of lift('a')) {
+        acc.push(i)
+      }
+
+      for (let i of lift(obj)) {
+        acc.push(i)
+      }
+
+      for (let i of lift(d)) {
+        acc.push(i)
+      }
+
+      expect(acc).toEqual([1, 'a', obj, d])
     })
 
   })

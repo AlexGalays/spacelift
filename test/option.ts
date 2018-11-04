@@ -251,6 +251,32 @@ suite('option', () => {
     expect(result.value()).toEqual([])
   })
 
+
+  // Iterable protocol
+
+  test('Some is an iterable', () => {
+    const result = Option(10)
+    const acc = []
+
+    for (let i of result) {
+      acc.push(i)
+    }
+
+    expect(acc).toEqual([10])
+  })
+
+  test('None is an iterable', () => {
+    const result = Option(null)
+    const acc = []
+
+    for (let i of result) {
+      acc.push(i)
+    }
+
+    expect(acc).toEqual([])
+  })
+
+
   // toResult
 
   test('Some.toResult', () => {

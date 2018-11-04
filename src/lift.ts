@@ -7,6 +7,8 @@ import {
   DateOpsConstructor, DateOps as IDateOps
 } from '../wrapper'
 
+import { iteratorSymbol, singleValueIterator } from './iterator'
+
 export { Wrapper } from '../wrapper'
 
 
@@ -55,6 +57,8 @@ function makeOps(): {} {
     value() { return this._value }
   }
 
+  Ops.prototype[iteratorSymbol] = singleValueIterator(self => self._value)
+
   return Ops
 }
 
@@ -65,6 +69,19 @@ function makeOps(): {} {
 
 export type ArrayOps<A> = IArrayOps<A>
 export const ArrayOps = makeOps() as ArrayOpsConstructor
+
+ArrayOps.prototype[iteratorSymbol] = function() {
+  let i = 0
+  const self = this as any
+
+  return {
+    next() {
+      return i < self._value.length
+        ? { value: self._value[i++], done: false }
+        : { done: true }
+    }
+  }
+}
 
 //--------------------------------------
 //  Object

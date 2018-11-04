@@ -3,7 +3,14 @@
 		"target": "es5",
 		"noImplicitAny": true,
 		"strictNullChecks": true,
-    "suppressImplicitAnyIndexErrors": true
+		"suppressImplicitAnyIndexErrors": true,
+		"downlevelIteration": true,
+		"lib": [
+			"dom",
+			"es5",
+			"es2015.core",
+			"es2015.iterable"
+		]
 	},
 	"compileOnSave": false,
 	"atom": {

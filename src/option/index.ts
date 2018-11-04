@@ -1,8 +1,9 @@
 import lift, { Wrapper, getValue, ArrayOps } from '../lift'
 import { Err, Ok, Result } from '../result'
+import { iteratorSymbol, singleValueIterator } from '../iterator'
 
 
-export interface Option<A> {
+export interface Option<A> extends Iterable<A> {
   /**
    * Returns the value contained in this Option.
    * This will always return undefined if this Option instance is None.
@@ -233,6 +234,12 @@ function makeNone() {
   self.toString = () => 'None'
   self.toJSON = () => null
 
+  self[iteratorSymbol] = function() {
+    return {
+      next() { return { done: true } }
+    }
+  }
+
   return self as None
 }
 
@@ -304,7 +311,9 @@ _Some.prototype = {
 
   toJSON() {
     return this.value.toJSON ? this.value.toJSON() : this.value
-  }
+  },
+
+  [iteratorSymbol]: singleValueIterator(self => self.value)
 }
 
 function isDef<T>(value: T | null | undefined): value is T  {

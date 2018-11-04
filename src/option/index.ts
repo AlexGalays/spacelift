@@ -48,6 +48,11 @@ export interface Option<A> extends Iterable<A> {
    * If this Option is a Some and the predicate returns true, keep that Some.
    * In all other cases, return None.
    */
+  filter<B extends A>(fn: (a: A) => a is B): Option<B>
+  /**
+   * If this Option is a Some and the predicate returns true, keep that Some.
+   * In all other cases, return None.
+   */
   filter(fn: (a: A) => boolean): Option<A>
 
   /**
@@ -69,6 +74,10 @@ export interface Option<A> extends Iterable<A> {
    */
   getOrElse(alternative: A): A
 
+  /**
+   * Returns whether this option is a Some with a value satisfying the predicate.
+   */
+  exists<B extends A>(predicate: (a: A) => a is B): this is Option<B>
   /**
    * Returns whether this option is a Some with a value satisfying the predicate.
    */

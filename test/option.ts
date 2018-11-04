@@ -142,6 +142,21 @@ suite('option', () => {
     expect(!none.isDefined() && none.get() === undefined).toBe(true)
   })
 
+  test('filter can refine the Option type', () => {
+    type Data =
+      { type: 'a', data: string } |
+      { type: 'b', data: number }
+
+    const some = Option<Data>({ type: 'a', data: 'hey' })
+
+    function isStringData(data: Data): data is { type: 'a', data: string } {
+      return 'a' in data
+    }
+
+    // This should compile
+    some.filter(isStringData).map(str => str.data.charCodeAt(0))
+  })
+
 
   // getOrElse
 
@@ -229,7 +244,24 @@ suite('option', () => {
 
   test('Some.exists', () => {
     expect(Some(10).exists(n => n == 10)).toBe(true)
-    expect(Some([]).exists(arr => arr.length > 0)).toBe(false)
+    expect(Some([]).exists(arr => arr.length > 0)).toBe(false)    
+  })
+
+  test('exists can refine the Option type', () => {
+    type Data =
+      { type: 'a', data: string } |
+      { type: 'b', data: number }
+
+    const some = Option<Data>({ type: 'a', data: 'hey' })
+
+    function isStringData(data: Data): data is { type: 'a', data: string } {
+      return 'a' in data
+    }
+
+    if (some.exists(isStringData)) {
+      // This should compile
+      some.map(str => str.data.charCodeAt(0))
+    }
   })
 
   test('None.exists', () => {

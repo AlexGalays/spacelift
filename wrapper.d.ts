@@ -9,7 +9,7 @@ export interface Wrapper<A> {
 
 
 export interface ArrayOpsConstructor {
-  new<A>(value: A[]): ArrayOps<A>
+  new<A>(value: ReadonlyArray<A>): ArrayOps<A>
   readonly prototype: ArrayOps<any>
 }
 

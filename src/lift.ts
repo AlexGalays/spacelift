@@ -21,7 +21,7 @@ export interface Lift {
   (obj: Date): DateOps
 
   /** Wraps an Array to provide a richer API. Unwrap with .value() **/
-  <T>(obj: T[]): ArrayOps<T>
+  <T>(obj: ReadonlyArray<T>): ArrayOps<T>
 
   /** Wraps a plain Object to provide a richer API. Unwrap with .value() **/
   <T extends {}>(obj: T): ObjectOps<T>

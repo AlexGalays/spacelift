@@ -293,7 +293,7 @@ describe('lift', () => {
     })
 
     it('can be sorted', () => {
-      let sorted: any[], arr: any[]
+      let sorted: ReadonlyArray<any>, arr: ReadonlyArray<any>
 
       // Numbers
       arr = [5, 4, 1, 6, 2, 4, 3]

@@ -1,20 +1,18 @@
 import lift, { ArrayOps, ObjectOps, StringOps, DateOps, Option, Some, None, Ok, Err, update, deepUpdate, DELETE, range, Set, memoize, is } from '..'
-
 import '../commonjs/all'
-import * as expect from 'expect'
 
 
 describe('lift', () => {
 
   it('re-exports immupdate, Option, Result', () => {
-    expect(Option).toExist()
-    expect(Some).toExist()
-    expect(None).toExist()
-    expect(Ok).toExist()
-    expect(Err).toExist()
-    expect(update).toExist()
-    expect(deepUpdate).toExist()
-    expect(DELETE).toExist()
+    expect(Option).toBeTruthy()
+    expect(Some).toBeTruthy()
+    expect(None).toBeTruthy()
+    expect(Ok).toBeTruthy()
+    expect(Err).toBeTruthy()
+    expect(update).toBeTruthy()
+    expect(deepUpdate).toBeTruthy()
+    expect(DELETE).toBeTruthy()
   })
 
   describe('Array', () => {
@@ -31,7 +29,7 @@ describe('lift', () => {
       const mapped = lift(arr).map(x => x * 2).value()
       expect(mapped).toEqual([2, 4, 6])
       expect(mapped instanceof Array).toBe(true)
-      expect(mapped).toNotBe(arr)
+      expect(mapped).not.toBe(arr)
 
       // The map iterator can also return Wrappers
       const mapped2 = lift(arr).map(x => lift(x * 2)).value()
@@ -69,7 +67,7 @@ describe('lift', () => {
 
       expect(filtered).toEqual([8, 10, 12])
       expect(filtered instanceof Array).toBe(true)
-      expect(filtered).toNotBe(arr)
+      expect(filtered).not.toBe(arr)
 
       type A = { type: 'a', a: number }
       type B = { type: 'b', b: string }
@@ -95,35 +93,35 @@ describe('lift', () => {
       const arr = [1, 2, 3, 4, 5, 6]
       const updated = lift(arr).append(7).value()
       expect(updated).toEqual([1, 2, 3, 4, 5, 6, 7])
-      expect(updated).toNotBe(arr)
+      expect(updated).not.toBe(arr)
     })
 
     it('can append an Array item', () => {
       const arr = [[1], [2], [3], [4], [5], [6]]
       const updated = lift(arr).append([7]).value()
       expect(updated).toEqual([[1], [2], [3], [4], [5], [6], [7]])
-      expect(updated).toNotBe(arr)
+      expect(updated).not.toBe(arr)
     })
 
     it('can append an Array of items', () => {
       const arr = [1, 2, 3, 4, 5, 6]
       const updated = lift(arr).appendAll([7, 8, 9, 10]).value()
       expect(updated).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-      expect(updated).toNotBe(arr)
+      expect(updated).not.toBe(arr)
     })
 
     it('can insert an item', () => {
       const arr = [1, 2, 3, 4, 5, 6]
       const updated = lift(arr).insert(2, 300).value()
       expect(updated).toEqual([1, 2, 300, 3, 4, 5, 6])
-      expect(updated).toNotBe(arr)
+      expect(updated).not.toBe(arr)
     })
 
     it('can insert an Array of items', () => {
       const arr = [1, 2, 3, 4, 5, 6]
       const updated = lift(arr).insertAll(2, [300, 400]).value()
       expect(updated).toEqual([1, 2, 300, 400, 3, 4, 5, 6])
-      expect(updated).toNotBe(arr)
+      expect(updated).not.toBe(arr)
     })
 
     it('can replace an item at a given index', () => {
@@ -136,7 +134,7 @@ describe('lift', () => {
         .value()
 
       expect(updated).toEqual([1, 2, 3000, 4, 5, 600])
-      expect(updated).toNotBe(arr)
+      expect(updated).not.toBe(arr)
     })
 
     it('won\'t replace an item if the given index is out of bounds', () => {
@@ -157,7 +155,7 @@ describe('lift', () => {
       const updated = lift(arr).removeAt(2).value()
 
       expect(updated).toEqual(['a', 'b', 'd', 'e', 'f'])
-      expect(updated).toNotBe(arr)
+      expect(updated).not.toBe(arr)
     })
 
     it('won\'t remove an item if the given index is negative', () => {
@@ -172,7 +170,7 @@ describe('lift', () => {
       const updated = lift(arr).compact().value()
 
       expect(updated).toEqual(['a', 'b', 'c', 'd', 'e', 'f'])
-      expect(updated).toNotBe(arr as any)
+      expect(updated).not.toBe(arr as any)
     })
 
     it('can find an item using a predicate', () => {
@@ -298,7 +296,7 @@ describe('lift', () => {
       // Numbers
       arr = [5, 4, 1, 6, 2, 4, 3]
       sorted = lift(arr).sort().value()
-      expect(sorted).toNotBe(arr)
+      expect(sorted).not.toBe(arr)
       expect(sorted).toEqual([1, 2, 3, 4, 4, 5, 6])
 
       // Default case sensitive String sort
@@ -535,7 +533,7 @@ describe('lift', () => {
         .assoc('newKey', 10)
         .value()
 
-      expect(result).toNotBe(obj)
+      expect(result).not.toBe(obj)
       expect(result).toEqual({ a: 1, b: 3, c: 222, newKey: 10 })
 
       // Heterogeneous objects
@@ -558,7 +556,7 @@ describe('lift', () => {
         .dissoc('c')
         .value()
 
-      expect(result).toNotBe(obj)
+      expect(result).not.toBe(obj)
       expect(result).toEqual({ b: 2 })
 
       // Heterogeneous objects
@@ -600,7 +598,7 @@ describe('lift', () => {
         .assoc('f', 6)
         .value()
 
-      expect(result).toNotBe(obj)
+      expect(result).not.toBe(obj)
       expect(result).toEqual({ b: 2, e: 5, f: 6 })
 
       // Heterogeneous objects
@@ -619,7 +617,7 @@ describe('lift', () => {
     it('can map the values of an object', () => {
       const obj: Record<string, number> = { a: 1, b: 2, c: 3 }
       const result = lift(obj).mapValues((key, value) => value * 2).value()
-      expect(result).toNotBe(obj)
+      expect(result).not.toBe(obj)
       expect(result).toEqual({ a: 2, b: 4, c: 6 })
     })
 
@@ -630,21 +628,21 @@ describe('lift', () => {
         .sort({ by: ([k, v]) => k })
         .value()
 
-      expect(result).toNotBe(obj as any)
+      expect(result).not.toBe(obj as any)
       expect(result).toEqual([[ 'a', 1], ['b', 2], ['c', 3]])
     })
 
     it('can convert is keys to an Array', () => {
       const obj: Record<string, number> = { a: 1, b: 2, c: 3 }
       const result = lift(obj).keys().sort().value()
-      expect(result).toNotBe(obj as any)
+      expect(result).not.toBe(obj as any)
       expect(result).toEqual(['a', 'b', 'c'])
     })
 
     it('can convert is values to an Array', () => {
       const obj: Record<string, number> = { a: 1, b: 2, c: 3 }
       const result = lift(obj).values().sort().value()
-      expect(result).toNotBe(obj as any)
+      expect(result).not.toBe(obj as any)
       expect(result).toEqual([1, 2, 3])
     })
 
@@ -802,7 +800,6 @@ describe('lift', () => {
   })
 
 })
-
 
 function measureTime(name: string, block: Function) {
   const iterations = 30

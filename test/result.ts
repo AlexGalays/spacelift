@@ -1,9 +1,8 @@
-import * as expect from 'expect'
 import '../commonjs/all'
 import { Result, Ok, Err } from '..'
 
 
-suite('result', () => {
+describe('result', () => {
 
   // Type checking
 

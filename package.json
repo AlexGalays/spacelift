@@ -17,8 +17,7 @@
     "build": "npm run build-commonjs && npm run build-es",
     "build-es": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core,es2015.iterable' --outDir ./es --declaration --strict --suppressImplicitAnyIndexErrors --module es6 --moduleResolution node",
     "build-commonjs": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core,es2015.iterable' --outDir ./commonjs --declaration --strict --suppressImplicitAnyIndexErrors",
-    "pretest": "npm run build && tsc --lib 'es5,es2015.core,es2015.iterable' test/expect.d.ts test/mocha.d.ts test/global.d.ts test/test.ts test/option.ts test/result.ts --outDir ./test --noImplicitAny --strictNullChecks --downlevelIteration",
-    "test": "mocha test/test.js && mocha --ui tdd test/option.js && mocha --ui tdd test/result.js",
+    "test": "jest",
     "prepublish": "npm run build"
   },
 
@@ -28,8 +27,10 @@
 
   "devDependencies": {
     "typescript": "3.1.1",
-    "mocha": "3.0.2",
-    "expect": "1.8.0"
+    "jest": "23.6.0",
+    "ts-jest": "23.10.4",
+    "@types/jest": "23.3.9",
+    "@types/node": "10.12.9"
   },
 
   "repository": {
@@ -40,6 +41,26 @@
     "name": "Alexandre Galays",
     "url": "https://github.com/AlexGalays/"
   },
+  "licenses": [{
+    "type": "MIT",
+    "url": "http://www.opensource.org/licenses/mit-license.php"
+  }],
   "homepage": "https://github.com/AlexGalays/spacelift",
-  "keywords": ["typescript", "ts", "TS", "std lib", "collection", "underscore", "monad", "option", "maybe", "result"]
+  "keywords": ["typescript", "ts", "TS", "std lib", "collection", "underscore", "monad", "option", "maybe", "result"],
+
+
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "moduleFileExtensions": ["js", "ts"],
+    "testMatch": [
+      "<rootDir>/test/*.ts"
+    ],
+    "globals": {
+      "ts-jest": {
+        "babelConfig": false
+      }
+    }
+  }
 }

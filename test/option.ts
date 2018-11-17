@@ -1,9 +1,8 @@
-import * as expect from 'expect'
 import '../commonjs/all'
 import { Option, None, Some, ArrayOps } from '..'
 
 
-suite('option', () => {
+describe('option', () => {
 
   // isDefined
 
@@ -422,11 +421,11 @@ suite('option', () => {
   // Perfs
 
   test('Measure the time needed to create a Some', () => {
-    for (let i = 0; i < 10; i++) {
-      console.time(`Creating a Some (${i})`)
-      Option(i)
-      console.timeEnd(`Creating a Some (${i})`)
-    }
+    // for (let i = 0; i < 10; i++) {
+    //   console.time(`Creating a Some (${i})`)
+    //   Option(i)
+    //   console.timeEnd(`Creating a Some (${i})`)
+    // }
   })
 
 })

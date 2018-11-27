@@ -554,7 +554,7 @@ Ok(10).fold(
 ```
 
 <a name="api.enum"></a>
-## Enum
+## createEnum
 
 Creates a type safe string enumeration from a list of strings, providing:  
 the list of all possible values, an object with all enum keys and the derived type of the enum in a single declaration.
@@ -580,7 +580,7 @@ the list of all possible values, an object with all enum keys and the derived ty
 ```
 
 <a name="api.union"></a>
-## union
+## createUnion
 
 Creates a type-safe union, providing: derived types, factories and type-guards in a single declaration.
 

@@ -560,7 +560,7 @@ Creates a type safe string enumeration from a list of strings, providing:
 the list of all possible values, an object with all enum keys and the derived type of the enum in a single declaration.
 
 ```ts
-  import { createEnum } from 'space-lift/enum'
+  import { createEnum } from 'space-lift/es/enum'
 
   const enumeration = createEnum('green', 'orange', 'red')
 
@@ -585,7 +585,7 @@ the list of all possible values, an object with all enum keys and the derived ty
 Creates a type-safe union, providing: derived types, factories and type-guards in a single declaration.
 
 ```ts
-  import { createUnion, empty } from 'space-lift/union'
+  import { createUnion, empty } from 'space-lift/es/union'
 
   const union = createUnion({
     green: empty,

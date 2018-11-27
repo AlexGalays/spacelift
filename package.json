@@ -18,6 +18,7 @@
     "build-es": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core,es2015.iterable' --outDir ./es --declaration --strict --suppressImplicitAnyIndexErrors --module es6 --moduleResolution node",
     "build-commonjs": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core,es2015.iterable' --outDir ./commonjs --declaration --strict --suppressImplicitAnyIndexErrors",
     "test": "jest",
+    "watch-test": "jest --watch",
     "prepublish": "npm run build"
   },
 
@@ -47,7 +48,6 @@
   }],
   "homepage": "https://github.com/AlexGalays/spacelift",
   "keywords": ["typescript", "ts", "TS", "std lib", "collection", "underscore", "monad", "option", "maybe", "result"],
-
 
   "jest": {
     "transform": {

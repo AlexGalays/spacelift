@@ -1,3 +1,7 @@
+/** 
+ * This module lists all operations currently attached to the various wrapper prototypes.
+ * For simplicity sake, you can import this module, or create your own with only the operations you use.
+ */
 
 import './transform'
 

@@ -1,8 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "es5",
-		"noImplicitAny": true,
-		"strictNullChecks": true,
+		"strict": true,
 		"suppressImplicitAnyIndexErrors": true,
 		"downlevelIteration": true,
 		"lib": [

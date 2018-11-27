@@ -25,6 +25,8 @@ Design goals
   * [Function](#api.function)
   * [Option](#api.option)
   * [Result](#api.result)
+  * [enum](#api.enum)
+  * [union](#api.union)
 
 
 <a name="howtouse"></a>
@@ -551,3 +553,69 @@ Ok(10).fold(
 ) // 20
 ```
 
+<a name="api.enum"></a>
+## Enum
+
+Creates a type safe string enumeration from a list of strings, providing:  
+the list of all possible values, an object with all enum keys and the derived type of the enum in a single declaration.
+
+```ts
+  import { createEnum } from 'space-lift/enum'
+
+  const enumeration = createEnum('green', 'orange', 'red')
+
+  // We can use the derived type
+  type StopLightColor = typeof enumeration.T
+
+  // We can list all enum values as an Array
+  expect(enumeration.values).toEqual(['green', 'orange', 'red'])
+
+  // We can access each value of the enum directly
+  const color = enumeration.enum
+
+  const redish: StopLightColor = 'red'
+  const greenish: StopLightColor = color.green
+  const orange: 'orange' = color.orange
+  expect(orange).toBe('orange')
+```
+
+<a name="api.union"></a>
+## union
+
+Creates a type-safe union, providing: derived types, factories and type-guards in a single declaration.
+
+```ts
+  import { createUnion, empty } from 'space-lift/union'
+
+  const union = createUnion({
+    green: empty,
+    orange: empty,
+    red: empty,
+    broken: (cause: string) => ({ cause })
+  })
+
+  const is = union.is
+  const stopLight = union.factories
+
+  // We can use the derived type for the overall union
+  type StopLight = typeof union.T
+  const orange: StopLight = stopLight.orange()
+
+  // Or an individual derived type
+  type Green = typeof stopLight.green.T
+  const green: Green = stopLight.green()
+  const broken = stopLight.broken('oops')
+
+  // factories are provided
+  stopLight.orange() // { type: 'orange' }
+  stopLight.broken('oops') // { type: 'broken', cause: 'oops' }
+
+  // typeguards are provided
+  if (is('broken')(broken)) {
+    broken.cause
+  }
+
+  if (is('broken')(green)) {
+    // will never get there
+  }
+```

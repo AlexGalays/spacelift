@@ -42,6 +42,6 @@ export function tuple<A, B, C, D, E, F, G>(a: A, b: B, c: C, d: D, e: E, f: F, g
 export function tuple<A, B, C, D, E, F, G, H>(a: A, b: B, c: C, d: D, e: E, f: F, g: G, h: H): [A, B, C, D, E, F, G, H]
 
 
-export function tuple(arr: any[]): any {
+export function tuple(...arr: any[]): any {
   return arr
 }

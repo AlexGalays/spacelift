@@ -1,4 +1,4 @@
-import lift, { ArrayOps, ObjectOps, StringOps, DateOps, Option, Some, None, Ok, Err, update, deepUpdate, DELETE, range, Set, memoize, is } from '..'
+import lift, { ArrayOps, ObjectOps, StringOps, DateOps, Option, Some, None, Ok, Err, update, deepUpdate, DELETE, range, Set, memoize, is, tuple } from '..'
 import '../commonjs/all'
 
 
@@ -797,6 +797,17 @@ describe('lift', () => {
       expect(acc).toEqual([1, 'a', obj, d])
     })
 
+  })
+
+  describe('tuple', () => {
+    it('can create a tuple', () => {
+      const data = tuple(1, { a: 'hello' }, null)
+
+      expect(data).toEqual([1, { a: 'hello' }, null])
+
+      // it should have the correct type
+      expect(data[1].a.toLowerCase()).toBe('hello')
+    })
   })
 
 })

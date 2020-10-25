@@ -1,112 +1,59 @@
-import {
-  Wrapper,
-  ArrayOpsConstructor, ArrayOps as IArrayOps,
-  ObjectOpsConstructor, ObjectOps as IObjectOps,
-  NumberOpsConstructor, NumberOps as INumberOps,
-  StringOpsConstructor, StringOps as IStringOps,
-  DateOpsConstructor, DateOps as IDateOps
-} from '../wrapper'
-
-import { iteratorSymbol, singleValueIterator } from './iterator'
-
-export { Wrapper } from '../wrapper'
-
+import { ObjectWrapper } from './object'
 
 export interface Lift {
   /** Wraps a Number to provide a richer API. Unwrap with .value() **/
-  (obj: number): NumberOps
+  (obj: number): Wrapper<number>
 
   /** Wraps a String to provide a richer API. Unwrap with .value() **/
-  (obj: string): StringOps
+  (obj: string): Wrapper<string>
 
   /** Wraps a Date to provide a richer API. Unwrap with .value() **/
-  (obj: Date): DateOps
+  (obj: Date): Wrapper<Date>
 
   /** Wraps an Array to provide a richer API. Unwrap with .value() **/
   <T>(obj: ReadonlyArray<T>): ArrayOps<T>
 
   /** Wraps a plain Object to provide a richer API. Unwrap with .value() **/
-  <T extends {}>(obj: T): ObjectOps<T>
+  <T extends {}>(obj: T): ObjectWrapper<T>
 }
 
+interface Wrapper<A> {
+  value(): A
+}
 
-const lift: Lift = function(obj: any): any {
+const lift: Lift = function (obj: any): any {
   if (obj instanceof Array) return new ArrayOps(obj)
-  if (obj instanceof Date) return new DateOps(obj)
+  if (obj instanceof Date) return new DateWrapper(obj)
 
-  if (typeof obj === 'string') return new StringOps(obj)
-  if (typeof obj === 'number') return new NumberOps(obj)
+  if (typeof obj === 'string') return new StringWrapper(obj)
+  if (typeof obj === 'number') return new NumberWrapper(obj)
+  if (typeof obj === 'boolean') return obj
 
-  return new ObjectOps(obj)
+  return new ObjectWrapper(obj)
 }
 
 export default lift
 
-
 export function getValue<A>(input: A | Wrapper<A>): A {
-  return input && input['_isLiftWrapper']
-    ? (input as Wrapper<A>).value()
-    : input as A
+  return input && input['_isLiftWrapper'] ? (input as Wrapper<A>).value() : (input as A)
 }
 
-
-function makeOps(): {} {
-  class Ops {
+// Generic Wrapper for types without any added methods.
+function makeWrapper() {
+  return class Wrapper {
     constructor(private _value: any) {}
     _isLiftWrapper = true
-    value() { return this._value }
-  }
 
-  Ops.prototype[iteratorSymbol] = singleValueIterator(self => self._value)
+    value() {
+      return this._value
+    }
 
-  return Ops
-}
-
-
-//--------------------------------------
-//  Array
-//--------------------------------------
-
-export type ArrayOps<A> = IArrayOps<A>
-export const ArrayOps = makeOps() as ArrayOpsConstructor
-
-ArrayOps.prototype[iteratorSymbol] = function() {
-  let i = 0
-  const self = this as any
-
-  return {
-    next() {
-      return i < self._value.length
-        ? { value: self._value[i++], done: false }
-        : { done: true }
+    pipe(func: Function) {
+      return lift(getValue(func(this.value())))
     }
   }
 }
 
-//--------------------------------------
-//  Object
-//--------------------------------------
-
-export type ObjectOps<A> = IObjectOps<A>
-export const ObjectOps = makeOps() as ObjectOpsConstructor
-
-//--------------------------------------
-//  Number
-//--------------------------------------
-
-export type NumberOps = INumberOps
-export const NumberOps = makeOps() as NumberOpsConstructor
-
-//--------------------------------------
-//  String
-//--------------------------------------
-
-export type StringOps = IStringOps
-export const StringOps = makeOps() as StringOpsConstructor
-
-//--------------------------------------
-//  Date
-//--------------------------------------
-
-export type DateOps = IDateOps
-export const DateOps = makeOps() as DateOpsConstructor
+const DateWrapper = makeWrapper()
+const NumberWrapper = makeWrapper()
+const StringWrapper = makeWrapper()

@@ -1,7 +1,4 @@
-export function update<T extends object>(
-  obj: T,
-  updater: (draft: Draft<T>) => void
-): T {
+export function update<T extends object>(obj: T, updater: (draft: Draft<T>) => void): T {
   let updatedObject: any = obj
   const draft = makeDraft(obj as any, newObj => {
     updatedObject = newObj
@@ -28,10 +25,7 @@ function makeDraft(
 
   const getObj = () => obj as any
 
-  const proxiedMethods: Record<
-    Key,
-    Function | undefined
-  > | null = Array.isArray(obj)
+  const proxiedMethods: Record<Key, Function | undefined> | null = Array.isArray(obj)
     ? proxiedArrayMethods(getObj, mutateObj, () => draft)
     : obj instanceof Map
     ? proxiedMapMethods(getObj, mutateObj, childDraftCache)
@@ -55,12 +49,9 @@ function makeDraft(
       // At this point, the draft is either an Object or Array and the child being accessed is not a primitive: Draft it.
       let childDraft = childDraftCache[key]
       if (!childDraft) {
-        childDraft = childDraftCache[key] = makeDraft(
-          value as any,
-          newChildObject => {
-            draft[key] = newChildObject
-          }
-        )
+        childDraft = childDraftCache[key] = makeDraft(value as any, newChildObject => {
+          draft[key] = newChildObject
+        })
       }
       return childDraft
     },
@@ -83,13 +74,11 @@ function proxiedArrayMethods(
   getDraft: () => Record<Key, unknown>
 ) {
   return {
-    prepend: (item: any) =>
-      mutateArray(() => getArray().unshift(item), allKeys),
+    prepend: (item: any) => mutateArray(() => getArray().unshift(item), allKeys),
 
     append: (item: any) => mutateArray(() => getArray().push(item), noKeys),
 
-    insert: (item: any, index: number) =>
-      mutateArray(() => getArray().splice(index, 0, item), allKeys),
+    insert: (item: any, index: number) => mutateArray(() => getArray().splice(index, 0, item), allKeys),
 
     updateIf: (predicate: Function, updateFunction: Function) =>
       getArray().forEach((item, index) => {
@@ -99,8 +88,7 @@ function proxiedArrayMethods(
     removeIf: (predicate: Function) => {
       let index = getArray().length - 1
       while (index >= 0) {
-        if (predicate(getArray()[index], index))
-          mutateArray(() => getArray().splice(index, 1), allKeys)
+        if (predicate(getArray()[index], index)) mutateArray(() => getArray().splice(index, 1), allKeys)
         index -= 1
       }
     }
@@ -119,17 +107,13 @@ function proxiedMapMethods(
 
       let childDraft = draftCache[key]
       if (!childDraft) {
-        childDraft = draftCache[key] = makeDraft(
-          value as any,
-          newChildObject => {
-            methods.set(key, newChildObject)
-          }
-        )
+        childDraft = draftCache[key] = makeDraft(value as any, newChildObject => {
+          methods.set(key, newChildObject)
+        })
       }
       return childDraft
     },
-    set: (key: Key, value: any) =>
-      mutateMap(() => getMap().set(key, value), key),
+    set: (key: Key, value: any) => mutateMap(() => getMap().set(key, value), key),
     clear: () => mutateMap(() => getMap().clear(), allKeys),
     delete: (key: Key) => {
       mutateMap(() => getMap().delete(key), key)
@@ -139,10 +123,7 @@ function proxiedMapMethods(
   return methods
 }
 
-function proxiedSetMethods(
-  getSet: () => Set<unknown>,
-  mutateSet: MutateFunction
-) {
+function proxiedSetMethods(getSet: () => Set<unknown>, mutateSet: MutateFunction) {
   return {
     add: (value: unknown) => mutateSet(() => getSet().add(value), noKeys),
     clear: () => mutateSet(() => getSet().clear(), noKeys),
@@ -201,55 +182,25 @@ interface DraftArray<T> {
    * @param callbackfn  A function that accepts up to three arguments. forEach calls the callbackfn function one time for each element in the array.
    * @param thisArg  An object to which the this keyword can refer in the callbackfn function. If thisArg is omitted, undefined is used as the this value.
    */
-  forEach(
-    callbackfn: (value: T, index: number, array: T[]) => void,
-    thisArg?: any
-  ): void
+  forEach(callbackfn: (value: T, index: number, array: T[]) => void, thisArg?: any): void
 
   indexOf(searchElement: T, fromIndex?: number): number
 
   includes(searchElement: T, fromIndex?: number): boolean
 
-  some(
-    predicate: (value: T, index: number, array: T[]) => unknown,
-    thisArg?: any
-  ): boolean
+  some(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): boolean
 
-  findIndex(
-    predicate: (value: T, index: number, obj: T[]) => unknown,
-    thisArg?: any
-  ): number
+  findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number
 
-  every(
-    predicate: (value: T, index: number, array: T[]) => unknown,
-    thisArg?: any
-  ): boolean
+  every(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): boolean
 
-  map<U>(
-    callbackfn: (value: T, index: number, array: T[]) => U,
-    thisArg?: any
-  ): DraftArray<U>
+  map<U>(callbackfn: (value: T, index: number, array: T[]) => U, thisArg?: any): DraftArray<U>
 
-  filter(
-    predicate: (value: T, index: number, array: T[]) => unknown,
-    thisArg?: any
-  ): DraftArray<T>
+  filter(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): DraftArray<T>
 
+  reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number, array: T[]) => T): T
   reduce(
-    callbackfn: (
-      previousValue: T,
-      currentValue: T,
-      currentIndex: number,
-      array: T[]
-    ) => T
-  ): T
-  reduce(
-    callbackfn: (
-      previousValue: T,
-      currentValue: T,
-      currentIndex: number,
-      array: T[]
-    ) => T,
+    callbackfn: (previousValue: T, currentValue: T, currentIndex: number, array: T[]) => T,
     initialValue: T
   ): T
 
@@ -273,14 +224,7 @@ interface DraftMap<K, V> extends Omit<Map<K, V>, 'get'> {
 interface DraftSet<E> extends Set<E> {}
 
 /** Types that should never be drafted */
-type AtomicObject =
-  | Function
-  | Promise<any>
-  | Date
-  | RegExp
-  | Boolean
-  | Number
-  | String
+type AtomicObject = Function | Promise<any> | Date | RegExp | Boolean | Number | String
 
 type IsTuple<T extends ReadonlyArray<any>> = T extends never[]
   ? true
@@ -292,7 +236,7 @@ type IsTuple<T extends ReadonlyArray<any>> = T extends never[]
 
 type WritableDraft<T> = { -readonly [K in keyof T]: Draft<T[K]> }
 
-type Draft<T> = T extends AtomicObject
+export type Draft<T> = T extends AtomicObject
   ? T
   : T extends ReadonlyMap<infer K, infer V>
   ? DraftMap<K, V>

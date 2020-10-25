@@ -1,7 +1,7 @@
 import { update } from '../src/immupdate'
 
 //--------------------------------------
-//  Object
+//  immuptate + Object
 //--------------------------------------
 
 // Updating with a non-object @shouldNotCompile
@@ -16,7 +16,7 @@ update({ a: { b: 1 } }, draft => {
 })
 
 //--------------------------------------
-//  Array
+//  immuptate + Array
 //--------------------------------------
 
 const arr = immutable([{ a: 1 }, { a: 2 }])
@@ -61,7 +61,7 @@ update(arr, draft => {
 })
 
 //--------------------------------------
-//  Map
+//  immuptate + Map
 //--------------------------------------
 
 const map = immutable(

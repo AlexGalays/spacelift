@@ -1,4 +1,13 @@
+import { lift } from '../src/lift'
 import { update } from '../src/immupdate'
+
+//--------------------------------------
+//  lift + Array
+//--------------------------------------
+
+const arrOrUndefined = ([1, 2] as any) as ReadonlyArray<number> | undefined
+// lifting a nullable array @shouldNotCompile
+lift(arrOrUndefined).drop(2)
 
 //--------------------------------------
 //  immuptate + Object
@@ -114,13 +123,7 @@ function immutable<T>(obj: T): Immutable<T> {
   return obj as any
 }
 
-type ImmutablePrimitive =
-  | undefined
-  | null
-  | boolean
-  | string
-  | number
-  | Function
+type ImmutablePrimitive = undefined | null | boolean | string | number | Function
 
 type Immutable<T> = T extends ImmutablePrimitive
   ? T

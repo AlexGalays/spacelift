@@ -1,6 +1,6 @@
 import { identity } from './function'
 import { Draft, update } from './immupdate'
-import { lift, getValue, Lifted, pipe, Wrapper } from './lift'
+import { lift, getValue, pipe, Wrapper, Lifted } from './lift'
 import { MapWrapper } from './map'
 import { SetWrapper } from './set'
 
@@ -154,7 +154,7 @@ export class ArrayWrapper<T> {
    * Folds this Array into a single value, using a starting value.
    */
   fold<V>(startValue: V, func: (acc: V, value: T, index: number) => V): Lifted<V> {
-    return lift(this._value.reduce(func, startValue))
+    return lift(this._value.reduce(func, startValue) as any)
   }
 
   /**
@@ -224,7 +224,7 @@ export class ArrayWrapper<T> {
   }
 
   /**
-   * Sorts the Array in ascending order, using one of more iterators specifying which field to compare.
+   * Sorts the Array in ascending order, using one or more iterators specifying which field to compare.
    * For strings, localCompare is used.
    * The sort is stable if the browser uses a stable sort (all modern engines do)
    */

@@ -9,6 +9,7 @@ const diagnostics = ts.getPreEmitDiagnostics(program)
 
 if (diagnostics.length === expectedErrorCount) {
   console.log(chalk.green(`All the expected compilation errors were found (${expectedErrorCount})`))
+  //console.log(errors(diagnostics))
 }
 else {
   console.log(chalk.red(`${expectedErrorCount} errors were expected but ${diagnostics.length} errors were found`))

@@ -1,6 +1,6 @@
 {
   "name": "space-lift",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Idiomatic Typescript Array, Object, Map, Set, Union, Enum utils",
   "sideEffects": false,
 
@@ -18,7 +18,8 @@
     "build-es": "tsc src/*.ts --target 'es2015' --lib 'es5,es2015.core,es2015.iterable' --outDir ./es --declaration --strict --suppressImplicitAnyIndexErrors --module es6 --moduleResolution node",
     "build-commonjs": "tsc src/*.ts --target 'es2015' --lib 'es5,es2015.core,es2015.iterable' --outDir ./commonjs --declaration --strict --suppressImplicitAnyIndexErrors --module commonjs --moduleResolution node",
     "pretest": "npm run build",
-    "test": "jest && node test/testCompilationErrors",
+    "test-compilation-errors": "node test/testCompilationErrors",
+    "test": "jest && npm run test-compilation-errors",
     "watch-test": "jest --watch",
     "prepublish": "npm run build"
   },

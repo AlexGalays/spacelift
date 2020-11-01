@@ -172,6 +172,30 @@ describe('immupdate', () => {
       expect(obj.a).not.toBe(updated.a)
     })
 
+    it('can insert an item efficiently in a sorted number array', () => {
+      const arr = immutable([1, 3, 8, 10, 30, 50, 80, 100, 120, 130])
+
+      const updated = update(arr, draft => {
+        draft.insertSorted(60)
+        expect(draft).toEqual([1, 3, 8, 10, 30, 50, 60, 80, 100, 120, 130])
+      })
+
+      expect(updated).toEqual([1, 3, 8, 10, 30, 50, 60, 80, 100, 120, 130])
+      expect(arr).toEqual([1, 3, 8, 10, 30, 50, 80, 100, 120, 130])
+    })
+
+    it('can insert an item efficiently in a sorted object array', () => {
+      const arr = immutable([1, 3, 8, 10, 30, 50, 80, 100, 120, 130].map(id => ({ id })))
+
+      const updated = update(arr, draft => {
+        draft.insertSorted({ id: 60 }, item => item.id)
+        expect(draft).toEqual([1, 3, 8, 10, 30, 50, 60, 80, 100, 120, 130].map(id => ({ id })))
+      })
+
+      expect(updated).toEqual([1, 3, 8, 10, 30, 50, 60, 80, 100, 120, 130].map(id => ({ id })))
+      expect(arr).toEqual([1, 3, 8, 10, 30, 50, 80, 100, 120, 130].map(id => ({ id })))
+    })
+
     it('can update an Array item', () => {
       const arr = immutable([
         { id: 1, name: 'Jon' },
@@ -487,13 +511,7 @@ function immutable<T>(obj: T): Immutable<T> {
   return obj as any
 }
 
-type ImmutablePrimitive =
-  | undefined
-  | null
-  | boolean
-  | string
-  | number
-  | Function
+type ImmutablePrimitive = undefined | null | boolean | string | number | Function
 
 type Immutable<T> = T extends ImmutablePrimitive
   ? T

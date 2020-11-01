@@ -1,59 +1,60 @@
+import { ArrayWrapper } from './array'
+import { MapWrapper } from './map'
 import { ObjectWrapper } from './object'
+import { SetWrapper } from './set'
+import * as is from './is'
 
-export interface Lift {
-  /** Wraps a Number to provide a richer API. Unwrap with .value() **/
-  (obj: number): Wrapper<number>
+export type Lifted<T> = T extends Wrapper<infer W> ? LiftedValue<W> : LiftedValue<T>
 
-  /** Wraps a String to provide a richer API. Unwrap with .value() **/
-  (obj: string): Wrapper<string>
+type AtomicObject = Function | Promise<any> | Date | RegExp | Boolean | Number | String
 
-  /** Wraps a Date to provide a richer API. Unwrap with .value() **/
-  (obj: Date): Wrapper<Date>
+type LiftedValue<T> = T extends AtomicObject
+  ? T
+  : T extends ReadonlyArray<infer E>
+  ? ArrayWrapper<E>
+  : T extends ReadonlyMap<infer K, infer V>
+  ? MapWrapper<K, V>
+  : T extends ReadonlySet<infer E>
+  ? SetWrapper<E>
+  : T extends Date
+  ? Wrapper<Date>
+  : T extends string
+  ? Wrapper<string>
+  : T extends number
+  ? Wrapper<number>
+  : T extends boolean
+  ? Wrapper<boolean>
+  : T extends object
+  ? ObjectWrapper<T>
+  : never
 
-  /** Wraps an Array to provide a richer API. Unwrap with .value() **/
-  <T>(obj: ReadonlyArray<T>): ArrayOps<T>
-
-  /** Wraps a plain Object to provide a richer API. Unwrap with .value() **/
-  <T extends {}>(obj: T): ObjectWrapper<T>
-}
-
-interface Wrapper<A> {
-  value(): A
-}
+/** Wraps an Object, Array, Map or Set to provide a richer API. Unwrap with .value() **/
+type Lift = <T>(obj: T) => Lifted<T>
 
 const lift: Lift = function (obj: any): any {
-  if (obj instanceof Array) return new ArrayOps(obj)
-  if (obj instanceof Date) return new DateWrapper(obj)
-
-  if (typeof obj === 'string') return new StringWrapper(obj)
-  if (typeof obj === 'number') return new NumberWrapper(obj)
-  if (typeof obj === 'boolean') return obj
-
-  return new ObjectWrapper(obj)
+  if (obj === null || obj === undefined) return obj
+  if (isWrapper(obj)) return obj
+  if (is.object(obj)) return new ObjectWrapper(obj)
+  if (obj instanceof Array) return new ArrayWrapper(obj)
+  if (obj instanceof Map) return new MapWrapper(obj)
+  if (obj instanceof Set) return new SetWrapper(obj)
+  return obj
 }
 
 export default lift
 
 export function getValue<A>(input: A | Wrapper<A>): A {
-  return input && input['_isLiftWrapper'] ? (input as Wrapper<A>).value() : (input as A)
+  return isWrapper(input) ? input.value() : input
 }
 
-// Generic Wrapper for types without any added methods.
-function makeWrapper() {
-  return class Wrapper {
-    constructor(private _value: any) {}
-    _isLiftWrapper = true
-
-    value() {
-      return this._value
-    }
-
-    pipe(func: Function) {
-      return lift(getValue(func(this.value())))
-    }
-  }
+function isWrapper<A>(obj: A | Wrapper<A>): obj is Wrapper<A> {
+  return obj && (obj as any)['_isLiftWrapper']
 }
 
-const DateWrapper = makeWrapper()
-const NumberWrapper = makeWrapper()
-const StringWrapper = makeWrapper()
+export interface Wrapper<T> {
+  value(): T
+}
+
+export function pipe<T, R>(this: Wrapper<T>, func: (object: T) => R): Lifted<R> {
+  return lift(func(this.value()))
+}

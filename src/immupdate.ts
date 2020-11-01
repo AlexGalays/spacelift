@@ -80,6 +80,21 @@ function proxiedArrayMethods(
 
     insert: (item: any, index: number) => mutateArray(() => getArray().splice(index, 0, item), allKeys),
 
+    insertSorted: (item: any, by: (item: any) => string | number = item => item) =>
+      mutateArray(() => {
+        const arr: any[] = getArray()
+        let low = 0,
+          high = arr.length
+
+        while (low < high) {
+          let mid = (low + high) >>> 1
+          if (by(arr[mid]) < by(item)) low = mid + 1
+          else high = mid
+        }
+
+        arr.splice(low, 0, item)
+      }, allKeys),
+
     updateIf: (predicate: Function, updateFunction: Function) =>
       getArray().forEach((item, index) => {
         if (predicate(item, index)) updateFunction(getDraft()[index], index)
@@ -135,15 +150,16 @@ function isPrimitive(obj: unknown) {
   return obj === null || typeof obj !== 'object'
 }
 
-function clone<T extends object>(obj: T) {
+export function clone<T extends object>(obj: T) {
   if (isPrimitive(obj)) return obj
+
   if (Array.isArray(obj)) return obj.slice()
   if (obj instanceof Map) return new Map(obj)
   if (obj instanceof Set) return new Set(obj)
   else {
-    const cloned = {}
+    const cloned: any = {}
     Object.keys(obj).forEach(key => {
-      ;(cloned as any)[key] = (obj as any)[key]
+      cloned[key] = (obj as any)[key]
     })
     return cloned
   }
@@ -157,7 +173,7 @@ const noKeys = {}
 
 interface DraftArray<T> {
   readonly length: number
-  [n: number]: Draft<T> | undefined // Might as well fix this. (https://github.com/microsoft/TypeScript/issues/13778)
+  [n: number]: Draft<T> | undefined // Might as well fix the original, crappy signature. (https://github.com/microsoft/TypeScript/issues/13778)
 
   /** Iterator */
   [Symbol.iterator](): IterableIterator<T>
@@ -207,6 +223,9 @@ interface DraftArray<T> {
   prepend(item: T): void
   append(item: T): void
   insert(item: T, index: number): void
+
+  insertSorted<U extends string | number>(this: DraftArray<U>, item: U): void
+  insertSorted(item: T, bySortKey: (item: T) => string | number): void
   updateIf(
     predicate: (item: T, index: number) => boolean,
     updateFunction: (item: Draft<T>, index: number) => void

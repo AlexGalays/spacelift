@@ -1,7 +1,8 @@
 {
   "name": "space-lift",
-  "version": "0.8.7",
-  "description": "Idiomatic TS array, object utils, Option, Result monads",
+  "version": "1.0.0-beta.0",
+  "description": "Idiomatic Typescript Array, Object, Map, Set, Union, Enum utils",
+  "sideEffects": false,
 
   "main": "commonjs/index.js",
   "module": "es/index.js",
@@ -9,21 +10,17 @@
 
   "files": [
     "es",
-    "commonjs",
-    "wrapper.d.ts"
+    "commonjs"
   ],
 
   "scripts": {
     "build": "npm run build-commonjs && npm run build-es",
-    "build-es": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core,es2015.iterable' --outDir ./es --declaration --strict --suppressImplicitAnyIndexErrors --module es6 --moduleResolution node",
-    "build-commonjs": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core,es2015.iterable' --outDir ./commonjs --declaration --strict --suppressImplicitAnyIndexErrors",
+    "build-es": "tsc src/*.ts --target 'es2015' --lib 'es5,es2015.core,es2015.iterable' --outDir ./es --declaration --strict --suppressImplicitAnyIndexErrors --module es6 --moduleResolution node",
+    "build-commonjs": "tsc src/*.ts --target 'es2015' --lib 'es5,es2015.core,es2015.iterable' --outDir ./commonjs --declaration --strict --suppressImplicitAnyIndexErrors --module commonjs --moduleResolution node",
+    "pretest": "npm run build",
     "test": "jest && node test/testCompilationErrors",
     "watch-test": "jest --watch",
     "prepublish": "npm run build"
-  },
-
-  "dependencies": {
-    "immupdate": "1.3.0"
   },
 
   "devDependencies": {
@@ -47,7 +44,7 @@
     "url": "http://www.opensource.org/licenses/mit-license.php"
   }],
   "homepage": "https://github.com/AlexGalays/spacelift",
-  "keywords": ["typescript", "ts", "TS", "std lib", "collection", "underscore", "monad", "option", "maybe", "result"],
+  "keywords": ["TypeScript", "ts", "TS", "std lib", "collection", "underscore", "array", "object", "Pap", "Set"],
 
   "jest": {
     "transform": {

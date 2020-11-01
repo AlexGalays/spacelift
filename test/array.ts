@@ -162,6 +162,9 @@ describe('Array', () => {
 
     expect(updated).toEqual(['a', 'b', 'c', 'd', 'e', 'f'])
     expect(updated).not.toBe(arr as any)
+
+    const updated2 = lift(['', 'hey']).compact().value()
+    expect(updated2).toEqual(['hey'])
   })
 
   it('can be flattened', () => {

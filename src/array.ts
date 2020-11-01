@@ -40,10 +40,9 @@ export class ArrayWrapper<T> {
    * Filters all the falsy elements out of this Array.
    * All occurences of false, null, undefined, 0, "" will be removed.
    */
-  compact<A>(this: ArrayWrapper<A | false | null | undefined | 0 | ''>): ArrayWrapper<A> {
-    return this.filter(x => !!x) as ArrayWrapper<A>
+  compact(): ArrayWrapper<Compacted<T>> {
+    return this.filter(x => !!x) as any
   }
-
   /**
    * Counts the items satisfying a predicate.
    */
@@ -338,3 +337,5 @@ export function range(start: number, stop?: number, step?: number): ArrayWrapper
 }
 
 type SortOnField<T> = ((field: T) => string | null | undefined) | ((field: T) => number | null | undefined)
+
+type Compacted<T> = T extends null | undefined | 0 | false ? never : T

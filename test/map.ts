@@ -1,4 +1,4 @@
-import lift, { createUnion } from '..'
+import { lift, createUnion } from '..'
 import { update } from '../src/immupdate'
 import { empty } from '../src/union'
 

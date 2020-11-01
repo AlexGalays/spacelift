@@ -31,7 +31,7 @@ type LiftedValue<T> = T extends AtomicObject
 /** Wraps an Object, Array, Map or Set to provide a richer API. Unwrap with .value() **/
 type Lift = <T>(obj: T) => Lifted<T>
 
-const lift: Lift = function (obj: any): any {
+export const lift: Lift = function (obj: any): any {
   if (obj === null || obj === undefined) return obj
   if (isWrapper(obj)) return obj
   if (is.object(obj)) return new ObjectWrapper(obj)
@@ -40,8 +40,6 @@ const lift: Lift = function (obj: any): any {
   if (obj instanceof Set) return new SetWrapper(obj)
   return obj
 }
-
-export default lift
 
 export function getValue<A>(input: A | Wrapper<A>): A {
   return isWrapper(input) ? input.value() : input

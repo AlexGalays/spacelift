@@ -1,4 +1,4 @@
-import lift from '..'
+import { lift } from '..'
 
 describe('Object', () => {
   it('can add a key/value', () => {

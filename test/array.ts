@@ -1,4 +1,4 @@
-import lift, { range } from '../'
+import { lift, range } from '../'
 import { update } from '../src/immupdate'
 
 describe('Array', () => {

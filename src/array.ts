@@ -1,6 +1,6 @@
 import { identity } from './function'
 import { Draft, update } from './immupdate'
-import lift, { getValue, Lifted, pipe, Wrapper } from './lift'
+import { lift, getValue, Lifted, pipe, Wrapper } from './lift'
 import { MapWrapper } from './map'
 import { SetWrapper } from './set'
 

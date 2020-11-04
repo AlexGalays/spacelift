@@ -9,6 +9,10 @@ const arrOrUndefined = ([1, 2] as any) as ReadonlyArray<number> | undefined
 // lifting a nullable array @shouldNotCompile
 lift(arrOrUndefined).drop(2)
 
+const readonlyArray: ReadonlyArray<number> = [1, 2]
+// getting an Array back from lift().value() and expecting it to now be writable @shouldNotCompile
+lift(readonlyArray).value().push
+
 //--------------------------------------
 //  immuptate + Object
 //--------------------------------------

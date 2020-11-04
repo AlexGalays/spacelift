@@ -1,4 +1,4 @@
-import { pipe } from './lift'
+import type { Pipe } from './lift'
 
 /** A Set wrapper providing extra functionalities and more chaining opportunities */
 export class SetWrapper<T> {
@@ -61,4 +61,9 @@ export class SetWrapper<T> {
   }
 
   pipe = pipe
+}
+
+let pipe: Pipe
+export function setSetPipe(_pipe: Pipe) {
+  pipe = _pipe
 }

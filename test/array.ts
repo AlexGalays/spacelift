@@ -7,6 +7,9 @@ describe('Array', () => {
     const unwrapped = lift(arr).value()
     expect(unwrapped).toBe(arr)
     expect(arr instanceof Array).toBe(true)
+
+    // The unwrapped Array retained its mutability.
+    unwrapped.push
   })
 
   it('can be mapped', () => {

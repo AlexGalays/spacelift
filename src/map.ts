@@ -1,5 +1,5 @@
 import { Draft, update } from './immupdate'
-import { pipe } from './lift'
+import type { Pipe } from './lift'
 
 /** A Map wrapper providing extra functionalities and more chaining opportunities */
 export class MapWrapper<K, V> {
@@ -88,4 +88,9 @@ export class MapWrapper<K, V> {
   toArray() {
     return this.pipe(m => [...m])
   }
+}
+
+let pipe: Pipe
+export function setMapPipe(_pipe: Pipe) {
+  pipe = _pipe
 }

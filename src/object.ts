@@ -1,6 +1,6 @@
 import { ArrayWrapper } from './array'
 import { clone, Draft, update } from './immupdate'
-import { pipe } from './lift'
+import type { Pipe } from './lift'
 
 export class ObjectWrapper<T extends object> {
   constructor(private _value: T) {}
@@ -39,7 +39,7 @@ export class ObjectWrapper<T extends object> {
   /**
    * Creates an Array of all this object's keys, in no particular order.
    */
-  keys(): ArrayWrapper<keyof T> {
+  keys(): ArrayWrapper<Array<keyof T>> {
     return this.pipe(o => Object.keys(o) as (keyof T)[])
   }
 
@@ -58,7 +58,7 @@ export class ObjectWrapper<T extends object> {
   /**
    * Creates an Array with all these object's values.
    */
-  values(): ArrayWrapper<T[keyof T]> {
+  values(): ArrayWrapper<Array<keyof T>> {
     return this.pipe(Object.values)
   }
 
@@ -69,4 +69,9 @@ export class ObjectWrapper<T extends object> {
   update(updateFunction: (draft: Draft<T>) => void) {
     return this.pipe(o => update(o, updateFunction))
   }
+}
+
+let pipe: Pipe
+export function setObjectPipe(_pipe: Pipe) {
+  pipe = _pipe
 }

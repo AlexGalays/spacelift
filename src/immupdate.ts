@@ -86,9 +86,17 @@ function proxiedArrayMethods(
         let low = 0,
           high = arr.length
 
+        const itemValue = by(item)
+
         while (low < high) {
-          let mid = (low + high) >>> 1
-          if (by(arr[mid]) < by(item)) low = mid + 1
+          const mid = (low + high) >>> 1
+          const midValue = by(arr[mid])
+          const itemValueIsBigger =
+            typeof itemValue === 'string'
+              ? itemValue.localeCompare(midValue as string) > 0
+              : itemValue > midValue
+
+          if (itemValueIsBigger) low = mid + 1
           else high = mid
         }
 

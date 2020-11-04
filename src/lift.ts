@@ -2,6 +2,7 @@ import { ArrayWrapper } from './array'
 import { MapWrapper } from './map'
 import { ObjectWrapper } from './object'
 import { SetWrapper } from './set'
+import { Wrapper, isWrapper } from './wrapper'
 import * as is from './is'
 
 export type Lifted<T> = undefined extends T
@@ -20,8 +21,8 @@ type LiftedValue<T> = null extends T
   ? never
   : T extends AtomicObject
   ? T
-  : T extends ReadonlyArray<infer E>
-  ? ArrayWrapper<E>
+  : T extends ReadonlyArray<any>
+  ? ArrayWrapper<T>
   : T extends ReadonlyMap<infer K, infer V>
   ? MapWrapper<K, V>
   : T extends ReadonlySet<infer E>
@@ -31,7 +32,7 @@ type LiftedValue<T> = null extends T
   : never
 
 interface Lift {
-  <T>(obj: ArrayWrapper<T>): ArrayWrapper<T>
+  <T>(obj: ArrayWrapper<ReadonlyArray<T>>): ArrayWrapper<ReadonlyArray<T>>
   <T extends object>(obj: ObjectWrapper<T>): ObjectWrapper<T>
   <K, V>(obj: MapWrapper<K, V>): MapWrapper<K, V>
   <T>(obj: SetWrapper<T>): SetWrapper<T>
@@ -40,7 +41,8 @@ interface Lift {
   <T extends AtomicObject>(obj: T): T
 
   /** Wraps an Array to provide a richer API. Unwrap with .value() **/
-  <T>(obj: ReadonlyArray<T>): ArrayWrapper<T>
+  <T>(obj: T[]): ArrayWrapper<T[]>
+  <T>(obj: ReadonlyArray<T>): ArrayWrapper<ReadonlyArray<T>>
 
   /** Wraps a Set to provide a richer API. Unwrap with .value() **/
   <T>(obj: ReadonlySet<T>): SetWrapper<T>
@@ -61,17 +63,7 @@ export const lift: Lift = function (obj: any): any {
   return obj
 }
 
-export function getValue<A>(input: A | Wrapper<A>): A {
-  return isWrapper(input) ? input.value() : input
-}
-
-function isWrapper<A>(obj: A | Wrapper<A>): obj is Wrapper<A> {
-  return obj && (obj as any)['_isLiftWrapper']
-}
-
-export interface Wrapper<T> {
-  value(): T
-}
+export type Pipe = typeof pipe
 
 export function pipe<T, R>(this: Wrapper<T>, func: (object: T) => R): Lifted<R> {
   return lift(func(this.value()) as any)

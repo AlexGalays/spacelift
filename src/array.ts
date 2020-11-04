@@ -26,15 +26,15 @@ export class ArrayWrapper<T extends ReadonlyArray<unknown>> {
   /**
    * Appends one item at the end of the Array.
    */
-  append(item: T[number]) {
-    return new ArrayWrapper([...this._value, item])
+  append(item: T[number]): ArrayWrapper<T> {
+    return new ArrayWrapper([...this._value, item]) as any
   }
 
   /**
    * Appends an Array of items at the end of the Array.
    */
-  appendAll(items: ReadonlyArray<T[number]>) {
-    return new ArrayWrapper(this._value.concat(items))
+  appendAll(items: ReadonlyArray<T[number]>): ArrayWrapper<T> {
+    return new ArrayWrapper(this._value.concat(items)) as any
   }
 
   /**

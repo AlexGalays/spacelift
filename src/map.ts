@@ -2,8 +2,8 @@ import { Draft, update } from './immupdate'
 import type { Pipe } from './lift'
 
 /** A Map wrapper providing extra functionalities and more chaining opportunities */
-export class MapWrapper<K, V> {
-  constructor(private _value: ReadonlyMap<K, V>) {}
+export class MapWrapper<K, V, M extends ReadonlyMap<K, V>> {
+  constructor(private _value: M) {}
 
   private _isLiftWrapper = true
 
@@ -11,8 +11,8 @@ export class MapWrapper<K, V> {
     return this._value
   }
 
-  clone() {
-    return new MapWrapper(this._clone())
+  clone(): MapWrapper<K, V, M> {
+    return new MapWrapper(this._clone()) as any
   }
 
   private _clone() {
@@ -47,32 +47,34 @@ export class MapWrapper<K, V> {
   /**
    * Maps this Map's keys and values, unless void or undefined is returned, in which case the entry is filtered.
    */
-  collect<KK, VV>(iterator: (key: K, value: V) => [KK, VV] | undefined | void): MapWrapper<KK, VV> {
+  collect<KK, VV>(
+    iterator: (key: K, value: V) => [KK, VV] | undefined | void
+  ): MapWrapper<KK, VV, MapOf<M, KK, VV>> {
     const result = new Map<KK, VV>()
 
     this._value.forEach((value, key) => {
       const res = iterator(key, value)
       if (res !== undefined) result.set(res[0], res[1])
     })
-    return new MapWrapper(result)
+    return new MapWrapper(result) as any
   }
 
   /**
    * Filters this Map's keys and values by aplying a predicate to all values and refine its type.
    */
-  filter<VV extends V>(predicate: (key: K, value: V) => value is VV): MapWrapper<K, VV>
+  filter<VV extends V>(predicate: (key: K, value: V) => value is VV): MapWrapper<K, VV, MapOf<M, K, VV>>
   /**
    * Filters this Map's keys and values.
    */
-  filter(predicate: (key: K, value: V) => boolean): MapWrapper<K, V>
-  filter(predicate: (key: K, value: V) => boolean): MapWrapper<K, V> {
+  filter(predicate: (key: K, value: V) => boolean): this
+  filter(predicate: (key: K, value: V) => boolean): MapWrapper<K, any, any> {
     return this.collect((key, value) => (predicate(key, value) ? [key, value] : undefined))
   }
 
   /**
    * Maps this map's value.
    */
-  mapValues<VV>(mapFunction: (value: V) => VV): MapWrapper<K, VV> {
+  mapValues<VV>(mapFunction: (value: V) => VV): MapWrapper<K, VV, MapOf<M, K, VV>> {
     return this.collect((key, value) => [key, mapFunction(value)])
   }
 
@@ -94,3 +96,7 @@ let pipe: Pipe
 export function setMapPipe(_pipe: Pipe) {
   pipe = _pipe
 }
+
+type MapOf<T extends ReadonlyMap<unknown, unknown>, K, V> = T extends Map<any, any>
+  ? Map<K, V>
+  : ReadonlyMap<K, V>

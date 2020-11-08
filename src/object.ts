@@ -15,7 +15,7 @@ export class ObjectWrapper<T extends object> {
     return new ObjectWrapper(this._clone())
   }
 
-  private _clone() {
+  private _clone(): T {
     return clone(this._value)
   }
 
@@ -24,7 +24,7 @@ export class ObjectWrapper<T extends object> {
    * To add a nullable key to an object while preserving its type, use "update()" instead.
    */
   add<K extends string, V>(key: K, value: V): ObjectWrapper<T & { [P in K]: V }> {
-    const result = this._clone()
+    const result: any = this._clone()
     result[key] = value
     return new ObjectWrapper(result)
   }
@@ -50,7 +50,7 @@ export class ObjectWrapper<T extends object> {
    * To delete a (nullable) key from an object while preserving its type, use "update()" instead.
    */
   remove<K extends keyof T>(keyToRemove: K): ObjectWrapper<Omit<T, K>> {
-    const result = this._clone()
+    const result: any = this._clone()
     delete result[keyToRemove.toString()]
     return new ObjectWrapper(result) as any
   }

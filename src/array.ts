@@ -15,11 +15,14 @@ export class ArrayWrapper<T extends ReadonlyArray<unknown>> {
     return this._value
   }
 
-  clone() {
-    return new ArrayWrapper(this._clone())
+  /**
+   * Shallowly clones this Array.
+   */
+  clone(): ArrayWrapper<T> {
+    return new ArrayWrapper(this._clone()) as any
   }
 
-  private _clone() {
+  private _clone(): Array<T[number]> {
     return this._value.slice()
   }
 
@@ -146,8 +149,8 @@ export class ArrayWrapper<T extends ReadonlyArray<unknown>> {
   /**
    * Flattens this Array of Arrays.
    */
-  flatten<A>(this: ArrayWrapper<ReadonlyArray<A>>): ArrayWrapper<ArrayOf<T, A>>
-  flatten<A>(this: ArrayWrapper<A[]>): ArrayWrapper<ArrayOf<T, A>>
+  flatten<A>(this: ArrayWrapper<ReadonlyArray<ReadonlyArray<A>>>): ArrayWrapper<ArrayOf<T, A>>
+  flatten<A>(this: ArrayWrapper<A[][]>): ArrayWrapper<ArrayOf<T, A>>
   flatten<A>(): ArrayWrapper<ArrayOf<T, A>> {
     const arr = this.value(),
       result: A[] = []
@@ -178,7 +181,9 @@ export class ArrayWrapper<T extends ReadonlyArray<unknown>> {
    * Creates a Map where keys are the results of running each element through a discriminator function.
    * The corresponding value of each key is an array of the elements responsible for generating the key.
    */
-  groupBy<K extends string | number>(discriminator: (item: T[number], index: number) => K): MapWrapper<K, T> {
+  groupBy<K extends string | number>(
+    discriminator: (item: T[number], index: number) => K
+  ): MapWrapper<K, T, MapFromArray<T, K, T>> {
     const groups = new Map<K, Array<T[number]>>()
 
     this._value.forEach((item, index) => {
@@ -282,8 +287,8 @@ export class ArrayWrapper<T extends ReadonlyArray<unknown>> {
   /**
    * Converts this Array to a Set.
    */
-  toSet(): SetWrapper<T[number]> {
-    return this.pipe(arr => new Set(arr))
+  toSet(): SetWrapper<T[number], SetFromArray<T>> {
+    return this.pipe(arr => new Set(arr)) as any
   }
 
   /**
@@ -354,6 +359,16 @@ type SortOnField<T> = ((field: T) => string | null | undefined) | ((field: T) =>
 
 type Compacted<T> = T extends null | undefined | 0 | false ? never : T
 
+type SetFromArray<T extends ReadonlyArray<unknown>> = T extends Array<infer E>
+  ? Set<E>
+  : T extends ReadonlyArray<infer E>
+  ? ReadonlySet<E>
+  : never
+
 type ArrayOf<T extends ReadonlyArray<unknown>, ITEM> = T extends Array<any>
   ? Array<ITEM>
   : ReadonlyArray<ITEM>
+
+type MapFromArray<T extends ReadonlyArray<unknown>, K, V> = T extends Array<any>
+  ? Map<K, V>
+  : ReadonlyMap<K, V>

@@ -6,12 +6,36 @@ import { update } from '../src/immupdate'
 //--------------------------------------
 
 const arrOrUndefined = ([1, 2] as any) as ReadonlyArray<number> | undefined
-// lifting a nullable array @shouldNotCompile
+// lifting a nullable Array @shouldNotCompile
 lift(arrOrUndefined).drop(2)
 
 const readonlyArray: ReadonlyArray<number> = [1, 2]
 // getting an Array back from lift().value() and expecting it to now be writable @shouldNotCompile
 lift(readonlyArray).value().push
+
+//--------------------------------------
+//  lift + Map
+//--------------------------------------
+
+const mapOrUndefined = (new Map([[1, 2]]) as any) as ReadonlyMap<number, number> | undefined
+// lifting a nullable Map @shouldNotCompile
+lift(mapOrUndefined).get
+
+const readonlyMap: ReadonlyMap<number, number> = new Map([[1, 2]])
+// getting a Map back from lift().value() and expecting it to now be writable @shouldNotCompile
+lift(readonlyMap).value().set
+
+//--------------------------------------
+//  lift + Set
+//--------------------------------------
+
+const setOrUndefined = (new Set([1, 2]) as any) as ReadonlySet<number> | undefined
+// lifting a nullable Set @shouldNotCompile
+lift(setOrUndefined).get
+
+const readonlySet: ReadonlySet<number> = new Set([1, 2])
+// getting a Set back from lift().value() and expecting it to now be writable @shouldNotCompile
+lift(readonlySet).value().add
 
 //--------------------------------------
 //  immuptate + Object

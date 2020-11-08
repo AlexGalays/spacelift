@@ -1,6 +1,18 @@
 import { lift } from '..'
 
 describe('Object', () => {
+  it('can be cloned', () => {
+    const obj = { a: 1, b: 2 }
+
+    const cloned = lift(obj).clone().value()
+
+    // Type assertion
+    const _cloned: { a: number; b: number } = cloned
+
+    expect(cloned).not.toBe(obj)
+    expect(cloned).toEqual(obj)
+  })
+
   it('can add a key/value', () => {
     const obj2 = { a: 1, b: 2 }
     const result2 = lift(obj2).add('c', 3).add('d', 'ohhhh').value()

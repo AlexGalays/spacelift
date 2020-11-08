@@ -103,7 +103,7 @@ describe('Array', () => {
   })
 
   it('can insert an item', () => {
-    const arr = [1, 2, 3, 4, 5, 6]
+    const arr = immutable([1, 2, 3, 4, 5, 6])
     const updated = lift(arr).insert(2, 300).value()
     expect(updated).toEqual([1, 2, 300, 3, 4, 5, 6])
     expect(updated).not.toBe(arr)
@@ -121,6 +121,30 @@ describe('Array', () => {
 
     expect(updated).toEqual([1, 2, 3000, 4, 5, 600])
     expect(updated).not.toBe(arr)
+  })
+
+  it('it can update itself', () => {
+    const arr: ReadonlyArray<{ id: number; label: string }> = [
+      { id: 1, label: 'one' },
+      { id: 2, label: 'two' }
+    ]
+
+    const updated = lift(arr)
+      .update(draft => {
+        const item = draft[1]
+        if (item) item.label = 'TWO'
+
+        expect(draft).toEqual([
+          { id: 1, label: 'one' },
+          { id: 2, label: 'TWO' }
+        ])
+      })
+      .value()
+
+    expect(updated).toEqual([
+      { id: 1, label: 'one' },
+      { id: 2, label: 'TWO' }
+    ])
   })
 
   it("won't replace an item if the given index is out of bounds", () => {
@@ -272,7 +296,7 @@ describe('Array', () => {
     expect(lift(arr).get(999)).toBe(undefined)
   })
 
-  it.only('can be sorted', () => {
+  it('can be sorted', () => {
     let sorted: ReadonlyArray<any>
 
     // Numbers
@@ -441,3 +465,24 @@ describe('Array', () => {
     expect(result5.value()).toEqual(['a', 'b'])
   })
 })
+
+function immutable<T>(obj: T): Immutable<T> {
+  return obj as any
+}
+
+type ImmutablePrimitive = undefined | null | boolean | string | number | Function
+
+type Immutable<T> = T extends ImmutablePrimitive
+  ? T
+  : T extends Array<infer U>
+  ? ImmutableArray<U>
+  : T extends Map<infer K, infer V>
+  ? ImmutableMap<K, V>
+  : T extends Set<infer M>
+  ? ImmutableSet<M>
+  : ImmutableObject<T>
+
+type ImmutableArray<T> = ReadonlyArray<Immutable<T>>
+type ImmutableMap<K, V> = ReadonlyMap<Immutable<K>, Immutable<V>>
+type ImmutableSet<T> = ReadonlySet<Immutable<T>>
+type ImmutableObject<T> = { readonly [K in keyof T]: Immutable<T[K]> }

@@ -37,7 +37,7 @@ interface Lift {
   <K, V>(obj: MapWrapper<K, V>): MapWrapper<K, V>
   <T>(obj: SetWrapper<T>): SetWrapper<T>
 
-  /** lift won't wrap primitives */
+  /** lift won't wrap primitives and some other non container-like objects */
   <T extends AtomicObject>(obj: T): T
 
   /** Wraps an Array to provide a richer API. Unwrap with .value() **/

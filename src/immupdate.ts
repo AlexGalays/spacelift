@@ -1,4 +1,7 @@
-export function update<T extends object>(obj: T, updater: (draft: Draft<T>) => void): T {
+/**
+ * Creates an object copy by mutating a draft Object/Array/Map/Set or any of its descendants.
+ */
+export function update<T extends object>(obj: T, updater: (draft: Draft<T>) => NoReturn): T {
   let updatedObject: any = obj
   const draft = makeDraft(obj as any, newObj => {
     updatedObject = newObj
@@ -187,7 +190,7 @@ interface DraftArray<T> {
   [Symbol.iterator](): IterableIterator<T>
 
   /**
-   * Returns an iterable of key, value pairs for every entry in the array
+   * Returns an iterable of [key, value] pairs for every entry in the array
    */
   entries(): IterableIterator<[number, T]>
 
@@ -203,8 +206,7 @@ interface DraftArray<T> {
 
   /**
    * Performs the specified action for each element in an array.
-   * @param callbackfn  A function that accepts up to three arguments. forEach calls the callbackfn function one time for each element in the array.
-   * @param thisArg  An object to which the this keyword can refer in the callbackfn function. If thisArg is omitted, undefined is used as the this value.
+   * Note: This never create an object draft. Access the item by index again to mutate it.
    */
   forEach(callbackfn: (value: T, index: number, array: T[]) => void, thisArg?: any): void
 
@@ -228,16 +230,43 @@ interface DraftArray<T> {
     initialValue: T
   ): T
 
+  /**
+   * Adds an item at the front of the Array.
+   */
   prepend(item: T): void
+
+  /**
+   * Adds an item at the back of the Array.
+   */
   append(item: T): void
+
+  /**
+   * Inserts an item at the specified index in the Array.
+   */
   insert(item: T, index: number): void
 
+  /**
+   * Efficiently inserts a string|number item in an already sorted Array.
+   */
   insertSorted<U extends string | number>(this: DraftArray<U>, item: U): void
+
+  /**
+   * Efficiently inserts an item in an already sorted Array. The second argument is the key on which items are sorted.
+   */
   insertSorted(item: T, bySortKey: (item: T) => string | number): void
+
+  /**
+   * Runs a predicate for each item of the Array.
+   * If it returns true, a Draft item is created and  given to updateFunction, ready to be mutated.
+   */
   updateIf(
     predicate: (item: T, index: number) => boolean,
-    updateFunction: (item: Draft<T>, index: number) => void
+    updateFunction: (item: Draft<T>, index: number) => NoReturn
   ): void
+
+  /**
+   * Removes all items satisfying a predicate. This is the mutating (at the draft level) equivalent of filter().
+   */
   removeIf(predicate: (item: T, index: number) => boolean): void
 }
 
@@ -245,6 +274,9 @@ interface DraftMap<K, V> extends Omit<Map<K, V>, 'get'> {
   /** Returns an iterable of entries in the map. */
   [Symbol.iterator](): IterableIterator<[K, V]>
 
+  /**
+   * If the key is found, returns the drafted value, else return undefined.
+   */
   get(key: K): Draft<V> | undefined
 }
 
@@ -277,6 +309,16 @@ export type Draft<T> = T extends AtomicObject
   ? WritableDraft<T>
   : T
 
+/**
+ * Safe type-cast from a regular array to an array draft.
+ * Use this if you want to assign an Array wholesale instead of mutating an existing one.
+ */
+// We need this because Typescript doesn't yet allow one to type reads and writes differently:
+// https://github.com/microsoft/TypeScript/issues/2521
+// If we had this ability, we could type the getter as DraftArray and the setter as DraftArray | ReadonlyArray.
 export function toDraft<T>(array: ReadonlyArray<T>): DraftArray<T> {
   return array as any
 }
+
+// To prevent mistakes, we explicitly forbid implicit return values from functions that should only mutate an input.
+type NoReturn = void | undefined

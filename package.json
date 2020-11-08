@@ -1,6 +1,6 @@
 {
   "name": "space-lift",
-  "version": "1.0.0-beta.6",
+  "version": "1.0.0-beta.7",
   "description": "Idiomatic Typescript Array, Object, Map, Set, Union, Enum utils",
   "sideEffects": true,
 

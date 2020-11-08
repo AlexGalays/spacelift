@@ -34,6 +34,17 @@ update({ a: { b: 1 } }, draft => {
 
 const arr = immutable([{ a: 1 }, { a: 2 }])
 
+// Returning a value (1) @shouldNotCompile
+update(arr, draft => draft)
+
+// Returning a value (2) @shouldNotCompile
+update(arr, draft => {
+  draft.updateIf(
+    item => item.a === 1,
+    item => item
+  )
+})
+
 // Updating an array with an object @shouldNotCompile
 update(arr, draft => {
   draft = {}

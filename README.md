@@ -585,37 +585,36 @@ the list of all possible values, an object with all enum keys and the derived ty
 Creates a type-safe union, providing: derived types, factories and type-guards in a single declaration.
 
 ```ts
-  import { createUnion, empty } from 'space-lift/es/union'
+  import { createUnion, empty } from 'space-lift'
 
-  const union = createUnion({
-    green: empty,
-    orange: empty,
-    red: empty,
-    broken: (cause: string) => ({ cause })
-  })
+  // Let's take a simple example of a Form that sends a new message or edit an existing one
+  // createUnion provides you 3 tools:
+  // T: the derived type for the overall union
+  // factories: an object containing the functions to create every state
+  // is: a typeguard function allowing you to check against a specific state
+  // To avoid verbosity, we recommend to deconstruct and rename the variables according to your needs
+  const { T: FormStateType, factories: FormState, is: formStateIs } = createUnion({
+    creating: empty,
+    editing: (msgId: string) => ({ msgId }),
+    sendingCreation: empty,
+    sendingUpdate: (msgId: string) => ({ msgId }),
+  });
 
-  const is = union.is
-  const stopLight = union.factories
+  // formState is our object state, the initial state of the form is creation of new messages
+  let formState: typeof FormStateType = FormState.creating() // { type: 'creating' }
 
-  // We can use the derived type for the overall union
-  type StopLight = typeof union.T
-  const orange: StopLight = stopLight.orange()
-
-  // Or an individual derived type
-  type Green = typeof stopLight.green.T
-  const green: Green = stopLight.green()
-  const broken = stopLight.broken('oops')
-
-  // factories are provided
-  stopLight.orange() // { type: 'orange' }
-  stopLight.broken('oops') // { type: 'broken', cause: 'oops' }
-
-  // typeguards are provided
-  if (is('broken')(broken)) {
-    broken.cause
+  // If the user wants to edit an existing message, we have to store that id, lets update our state
+  onClickEdit(msgId: string) {
+    formState = FormState.editing(msgId) // { type: 'editing', msgId: 'someId' }
   }
 
-  if (is('broken')(green)) {
-    // will never get there
+  // In edition mode, we could want to get the message and change the send button label
+  if (formStateIs('editing')(formState)) {
+    getMessage(formState.msgId) // thanks to the typeguard function, we know msgId is available in the state
+    buttonLabel = 'Update message'
   }
+
+  // If needed, we can also access a specific state derived type
+  type EditingType = typeof FormState.editing.T
+  const editingObj: EditingType = FormState.editing('someId')
 ```

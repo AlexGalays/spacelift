@@ -116,12 +116,11 @@ describe('Map', () => {
   })
 
   it('can filter and refine its entries', () => {
-    const peopleUnion = createUnion({
+    const people = createUnion({
       Jo: empty,
       Alicia: empty
     })
-    type People = typeof peopleUnion.T
-    const people = peopleUnion.factories
+    type People = typeof people.T
 
     const map = new Map<number, People>([
       [1, people.Jo()],
@@ -130,11 +129,11 @@ describe('Map', () => {
     const map2 = immutable(map)
 
     const result = lift(map)
-      .filter((_key, value) => peopleUnion.is('Alicia')(value))
+      .filter((_key, value) => people.is('Alicia')(value))
       .value()
 
     const result2 = lift(map2)
-      .filter((_key, value) => peopleUnion.is('Alicia')(value))
+      .filter((_key, value) => people.is('Alicia')(value))
       .value()
 
     // Type assertion

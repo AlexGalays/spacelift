@@ -587,34 +587,33 @@ Creates a type-safe union, providing: derived types, factories and type-guards i
 ```ts
   import { createUnion, empty } from 'space-lift'
 
-  // Let's take a simple example of a Form that sends a new message or edit an existing one
-  // createUnion provides you 3 tools:
+  // Let's take the example of a single input Form that can send a new message or edit an existing one.
+  // createUnion() gives you 3 tools:
   // T: the derived type for the overall union
-  // factories: an object containing the functions to create every state
-  // is: a typeguard function allowing you to check against a specific state
-  // To avoid verbosity, we recommend to deconstruct and rename the variables according to your needs
-  const { T: FormStateType, factories: FormState, is: formStateIs } = createUnion({
+  // is: a typeguard function for each state
+  // Lastly, the returned object has a key acting as a factory for each union member
+  const formState = createUnion({
     creating: empty,
     editing: (msgId: string) => ({ msgId }),
     sendingCreation: empty,
     sendingUpdate: (msgId: string) => ({ msgId }),
   });
 
-  // formState is our object state, the initial state of the form is creation of new messages
-  let formState: typeof FormStateType = FormState.creating() // { type: 'creating' }
+  // The initial form state is 'creating'
+  let state: typeof formState.T = formState.creating() // { type: 'creating' }
 
-  // If the user wants to edit an existing message, we have to store that id, lets update our state
+  // If the user wants to edit an existing message, we have to store the edited message id. Lets update our state.
   onClickEdit(msgId: string) {
-    formState = FormState.editing(msgId) // { type: 'editing', msgId: 'someId' }
+    state = formState.editing(msgId) // { type: 'editing', msgId: 'someId' }
   }
 
   // In edition mode, we could want to get the message and change the send button label
-  if (formStateIs('editing')(formState)) {
-    getMessage(formState.msgId) // thanks to the typeguard function, we know msgId is available in the state
+  if (formState.is('editing')(state)) {
+    getMessage(state.msgId) // thanks to the typeguard function, we know msgId is available in the state
     buttonLabel = 'Update message'
   }
 
-  // If needed, we can also access a specific state derived type
-  type EditingType = typeof FormState.editing.T
-  const editingObj: EditingType = FormState.editing('someId')
+  // If needed, we can also access the derived type of a given state
+  type EditingType = typeof formState.editing.T
+  const editingObj: EditingType = formState.editing('someId')
 ```

@@ -2,19 +2,15 @@ import { createUnion, empty } from '../src/union'
 
 describe('union', () => {
   test('can create an union', () => {
-    const union = createUnion({
+    const stopLight = createUnion({
       green: empty,
       orange: empty,
       red: empty,
       broken: (cause: string) => ({ cause })
     })
 
-    const is = union.is
-    const stopLight = union.factories
-
     // We can use the derived type for the overall union
-    type StopLight = typeof union.T
-    const orange: StopLight = stopLight.orange()
+    type StopLight = typeof stopLight.T
 
     // Or an individual derived type
     type Green = typeof stopLight.green.T
@@ -27,19 +23,20 @@ describe('union', () => {
     expect(stopLight.orange()).toEqual({
       type: 'orange'
     })
+
     expect(stopLight.broken('oops')).toEqual({
       type: 'broken',
       cause: 'oops'
     })
 
     // typeguards are provided
-    if (is('broken')(broken)) {
+    if (stopLight.is('broken')(broken)) {
       broken.cause
     } else {
       fail()
     }
 
-    if (is('broken')(greenUnion)) {
+    if (stopLight.is('broken')(greenUnion)) {
       greenUnion.cause
       fail()
     }

@@ -5,8 +5,7 @@ type UnionResult<T extends UnionDescription> = {
   is: <NAME extends keyof T>(
     name: NAME
   ) => <U extends Union<T>>(other: U) => other is ReturnType<T[NAME]> & { type: NAME }
-  factories: { [K in keyof T]: Factory<T[K], K> & { T: ReturnType<Factory<T[K], K>> } }
-}
+} & { [K in keyof T]: Factory<T[K], K> & { T: ReturnType<Factory<T[K], K>> } }
 
 // Same as the std lib's ReturnType but without the constraint on T as the compiler can't check it against Arguments<F>
 type ReturnType<T> = T extends (...args: any[]) => infer R ? R : any
@@ -43,7 +42,7 @@ export function createUnion<D extends UnionDescription>(description: D): UnionRe
   }
 
   return {
-    factories,
+    ...factories,
     is
   } as any
 }

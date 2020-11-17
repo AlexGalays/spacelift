@@ -25,6 +25,10 @@ const readonlyMap: ReadonlyMap<number, number> = new Map([[1, 2]])
 // getting a Map back from lift().value() and expecting it to now be writable @shouldNotCompile
 lift(readonlyMap).value().set
 
+const mapWithObjectKeys: Map<{ id: number }, { id: number }> = new Map()
+// toObject() on a map without string or number keys @shouldNotCompile
+lift(mapWithObjectKeys).toObject().value()
+
 //--------------------------------------
 //  lift + Set
 //--------------------------------------

@@ -196,14 +196,18 @@ describe('Array', () => {
     const arr = [1, 2, 3, 4, 5, 6]
     const arr2 = immutable(arr)
 
-    const updated = lift(arr).appendAll([7, 8, 9, 10]).value()
+    const updated = lift(arr)
+      .appendAll([7, 8, 9, 10])
+      .appendAll(new Set([11, 12]))
+      .value()
+
     const updated2 = lift(arr2).appendAll([7, 8, 9, 10]).value()
 
     // Type assertion
     const _updated: Array<number> = updated
     const _updated2: ReadonlyArray<number> = updated2
 
-    expect(updated).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    expect(updated).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
     expect(updated).not.toBe(arr)
   })
 

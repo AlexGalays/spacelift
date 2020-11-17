@@ -144,6 +144,29 @@ describe('Map', () => {
     expect(result).not.toBe(map)
   })
 
+  it('can be converted to an Object', () => {
+    const map = new Map([
+      [1, { id: 1, name: 'aa' }],
+      [2, { id: 2, name: 'bb' }]
+    ])
+    const map2 = immutable(map)
+
+    const result = lift(map).toObject().value()
+    const result2 = lift(map2).toObject().value()
+
+    // Type assertion
+    const _result: Record<number, { id: number; name: string } | undefined> = result
+    const _result2: Readonly<Record<number, { id: number; name: string } | undefined>> = result2
+    type TypeAssertion = SameTypes<typeof result[0], { id: number; name: string } | undefined>
+    const _typeAssertion: TypeAssertion = true
+
+    expect(result).toEqual({
+      1: { id: 1, name: 'aa' },
+      2: { id: 2, name: 'bb' }
+    })
+    expect(result).not.toBe(map)
+  })
+
   it('can be converted to an Array', () => {
     const map = new Map([
       [1, { id: 1, name: 'aa' }],
@@ -314,3 +337,9 @@ describe('Map', () => {
     const _result5: Map<string, number> = result5.value()
   })
 })
+
+type SameTypes<T, U, Y = true, N = false> = (<G>() => G extends T ? 1 : 2) extends <G>() => G extends U
+  ? 1
+  : 2
+  ? Y
+  : N

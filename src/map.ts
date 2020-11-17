@@ -1,3 +1,4 @@
+import { ObjectWrapper } from './object'
 import { Draft, update } from './immupdate'
 import type { Pipe } from './lift'
 
@@ -89,6 +90,17 @@ export class MapWrapper<K, V, M extends ReadonlyMap<K, V>> {
 
   toArray() {
     return this.pipe(m => [...m])
+  }
+
+  toObject<KK extends string | number>(
+    this: MapWrapper<KK, V, any>
+  ): ObjectWrapper<Record<KK, V | undefined>> {
+    return this.pipe(m =>
+      [...m].reduce((obj, [key, val]) => {
+        obj[key] = val
+        return obj
+      }, {} as any)
+    )
   }
 }
 

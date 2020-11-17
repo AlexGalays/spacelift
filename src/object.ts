@@ -1,4 +1,5 @@
 import { ArrayWrapper } from './array'
+import { MapWrapper } from './map'
 import { clone, Draft, update } from './immupdate'
 import type { Pipe } from './lift'
 
@@ -69,9 +70,18 @@ export class ObjectWrapper<T extends object> {
   update(updateFunction: (draft: Draft<T>) => void) {
     return this.pipe(o => update(o, updateFunction))
   }
+
+  /**
+   * Transforms this Object to a Map where the keys are the string typed keys of this Object.
+   */
+  toMap(): MapWrapper<KeyAsString<keyof T>, T[keyof T], Map<KeyAsString<keyof T>, T[keyof T]>> {
+    return this.pipe(o => new Map(Object.entries(o))) as any
+  }
 }
 
 let pipe: Pipe
 export function setObjectPipe(_pipe: Pipe) {
   pipe = _pipe
 }
+
+type KeyAsString<K> = K extends string ? K : string

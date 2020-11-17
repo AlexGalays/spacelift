@@ -22,6 +22,10 @@ export class SetWrapper<T, S extends ReadonlySet<T>> {
     return new SetWrapper(this._clone().add(item)) as any
   }
 
+  addAll(items: Iterable<T>): this {
+    return new SetWrapper(new Set([...this._value, ...items])) as any
+  }
+
   delete(item: T): this {
     const result = this._clone()
     result.delete(item)
@@ -54,6 +58,20 @@ export class SetWrapper<T, S extends ReadonlySet<T>> {
   filter(predicate: (item: T) => boolean): SetWrapper<T, S>
   filter(predicate: (item: T) => boolean): SetWrapper<any, any> {
     return this.collect(item => (predicate(item) ? item : undefined))
+  }
+
+  /**
+   * Returns the Set of all items of this Set that are also found in the passed Set.
+   */
+  intersection(other: ReadonlySet<T>): SetWrapper<T, S> {
+    return this.filter(item => other.has(item))
+  }
+
+  /**
+   * Returns the Set of all items of this Set but not found in the passed Set.
+   */
+  difference(other: ReadonlySet<T>): SetWrapper<T, S> {
+    return this.filter(item => !other.has(item))
   }
 
   toArray() {

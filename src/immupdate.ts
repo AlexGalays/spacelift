@@ -83,29 +83,6 @@ function proxiedArrayMethods(
 
     insert: (item: any, index: number) => mutateArray(() => getArray().splice(index, 0, item), allKeys),
 
-    insertSorted: (item: any, by: (item: any) => string | number = item => item) =>
-      mutateArray(() => {
-        const arr: any[] = getArray()
-        let low = 0,
-          high = arr.length
-
-        const itemValue = by(item)
-
-        while (low < high) {
-          const mid = (low + high) >>> 1
-          const midValue = by(arr[mid])
-          const itemValueIsBigger =
-            typeof itemValue === 'string'
-              ? itemValue.localeCompare(midValue as string) > 0
-              : itemValue > midValue
-
-          if (itemValueIsBigger) low = mid + 1
-          else high = mid
-        }
-
-        arr.splice(low, 0, item)
-      }, allKeys),
-
     updateIf: (predicate: Function, updateFunction: Function) =>
       getArray().forEach((item, index) => {
         if (predicate(item, index)) updateFunction(getDraft()[index], index)
@@ -244,16 +221,6 @@ interface DraftArray<T> {
    * Inserts an item at the specified index in the Array.
    */
   insert(item: T, index: number): void
-
-  /**
-   * Efficiently inserts a string|number item in an already sorted Array.
-   */
-  insertSorted<U extends string | number>(this: DraftArray<U>, item: U): void
-
-  /**
-   * Efficiently inserts an item in an already sorted Array. The second argument is the key on which items are sorted.
-   */
-  insertSorted(item: T, bySortKey: (item: T) => string | number): void
 
   /**
    * Runs a predicate for each item of the Array.

@@ -34,10 +34,10 @@ export class ArrayWrapper<T extends ReadonlyArray<unknown>> {
   }
 
   /**
-   * Appends an Array of items at the end of the Array.
+   * Appends an Iterable of items at the end of the Array.
    */
-  appendAll(items: ReadonlyArray<T[number]>): ArrayWrapper<T> {
-    return new ArrayWrapper(this._value.concat(items)) as any
+  appendAll(items: Iterable<T[number]>): ArrayWrapper<T> {
+    return new ArrayWrapper([...this._value, ...items]) as any
   }
 
   /**

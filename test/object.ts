@@ -1,13 +1,16 @@
-import { lift } from '..'
+import { lift, immutable } from '..'
 
 describe('Object', () => {
   it('can be cloned', () => {
     const obj = { a: 1, b: 2 }
+    const obj2 = immutable(obj)
 
     const cloned = lift(obj).clone().value()
+    const cloned2 = lift(obj2).clone().value()
 
     // Type assertion
-    const _cloned: { a: number; b: number } = cloned
+    const _cloned: typeof obj = cloned
+    const _cloned2: typeof obj2 = cloned2
 
     expect(cloned).not.toBe(obj)
     expect(cloned).toEqual(obj)
@@ -59,5 +62,44 @@ describe('Object', () => {
     expect(lift({}).isEmpty()).toBe(true)
     expect(lift({ a: undefined }).isEmpty()).toBe(false)
     expect(lift({ a: 10 }).isEmpty()).toBe(false)
+  })
+
+  it('can provide collect() via Map()', () => {
+    const obj = { a: 1, b: 2, c: 3 }
+
+    const result = lift(obj)
+      .toMap()
+      .collect((key, value) => {
+        if (key === 'b') return
+        return [key + '$', value * 2]
+      })
+      .toObject()
+      .value()
+
+    expect(result).toEqual({
+      a$: 2,
+      c$: 6
+    })
+  })
+
+  it('can be converted to a Map', () => {
+    const obj = { a: 1, b: 2, c: '3' }
+    const obj2 = immutable(obj)
+    const obj3: Record<number, string> = { 1: '10', 2: '20' }
+
+    const map = lift(obj).toMap().value()
+    const map2 = lift(obj2).toMap().value()
+    const map3 = lift(obj3).toMap().value()
+
+    const _map: Map<'a' | 'b' | 'c', number | string> = map
+    const _map2: Map<'a' | 'b' | 'c', number | string> = map2
+    const _map3: Map<string, string> = map3
+
+    expect(map3).toEqual(
+      new Map([
+        ['1', '10'],
+        ['2', '20']
+      ])
+    )
   })
 })

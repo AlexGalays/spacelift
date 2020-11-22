@@ -21,6 +21,9 @@ Design goals
 * [API](#api)
   * [Array](#api.array)
   * [Object](#api.object)
+  * [Map](#api.map)
+  * [Set](#api.set)
+  * [update](#api.update)
   * [createEnum](#api.enum)
   * [createUnion](#api.union)
   * [Result](#api.result)
@@ -105,42 +108,39 @@ const sortedPeople = lift(people)
 <a name="api.array"></a>
 ## Array
 
-* [lift(array)](#lift.array)
+* [clone](#array.clone)
 * [append](#array.append)
 * [appendAll](#array.appendAll)
 * [compact](#array.compact)
 * [count](#array.count)
+* [collect](#array.collect)
 * [distinct](#array.distinct)
 * [drop](#array.drop)
 * [dropRight](#array.dropRight)
-* [every](#array.every)
 * [filter](#array.filter)
-* [find](#array.find)
-* [findIndex](#array.findIndex)
 * [first](#array.first)
 * [flatMap](#array.flatMap)
 * [flatten](#array.flatten)
 * [fold](#array.fold)
-* [foldRight](#array.foldRight)
-* [fromArrayLike](#array.fromArrayLike)
 * [get](#array.get)
 * [groupBy](#array.groupBy)
 * [insert](#array.insert)
-* [insertAll](#array.insertAll)
-* [join](#array.join)
 * [last](#array.last)
 * [map](#array.map)
-* [range](#array.range)
 * [removeAt](#array.removeAt)
 * [reverse](#array.reverse)
-* [some](#array.some)
 * [sort](#array.sort)
 * [take](#array.take)
 * [takeRight](#array.takeRight)
 * [toSet](#array.toSet)
+* [update](#array.update)
 * [updateAt](#array.updateAt)
+* [pipe](#array.pipe)
 
-TODO: Detail and examples
+<a name="array.clone"></a>
+### Array.clone
+
+
 
 
 <a name="api.object"></a>

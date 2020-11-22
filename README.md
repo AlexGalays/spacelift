@@ -42,7 +42,6 @@ import {
   createEnum,
   identity,
   noop,
-  empty,
   Result,
   Ok,
   Err,
@@ -58,7 +57,6 @@ import {
 - `createEnum` creates a bunch of useful things when working with a string based enum.  
 - `identity` the identity function
 - `noop` a function that does nothing
-- `empty` a function that return an empty object
 - `Result`, `Ok`, `Err` are used to work with computation that may fail  
 - `Immutable` a type that will recursively make a tree `Readonly`.
 
@@ -199,7 +197,7 @@ the list of all possible values, an object with all enum keys and the derived ty
 Creates a type-safe union, providing: derived types, factories and type-guards in a single declaration.
 
 ```ts
-  import { createUnion, empty } from 'space-lift'
+  import { createUnion } from 'space-lift'
 
   // Let's take the example of a single input Form that can send a new message or edit an existing one.
   // createUnion() gives you 3 tools:
@@ -207,9 +205,9 @@ Creates a type-safe union, providing: derived types, factories and type-guards i
   // is: a typeguard function for each state
   // Lastly, the returned object has a key acting as a factory for each union member
   const formState = createUnion({
-    creating: empty,
+    creating: () => ({}),
     editing: (msgId: string) => ({ msgId }),
-    sendingCreation: empty,
+    sendingCreation: () => ({}),
     sendingUpdate: (msgId: string) => ({ msgId }),
   });
 

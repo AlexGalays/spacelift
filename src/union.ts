@@ -46,7 +46,3 @@ export function createUnion<D extends UnionDescription>(description: D): UnionRe
     is
   } as any
 }
-
-export function empty() {
-  return {}
-}

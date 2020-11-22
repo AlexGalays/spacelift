@@ -3,7 +3,7 @@ export { lift } from './lift'
 
 export { update } from './immupdate'
 export { range } from './array'
-export { createUnion, empty } from './union'
+export { createUnion } from './union'
 export { createEnum } from './enum'
 export { identity, noop } from './function'
 

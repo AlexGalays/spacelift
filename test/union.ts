@@ -1,11 +1,13 @@
-import { createUnion, empty } from '../src/union'
+import { createUnion } from '../src/union'
 
 describe('union', () => {
   test('can create an union', () => {
+    const noArg = () => ({})
+
     const stopLight = createUnion({
-      green: empty,
-      orange: empty,
-      red: empty,
+      green: noArg,
+      orange: noArg,
+      red: noArg,
       broken: (cause: string) => ({ cause })
     })
 

@@ -1,6 +1,5 @@
 import { lift, createUnion, immutable } from '..'
 import { update } from '../src/immupdate'
-import { empty } from '../src/union'
 
 describe('Map', () => {
   it('can be unwrapped', () => {
@@ -117,8 +116,8 @@ describe('Map', () => {
 
   it('can filter and refine its entries', () => {
     const people = createUnion({
-      Jo: empty,
-      Alicia: empty
+      Jo: () => ({}),
+      Alicia: () => ({})
     })
     type People = typeof people.T
 

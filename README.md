@@ -21,8 +21,8 @@ Design goals
 * [API](#api)
   * [Array](#api.array)
   * [Object](#api.object)
-  * [enum](#api.enum)
-  * [union](#api.union)
+  * [createEnum](#api.enum)
+  * [createUnion](#api.union)
   * [Result](#api.result)
 * [Auto unwrap](#autounwrap)
 
@@ -50,17 +50,17 @@ import {
 } from 'space-lift'
 ```
 
-`lift` is the main attraction and is used to wrap an Array, Object, Map or Set to give it extra functionalities  
-`update` can update an Object, Array, Map or Set without modifying the original
-`range` is a factory function for Arrays of numbers  
-`is` is a helper used to determine if an instance is of a particular type (e.g `is.array([]) === true`)  
-`createUnion` creates a bunch  of useful things when working with discriminated unions.
-`createEnum` creates a bunch of useful things when working with a string based enum.  
-`identity` the identity function
-`noop` a function that does nothing
-`empty` a function that return an empty object
-`Result`, `Ok`, `Err` are used to work with computation that may fail  
-`Immutable` a type that will recursively make a tree `Readonly`.
+- `lift` is the main attraction and is used to wrap an Array, Object, Map or Set to give it extra functionalities  
+- `update` can update an Object, Array, Map or Set without modifying the original  
+- `range` is a factory function for Arrays of numbers  
+- `is` is a helper used to determine if an instance is of a particular type (e.g `is.array([]) === true`)  
+- `createUnion` creates a bunch  of useful things when working with discriminated unions.  
+- `createEnum` creates a bunch of useful things when working with a string based enum.  
+- `identity` the identity function
+- `noop` a function that does nothing
+- `empty` a function that return an empty object
+- `Result`, `Ok`, `Err` are used to work with computation that may fail  
+- `Immutable` a type that will recursively make a tree `Readonly`.
 
 
 <a name="examples"></a>
@@ -181,8 +181,8 @@ the list of all possible values, an object with all enum keys and the derived ty
   // We can use the derived type
   type StopLightColor = typeof enumeration.T
 
-  // We can list all enum values as an Array
-  enumeration.values // ['green', 'orange', 'red'])
+  // We can list all enum values as a Set.
+  enumeration.values // Set(['green', 'orange', 'red'])
 
   // We can access each value of the enum directly
   const color = enumeration.enum

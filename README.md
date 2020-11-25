@@ -140,8 +140,312 @@ const sortedPeople = lift(people)
 <a name="array.clone"></a>
 ### Array.clone
 
+Shallowly clones the Array.
 
+```ts
+import {lift} from 'space-lift'
+const cloned = lift([1, 2, 3]).clone().value() // [1, 2, 3]
+```
 
+<a name="array.append"></a>
+### Array.append
+
+Appends one item at the end of the Array.  
+
+```ts
+import {lift} from 'space-lift'
+const updated = lift([1, 2, 3]).append(4).value() // [1, 2, 3, 4]
+```
+
+<a name="array.appendAll"></a>
+### Array.appendAll
+
+Appends an Iterable of items at the end of the Array.  
+
+```ts
+import {lift} from 'space-lift'
+const updated = lift([1, 2, 3]).appendAll([4, 5]).value() // [1, 2, 3, 4, 5]
+```
+
+<a name="array.compact"></a>
+### Array.compact
+
+Filters all the falsy elements out of this Array.  
+All occurences of false, null, undefined, 0, "" will be removed.  
+
+```ts
+import {lift} from 'space-lift'
+const updated = lift([1, null, 2, 3, undefined]).compact().value() // [1, 2, 3]
+```
+
+<a name="array.count"></a>
+### Array.count
+
+Counts the items satisfying a predicate.  
+
+```ts
+import {lift} from 'space-lift'
+const count = lift([1, 2, 3]).count(n => n > 1) // 2
+```
+
+<a name="array.collect"></a>
+### Array.collect
+
+Maps this Array's items, unless void or undefined is returned, in which case the item is filtered.  
+
+```ts
+import {lift} from 'space-lift'
+const count = lift([1, 2, 3]).collect(n => {
+  if (n === 1) return;
+  return `${n*10}`
+}).value() // ['20', '30']
+```
+
+<a name="array.distinct"></a>
+### Array.distinct
+
+Creates an array without any duplicate item.  
+If a key function is passed, items will be compared based on the result of that function;  
+if not, they will be compared using strict equality.  
+
+```ts
+import {lift} from 'space-lift'
+
+const people = [{id: 1, name: 'Alexios'}, {id: 2, name: 'Bob'}, {id: 1, name: 'Alessia'}]
+
+// [{id: 1, name: 'Alexios'}, {id: 2, name: 'Bob'}]
+const deduped = lift(people).distinct(p => p.id).value()
+```
+
+<a name="array.drop"></a>
+### Array.drop
+
+Drops the first 'count' items from this Array.  
+
+```ts
+import {lift} from 'space-lift'
+const updated = lift([1, 2, 3]).drop(2).value() // [3]
+```
+
+<a name="array.dropRight"></a>
+### Array.dropRight
+
+Drops the last 'count' items from this Array.  
+
+```ts
+import {lift} from 'space-lift'
+const updated = lift([1, 2, 3]).dropRight(2).value() // [1]
+```
+
+<a name="array.filter"></a>
+### Array.filter
+
+Filters this array by aplying a predicate to all items and refine its type.  
+
+```ts
+import {lift} from 'space-lift'
+const filtered = lift([1, 2, 3]).filter(n => n > 1).value() // [2, 3]
+```
+
+<a name="array.first"></a>
+### Array.first
+
+Returns the first element in this Array or undefined.  
+
+```ts
+import {lift} from 'space-lift'
+const first = lift([1, 2, 3]).first() // 1
+```
+
+<a name="array.flatMap"></a>
+### Array.flatMap
+
+Maps this Array to an Array of Array | ArrayWrapper using a mapper function then flattens it.  
+
+```ts
+import {lift} from 'space-lift'
+const mapped = lift([1, 2, 3]).flatMap(n => [n + 1, n + 2]).value() // [2, 3, 3, 4, 4, 5]
+```
+
+<a name="array.flatten"></a>
+### Array.flatten
+
+Flattens this Array of Arrays.  
+
+```ts
+import {lift} from 'space-lift'
+const flattened = lift([1, [2], [3, 4]]).flatten().value() // [1, 2, 3, 4]
+```
+
+<a name="array.fold"></a>
+### Array.fold
+
+Folds this Array into a single value, using a starting value.  
+
+```ts
+import {lift} from 'space-lift'
+const count = lift([1, 2, 3).fold(0, (count, n) => count + n) // 6
+```
+
+<a name="array.get"></a>
+### Array.get
+
+Returns the item found at the provided index or undefined.  
+
+```ts
+import {lift} from 'space-lift'
+const secondItem = lift([1, 2, 3).get(1) // 2
+```
+
+<a name="array.groupBy"></a>
+### Array.groupBy
+
+Creates a Map where keys are the results of running each element through a discriminator function.  
+The corresponding value of each key is an array of the elements responsible for generating the key.  
+
+```ts
+import {lift} from 'space-lift'
+const people = [
+  { age: 10, name: 'jon' },
+  { age: 30, name: 'momo' },
+  { age: 10, name: 'kiki' },
+  { age: 28, name: 'jesus' },
+  { age: 29, name: 'frank' },
+  { age: 30, name: 'michel' }
+]
+
+// Map<number, Array<{age: number, name: string}>>
+const peopleByAge = lift(people).groupBy(p => p.age).value()
+```
+
+<a name="array.insert"></a>
+### Array.insert
+
+Inserts an item at a specified index.  
+
+```ts
+import {lift} from 'space-lift'
+const updated = lift(['1', '2', '3').insert(1, '20').value() // [1, 20, 2, 3]
+```
+
+<a name="array.last"></a>
+### Array.last
+
+Returns the item found at the last index or undefined.  
+
+```ts
+import {lift} from 'space-lift'
+const last = lift(['1', '2', '3').last() // '3'
+```
+
+<a name="array.map"></a>
+### Array.map
+
+Maps this Array using a mapper function.  
+
+```ts
+import {lift} from 'space-lift'
+const mapped = lift(['1', '2', '3').map(str => '0' + str).value() // ['01', '02', '03']
+```
+
+<a name="array.removeAt"></a>
+### Array.removeAt
+
+Removes the item found at the specified index.  
+
+```ts
+import {lift} from 'space-lift'
+const updated = lift(['1', '2', '3').removeAt(1).value() // ['1', '3']
+```
+
+<a name="array.reverse"></a>
+### Array.reverse
+
+Reverses the Array.  
+
+```ts
+import {lift} from 'space-lift'
+const updated = lift(['1', '2', '3').reverse().value() // ['3', '2', '1']
+```
+
+<a name="array.sort"></a>
+### Array.sort
+
+Sorts the Array in ascending order, using one or more iterators specifying which field to compare.  
+For strings, localCompare is used.  
+The sort is stable if the browser uses a stable sort (all modern engines do)  
+
+```ts
+import {lift} from 'space-lift'
+
+const people = [
+  { name: 'Jesse', creationDate: 2 },
+  { name: 'Walt', creationDate: 1 },
+  { name: 'Mike', creationDate: 4 },
+  { name: 'Skyler', creationDate: 3 }
+]
+
+const sorted = lift(people)
+  .sort(p => p.creationDate)
+  .map(p => p.name)
+  .value() // ['Walt', 'Jesse', 'Skyler', 'Mike']
+```
+
+<a name="array.take"></a>
+### Array.take
+
+Takes the first 'count' items from this Array.  
+
+```ts
+import {lift} from 'space-lift'
+const updated = lift(['1', '2', '3').take(2).value() // ['1', '2']
+```
+
+<a name="array.takeRight"></a>
+### Array.takeRight
+
+Takes the last 'count' items from this Array.  
+
+```ts
+import {lift} from 'space-lift'
+const updated = lift(['1', '2', '3').takeRight(2).value() // ['2', '3']
+```
+
+<a name="array.toSet"></a>
+### Array.toSet
+
+Converts this Array to a Set.  
+
+```ts
+import {lift} from 'space-lift'
+const set = lift(['1', '2', '2', '3').toSet().value() // Set(['1', '2', '3'])
+```
+
+<a name="array.update"></a>
+### Array.update
+
+Make mutable modifications to a draft Array then return a new Array.  
+See [update](#api.update)  
+
+<a name="array.updateAt"></a>
+### Array.updateAt
+
+Updates an item at the specified index.  
+
+```ts
+import {lift} from 'space-lift'
+const updated = lift(['1', '2', '2', '3').updateAt(1, '20').value() // ['1', '20', '2', '3']
+```
+
+<a name="array.pipe"></a>
+### Array.pipe
+
+Pipes this Array with an arbitrary transformation function.  
+
+```ts
+import {lift} from 'space-lift'
+const updated = lift([1, 0, 3]).pipe(Boolean).value() // [true, false, true]
+```
 
 <a name="api.object"></a>
 ## Object

@@ -1,7 +1,7 @@
 import { pipe } from './lift'
 export { lift } from './lift'
 
-export { update } from './immupdate'
+export { update, toDraft } from './immupdate'
 export { range } from './array'
 export { createUnion } from './union'
 export { createEnum } from './enum'

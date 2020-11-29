@@ -427,6 +427,18 @@ const set = lift(['1', '2', '2', '3').toSet().value() // Set(['1', '2', '3'])
 Make mutable modifications to a draft Array then return a new Array.  
 See [update for Array](#update-for-array)  
 
+The method is also accessible on Array wrappers for convenience:  
+
+```ts
+import {lift} from 'space-lift'
+
+const array = [{a: 1}, {a: 2}]
+
+const updated = lift(array).update(draft => {
+  draft[0].a = 10
+}).value()
+```
+
 <a name="array.updateAt"></a>
 ### Array.updateAt
 

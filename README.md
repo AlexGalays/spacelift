@@ -468,6 +468,119 @@ const updated = lift([1, 0, 3]).pipe(Boolean).value() // [true, false, true]
 
 TODO: Detail and examples
 
+<a name="api.update"></a>
+## update
+
+`update` is your go-to function to perform immutable updates on your `Objects`, `Array`, `Map` and `Set`, using a mutable API. If you know [immerjs](https://immerjs.github.io/immer/docs/introduction), it's very similar (great idea!) but with different design constraints in mind:  
+
+- Tiny implementation (The entirety of `space-lift` is way smaller than `immerjs`)
+- The `Array` draft has special methods to update it as the traditional mutable Array API in JavaScript is awful.
+- Instead of eagerly creating tons of costly `Proxies` (also called `drafts`), they are created only when strictly needed (look for: **will create a draft** in the documentation below).
+- `drafts` are only created for values of type `Object`, `Array`, `Map` or `Set`.
+- `update` should never have a returned value and will prevent it at the type level.
+- Remember that if you iterate through keys, values, etc drafts will **NOT** be created by default. Call one of the draft creating methods within the loop to perform the updates conditionally.
+- As long as you keep accessing drafts, the update can be done at any level of a tree.
+
+### update for Object
+
+Accessing a draft object property is the only `Object` operation that **will create a draft**
+
+#### Adding/updating an Object property
+
+```ts
+import {update} from 'space-lift'
+
+const obj: { a: 1; b?: number } = { a: 1 }
+
+const updated = update(obj, draft => {
+  draft.b = 20
+})
+```
+
+#### Deleting an Object property
+
+```ts
+import {update} from 'space-lift'
+
+const obj: { a: 1; b?: number } = { a: 1, b: 20 }
+
+const updated = update(obj, draft => {
+  delete draft.b
+})
+```
+
+### update for Map
+
+All regular methods are available.  
+`get` is the only `Map` draft method that **will create a draft** for the returned value.  
+
+#### Map - Updating an existing value
+
+```ts
+import {update} from 'space-lift'
+
+const map = new Map([
+  [1, { id: 1, name: 'jon' }],
+  [2, { id: 2, name: 'Julia' }]
+])
+
+const updated = update(map, draft => {
+  const value = draft.get(2)
+  if (value) return
+  
+  value.name = 'Bob'
+})
+```
+
+### update for Set
+
+All regular `Set` methods are available.  
+None of the `Set` draft methods **will create a draft** as a `Set` never hands value over.  
+Still, it's useful to update an immutable `Set` whether it's found nested in a tree or not and Sets are most of the time only useful for primitives values that wouldn't be drafted.  
+
+### update for Array
+
+Most Array methods are available but some are removed to make working with Array more pleasant:  
+
+- `splice`: Replaced by `insert`, `removeIf`.
+- `unshift`: Replaced by `preprend`.
+- `shift`: Replaced by `removeIf`.
+- `pop`: Replaced by `removeIf`.
+- `push`: Replaced by `append`.
+- `map` is not removed but `updateIf` is added as the conceptual, mutable equivalent.
+
+As a result, the interface of a draft Array is not fully compatible with `Array`/`ReadonlyArray` and you must use `toDraft` if you want to assign a regular Array to a draft Array:  
+
+```ts
+import {update, toDraft} from 'space-lift'
+
+const updated = update({arr: [1, 2, 3]}, draft => {
+  draft.arr = toDraft([4, 5, 6])
+})
+```
+
+- Accessing an Array element by index **will create a draft**
+- `updateIf` **will create a draft** for each item satisfying its predicate.  
+
+#### Array - using updateIf
+
+```ts
+import {update} from 'space-lift'
+
+const arr = [
+  { id: 1, name: 'Jon' },
+  { id: 3, name: 'Julia' }
+]
+
+const updated = update(arr, draft => {
+  draft.updateIf(
+    (item, index) => item.id === 3,
+    item => {
+      item.name = 'Bob'
+    }
+  )
+})
+```
 
 <a name="api.enum"></a>
 ## createEnum

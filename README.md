@@ -425,7 +425,7 @@ const set = lift(['1', '2', '2', '3').toSet().value() // Set(['1', '2', '3'])
 ### Array.update
 
 Make mutable modifications to a draft Array then return a new Array.  
-See [update](#api.update)  
+See [update for Array](#update-for-array)  
 
 <a name="array.updateAt"></a>
 ### Array.updateAt
@@ -540,7 +540,7 @@ Still, it's useful to update an immutable `Set` whether it's found nested in a t
 
 ### update for Array
 
-Most Array methods are available but some are removed to make working with Array more pleasant:  
+Most Array methods are available but some are removed to make working with Arrays more pleasant:  
 
 - `splice`: Replaced by `insert`, `removeIf`.
 - `unshift`: Replaced by `preprend`.
@@ -559,7 +559,7 @@ const updated = update({arr: [1, 2, 3]}, draft => {
 })
 ```
 
-- Accessing an Array element by index **will create a draft**
+- Accessing an Array element by index **will create a draft** (be careful with this if you somehow end up manually iterating the Array)
 - `updateIf` **will create a draft** for each item satisfying its predicate.  
 
 #### Array - using updateIf

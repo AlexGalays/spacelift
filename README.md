@@ -61,7 +61,7 @@ import {
 - `identity` the identity function
 - `noop` a function that does nothing
 - `Result`, `Ok`, `Err` are used to work with computation that may fail  
-- `Immutable` a type that will recursively make a tree `Readonly`.
+- `Immutable` a helper type that will recursively make a tree `Readonly`.
 
 
 <a name="examples"></a>

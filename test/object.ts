@@ -102,4 +102,45 @@ describe('Object', () => {
       ])
     )
   })
+
+  it('can map its values', () => {
+    const obj = { a: 1, b: 2, c: 3 }
+
+    const updated = lift(obj)
+      .mapValues(v => v * 10)
+      .value()
+
+    // Type assertion
+    const _updated: typeof obj = updated
+
+    expect(updated).toEqual({
+      a: 10,
+      b: 20,
+      c: 30
+    })
+  })
+
+  it('can be converted to an Array', () => {
+    const obj = { a: 1, b: 2, c: 3 }
+
+    const array = lift(obj).toArray().value()
+
+    // Type assertion
+    const _array: Array<['a' | 'b' | 'c', number]> = array
+    const _obj = lift(_array)
+      .fold({} as typeof obj, (result, [key, value]) => {
+        result[key] = value
+        return result
+      })
+      .value()
+
+    expect(array).toEqual([
+      ['a', 1],
+      ['b', 2],
+      ['c', 3]
+    ])
+
+    // Type assertion (object keys are ALWAYS strings)
+    const _array2: Array<[string, number]> = lift({ 1: 1, 2: 2 }).toArray().value()
+  })
 })

@@ -73,7 +73,7 @@ export class MapWrapper<K, V, M extends ReadonlyMap<K, V>> {
   }
 
   /**
-   * Maps this map's value.
+   * Maps this map's values.
    */
   mapValues<VV>(mapFunction: (value: V) => VV): MapWrapper<K, VV, MapOf<M, K, VV>> {
     return this.collect((key, value) => [key, mapFunction(value)])

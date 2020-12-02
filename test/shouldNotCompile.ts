@@ -14,6 +14,14 @@ const readonlyArray: ReadonlyArray<number> = [1, 2]
 lift(readonlyArray).value().push
 
 //--------------------------------------
+//  lift + Object
+//--------------------------------------
+
+const mapFromRecord = lift({ a: 1, b: 2 }).toMap().value()
+// Trying to access a Map key that didn't exist in the original object @shouldNotCompile
+mapFromRecord.get('c')
+
+//--------------------------------------
 //  lift + Map
 //--------------------------------------
 

@@ -103,23 +103,6 @@ describe('Object', () => {
     )
   })
 
-  it('can map its values', () => {
-    const obj = { a: 1, b: 2, c: 3 }
-
-    const updated = lift(obj)
-      .mapValues(v => v * 10)
-      .value()
-
-    // Type assertion
-    const _updated: typeof obj = updated
-
-    expect(updated).toEqual({
-      a: 10,
-      b: 20,
-      c: 30
-    })
-  })
-
   it('can be converted to an Array', () => {
     const obj = { a: 1, b: 2, c: 3 }
 

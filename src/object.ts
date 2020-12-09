@@ -59,7 +59,7 @@ export class ObjectWrapper<T extends object> {
   /**
    * Creates an Array with all these object's values.
    */
-  values(): ArrayWrapper<Array<keyof T>> {
+  values(): ArrayWrapper<Array<T[keyof T]>> {
     return this.pipe(Object.values)
   }
 

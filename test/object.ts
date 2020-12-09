@@ -56,6 +56,9 @@ describe('Object', () => {
     const result = lift(obj).values().sort().value()
     expect(result).not.toBe(obj)
     expect(result).toEqual([1, 2, 3])
+
+    // Type assertion
+    const _array: number[] = result
   })
 
   it("can return whether it's empty", () => {

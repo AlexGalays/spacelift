@@ -16,6 +16,8 @@ Design goals
 - Small set of functions, configurable with lambdas
 - Cover 95% of frontend data transformation needs without becoming a bloated lib just to cover the remaining 5%
 
+![spacelift lib size](https://user-images.githubusercontent.com/5928836/101669317-0923c300-3a52-11eb-89b7-1b607f7a243b.png)
+
 * [How to use](#howtouse)
 * [Examples](#examples)
 * [API](#api)

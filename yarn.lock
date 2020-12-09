@@ -1531,10 +1531,6 @@ iconv-lite@0.4.24:
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
-immupdate@1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/immupdate/-/immupdate-1.3.0.tgz#3070d0279823d29c70168a18334c892fced43a89"
-
 import-local@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/import-local/-/import-local-3.0.2.tgz#a8cfd0431d1de4a2199703d003e3e62364fa6db6"

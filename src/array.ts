@@ -1,5 +1,5 @@
 import { identity } from './function'
-import { Draft, update } from './immupdate'
+import { Draft, NoReturn, update } from './immupdate'
 import { Lifted, Pipe } from './lift'
 import { getValue, Wrapper } from './wrapper'
 import { MapWrapper } from './map'
@@ -13,13 +13,6 @@ export class ArrayWrapper<T extends ReadonlyArray<unknown>> {
 
   value() {
     return this._value
-  }
-
-  /**
-   * Shallowly clones this Array.
-   */
-  clone(): ArrayWrapper<T> {
-    return new ArrayWrapper(this._clone()) as any
   }
 
   private _clone(): Array<T[number]> {
@@ -164,9 +157,9 @@ export class ArrayWrapper<T extends ReadonlyArray<unknown>> {
   }
 
   /**
-   * Folds this Array into a single value, using a starting value.
+   * Reduces this Array into a single value, using a starting value.
    */
-  fold<V>(startValue: V, func: (acc: V, value: T[number], index: number) => V): Lifted<V> {
+  reduce<V>(startValue: V, func: (acc: V, value: T[number], index: number) => V): Lifted<V> {
     return this.pipe(arr => arr.reduce(func, startValue))
   }
 
@@ -295,7 +288,7 @@ export class ArrayWrapper<T extends ReadonlyArray<unknown>> {
    * Make mutable modifications to a draft Array then return a new Array.
    * Example: lift([{a: 1}]).update(draft => {draft[0]!.a = 10})
    */
-  update(updateFunction: (draft: Draft<ReadonlyArray<T[number]>>) => void) {
+  update(updateFunction: (draft: Draft<ReadonlyArray<T[number]>>) => NoReturn) {
     return this.pipe(o => update(o, updateFunction))
   }
 

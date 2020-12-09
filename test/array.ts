@@ -17,21 +17,6 @@ describe('Array', () => {
     unwrapped.push
   })
 
-  it('can be cloned', () => {
-    const arr = [1, 2, 3]
-    const arr2 = immutable(arr)
-
-    const cloned = lift(arr).clone().value()
-    const cloned2 = lift(arr2).clone().value()
-
-    // Type assertion
-    const _cloned: Array<number> = cloned
-    const _cloned2: ReadonlyArray<number> = cloned2
-
-    expect(cloned).not.toBe(arr)
-    expect(cloned).toEqual([1, 2, 3])
-  })
-
   it('can be mapped', () => {
     const arr = [1, 2, 3]
     const arr2 = immutable(arr)
@@ -665,16 +650,16 @@ describe('Array', () => {
     const _sorted10: ReadonlyArray<{ name: string; age: number }> = sorted10
   })
 
-  it('can fold its items', () => {
+  it('can reduce its items', () => {
     const arr = ['a', 'b', 'c', 'd']
     const arr2 = immutable(arr)
 
-    const result = lift(arr).fold('zzz', (acc, value) => acc + value)
-    const result2 = lift(arr2).fold('zzz', (acc, value) => acc + value)
+    const result = lift(arr).reduce('zzz', (acc, value) => acc + value)
+    const result2 = lift(arr2).reduce('zzz', (acc, value) => acc + value)
 
     expect(result).toBe('zzzabcd')
 
-    expect(lift([] as string[]).fold('zzz', (acc, value) => acc + value)).toBe('zzz')
+    expect(lift([] as string[]).reduce('zzz', (acc, value) => acc + value)).toBe('zzz')
 
     // Type assertion
     const _result: string = result
@@ -682,7 +667,7 @@ describe('Array', () => {
 
     const arr3 = [1, 2, 3]
     const seed2: number[] = []
-    const result3 = lift(arr3).fold(seed2, (acc, value) => acc.concat(value))
+    const result3 = lift(arr3).reduce(seed2, (acc, value) => acc.concat(value))
     expect(result3.value()).toEqual([1, 2, 3])
   })
 

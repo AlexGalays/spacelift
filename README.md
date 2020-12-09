@@ -12,7 +12,7 @@ Design goals
 - 100% immutable, no magic, no overwhelming polymorphism or dynamic operators
 - Fun to use
 - Correctness and first-class typescript typings
-- Tiny and performant
+- Tiny and performant (`space-lift` weights `8.2 kB` minified for roughly the same scope as `lodash` (`70.0 kB`) AND `immerjs` (`15.6 kB`))
 - Small set of functions, configurable with lambdas
 - Cover 95% of frontend data transformation needs without becoming a bloated lib just to cover the remaining 5%
 
@@ -121,7 +121,7 @@ const sortedPeople = lift(people)
 * [first](#array.first)
 * [flatMap](#array.flatMap)
 * [flatten](#array.flatten)
-* [fold](#array.fold)
+* [reduce](#array.reduce)
 * [get](#array.get)
 * [groupBy](#array.groupBy)
 * [insert](#array.insert)
@@ -277,14 +277,14 @@ import {lift} from 'space-lift'
 const flattened = lift([1, [2], [3, 4]]).flatten().value() // [1, 2, 3, 4]
 ```
 
-<a name="array.fold"></a>
-### Array.fold
+<a name="array.reduce"></a>
+### Array.reduce
 
-Folds this Array into a single value, using a starting value.  
+Reduces this Array into a single value, using a starting value.  
 
 ```ts
 import {lift} from 'space-lift'
-const count = lift([1, 2, 3).fold(0, (count, n) => count + n) // 6
+const count = lift([1, 2, 3).reduce(0, (count, n) => count + n) // 6
 ```
 
 <a name="array.get"></a>

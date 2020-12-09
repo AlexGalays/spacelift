@@ -1,21 +1,6 @@
 import { lift, immutable } from '..'
 
 describe('Object', () => {
-  it('can be cloned', () => {
-    const obj = { a: 1, b: 2 }
-    const obj2 = immutable(obj)
-
-    const cloned = lift(obj).clone().value()
-    const cloned2 = lift(obj2).clone().value()
-
-    // Type assertion
-    const _cloned: typeof obj = cloned
-    const _cloned2: typeof obj2 = cloned2
-
-    expect(cloned).not.toBe(obj)
-    expect(cloned).toEqual(obj)
-  })
-
   it('can add a key/value', () => {
     const obj2 = { a: 1, b: 2 }
     const result2 = lift(obj2).add('c', 3).add('d', 'ohhhh').value()
@@ -114,7 +99,7 @@ describe('Object', () => {
     // Type assertion
     const _array: Array<['a' | 'b' | 'c', number]> = array
     const _obj = lift(_array)
-      .fold({} as typeof obj, (result, [key, value]) => {
+      .reduce({} as typeof obj, (result, [key, value]) => {
         result[key] = value
         return result
       })

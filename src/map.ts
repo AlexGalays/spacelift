@@ -1,5 +1,5 @@
 import { ObjectWrapper } from './object'
-import { Draft, update } from './immupdate'
+import { Draft, NoReturn, update } from './immupdate'
 import type { Pipe } from './lift'
 
 /** A Map wrapper providing extra functionalities and more chaining opportunities */
@@ -10,10 +10,6 @@ export class MapWrapper<K, V, M extends ReadonlyMap<K, V>> {
 
   value() {
     return this._value
-  }
-
-  clone(): MapWrapper<K, V, M> {
-    return new MapWrapper(this._clone()) as any
   }
 
   private _clone() {
@@ -82,7 +78,7 @@ export class MapWrapper<K, V, M extends ReadonlyMap<K, V>> {
   /**
    * Make mutable modifications to a draft then return a new Map.
    */
-  update(updateFunction: (draft: Draft<ReadonlyMap<K, V>>) => void) {
+  update(updateFunction: (draft: Draft<ReadonlyMap<K, V>>) => NoReturn) {
     return this.pipe(o => update(o, updateFunction))
   }
 

@@ -167,6 +167,22 @@ update(map, draft => {
 })
 
 //--------------------------------------
+//  lift + update()
+//--------------------------------------
+
+// Returning a value (3) @shouldNotCompile
+lift([]).update(draft => draft)
+
+// Returning a value (4) @shouldNotCompile
+lift({}).update(draft => draft)
+
+// Returning a value (5) @shouldNotCompile
+lift(new Map()).update(draft => draft)
+
+// Returning a value (6) @shouldNotCompile
+lift(new Set()).update(draft => draft)
+
+//--------------------------------------
 //  Utils
 //--------------------------------------
 

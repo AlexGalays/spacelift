@@ -11,20 +11,6 @@ describe('Set', () => {
     unwrapped.add
   })
 
-  it('can be cloned', () => {
-    const set = new Set([1, 2])
-    const set2 = immutable(set)
-
-    const cloned = lift(set).clone().value()
-    const cloned2 = lift(set2).clone().value()
-
-    // Type assertion
-    const _cloned: Set<number> = cloned
-    const _cloned2: ReadonlySet<number> = cloned2
-
-    expect(cloned).toEqual(new Set([1, 2]))
-  })
-
   it('can add an item', () => {
     const set = new Set([1, 2])
     const set2 = immutable(set)
@@ -68,7 +54,7 @@ describe('Set', () => {
       .value()
 
     const result2 = lift([new Set([3, 2]), new Set([2, 2]), new Set([2, 4])])
-      .fold(lift(set), (result, set) => result.intersection(set))
+      .reduce(lift(set), (result, set) => result.intersection(set))
       .value()
 
     expect(result).toEqual(new Set([2]))
@@ -83,7 +69,7 @@ describe('Set', () => {
       .value()
 
     const result2 = lift([new Set([3, 2]), new Set([2, 2]), new Set([2, 4])])
-      .fold(lift(set), (result, set) => result.difference(set))
+      .reduce(lift(set), (result, set) => result.difference(set))
       .value()
 
     expect(result).toEqual(new Set([8]))

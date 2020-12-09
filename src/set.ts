@@ -1,3 +1,4 @@
+import { Draft, NoReturn, update } from './immupdate'
 import type { Pipe } from './lift'
 
 /** A Set wrapper providing extra functionalities and more chaining opportunities */
@@ -8,10 +9,6 @@ export class SetWrapper<T, S extends ReadonlySet<T>> {
 
   value() {
     return this._value
-  }
-
-  clone(): SetWrapper<T, S> {
-    return new SetWrapper(this._clone()) as any
   }
 
   private _clone() {
@@ -72,6 +69,14 @@ export class SetWrapper<T, S extends ReadonlySet<T>> {
    */
   difference(other: ReadonlySet<T>): SetWrapper<T, S> {
     return this.filter(item => !other.has(item))
+  }
+
+  /**
+   * Make mutable modifications to a draft Set then return a new Set.
+   * Example: lift([{a: 1}]).update(draft => {draft[0]!.a = 10})
+   */
+  update(updateFunction: (draft: Draft<S>) => NoReturn) {
+    return this.pipe(o => update(o, updateFunction))
   }
 
   toArray() {

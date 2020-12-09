@@ -288,4 +288,4 @@ export function toDraft<T>(array: ReadonlyArray<T>): DraftArray<T> {
 }
 
 // To prevent mistakes, we explicitly forbid implicit return values from functions that should only mutate an input.
-type NoReturn = void | undefined
+export type NoReturn = void | undefined

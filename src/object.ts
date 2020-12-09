@@ -1,6 +1,6 @@
 import { ArrayWrapper } from './array'
 import { MapWrapper } from './map'
-import { clone, Draft, update } from './immupdate'
+import { clone, Draft, NoReturn, update } from './immupdate'
 import type { Pipe } from './lift'
 
 export class ObjectWrapper<T extends object> {
@@ -10,10 +10,6 @@ export class ObjectWrapper<T extends object> {
 
   value() {
     return this._value
-  }
-
-  clone() {
-    return new ObjectWrapper(this._clone())
   }
 
   private _clone(): T {
@@ -67,7 +63,7 @@ export class ObjectWrapper<T extends object> {
    * Make mutable modifications to a draft then return a new Object.
    * Example: lift({a: 1}).update(draft => {draft.a = 10})
    */
-  update(updateFunction: (draft: Draft<T>) => void) {
+  update(updateFunction: (draft: Draft<T>) => NoReturn) {
     return this.pipe(o => update(o, updateFunction))
   }
 

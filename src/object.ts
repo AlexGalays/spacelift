@@ -40,6 +40,16 @@ export class ObjectWrapper<T extends object> {
     return this.pipe(o => Object.keys(o) as (keyof T)[])
   }
 
+  /**
+   * Maps this Object's values.
+   */
+  mapValues<V>(mapFunction: (value: T[keyof T]) => V): ObjectWrapper<Record<keyof T, V>> {
+    return this.toArray().reduce<any>({}, (result, [key, value]) => {
+      result[key] = mapFunction(value)
+      return result
+    })
+  }
+
   pipe = pipe
 
   /**

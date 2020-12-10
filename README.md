@@ -337,7 +337,7 @@ Maps this Array using a mapper function.
 
 ```ts
 import {lift} from 'space-lift'
-const mapped = lift(['1', '2', '3').map(str => '0' + str).value() // ['01', '02', '03']
+const mapped = lift(['1', '2', '3']).map(str => '0' + str).value() // ['01', '02', '03']
 ```
 
 <a name="array.removeAt"></a>
@@ -454,7 +454,6 @@ const updated = lift([1, 0, 3]).pipe(Boolean).value() // [true, false, true]
 <a name="api.object"></a>
 ## Object
 
-* [lift(object)](#lift.object)
 * [add](#object.add)
 * [assoc](#object.assoc)
 * [contains](#object.contains)
@@ -470,7 +469,58 @@ const updated = lift([1, 0, 3]).pipe(Boolean).value() // [true, false, true]
 * [toArray](#object.toArray)
 * [values](#object.values)
 
-TODO: Detail and examples
+<a name="object.mapValues"></a>
+### Object.mapValues
+
+Maps this Object values using a mapper function.
+
+```ts
+import {lift} from 'space-lift'
+const mappedValues = lift({
+    chan1: [1, 2, 3],
+    chan2: [10, 11, 12]
+  })
+  .mapValues(numbers => numbers.map(n => n * 2))
+  .value() // { chan1: [2, 4, 6], chan2: [20, 22, 24] }
+```
+
+TODO: Complete detail and examples
+
+<a name="api.map"></a>
+## Map
+
+* [first](#map.first)
+* [last](#map.last)
+
+<a name="map.first"></a>
+### Map.first
+
+Returns the first element in this Map or undefined.  
+
+```ts
+import {lift} from 'space-lift'
+const map = new Map([
+  [1, { id: 1, name: 'Walter' }],
+  [2, { id: 2, name: 'Jesse' }]
+])
+const first = lift(map).first() // { id: 1, name: 'Walter' }
+```
+
+<a name="map.last"></a>
+### Map.last
+
+Returns the last element in this Map or undefined.  
+
+```ts
+import {lift} from 'space-lift'
+const map = new Map([
+  [1, { id: 1, name: 'Walter' }],
+  [2, { id: 2, name: 'Jesse' }]
+])
+const first = lift(map).last() // { id: 2, name: 'Jesse' }
+```
+
+TODO: Complete detail and examples
 
 <a name="api.update"></a>
 ## update

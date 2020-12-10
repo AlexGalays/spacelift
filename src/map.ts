@@ -69,6 +69,20 @@ export class MapWrapper<K, V, M extends ReadonlyMap<K, V>> {
   }
 
   /**
+   * Returns the first element in this Map or undefined.
+   */
+  first(): V | undefined {
+    return Array.from(this._value.values())[0]
+  }
+
+  /**
+   * Returns the last element in this Map or undefined.
+   */
+  last(): V | undefined {
+    return Array.from(this._value.values()).pop()
+  }
+
+  /**
    * Maps this map's values.
    */
   mapValues<VV>(mapFunction: (value: V) => VV): MapWrapper<K, VV, MapOf<M, K, VV>> {

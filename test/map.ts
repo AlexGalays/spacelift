@@ -92,6 +92,44 @@ describe('Map', () => {
     expect(result).not.toBe(map)
   })
 
+  it('allows its first item to be read', () => {
+    const map = new Map([
+      [1, { id: 1, name: 'aa' }],
+      [2, { id: 2, name: 'bb' }]
+    ])
+    const map2 = immutable(map)
+
+    const one = lift(map).first()
+    const one2 = lift(map2).first()
+
+    // Type assertion
+    const _one: { id: number; name: string } | undefined = one
+    const _one2: { id: number; name: string } | undefined = one2
+
+    expect(one).toEqual({ id: 1, name: 'aa' })
+    expect(one2).toEqual({ id: 1, name: 'aa' })
+    expect(lift(new Map()).first()).toBe(undefined)
+  })
+
+  it('allows its last item to be read', () => {
+    const map = new Map([
+      [1, { id: 1, name: 'aa' }],
+      [2, { id: 2, name: 'bb' }]
+    ])
+    const map2 = immutable(map)
+
+    const one = lift(map).last()
+    const one2 = lift(map2).last()
+
+    // Type assertion
+    const _one: { id: number; name: string } | undefined = one
+    const _one2: { id: number; name: string } | undefined = one2
+
+    expect(one).toEqual({ id: 2, name: 'bb' })
+    expect(one2).toEqual({ id: 2, name: 'bb' })
+    expect(lift(new Map()).last()).toBe(undefined)
+  })
+
   it('can filter its entries', () => {
     const map = new Map([
       [1, { id: 1, name: 'aa' }],

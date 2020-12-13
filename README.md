@@ -134,7 +134,6 @@ const sortedPeople = lift(people)
 * [take](#array.take)
 * [takeRight](#array.takeRight)
 * [toSet](#array.toSet)
-* [update](#array.update)
 * [updateAt](#array.updateAt)
 * [pipe](#array.pipe)
 
@@ -413,24 +412,6 @@ import {lift} from 'space-lift'
 const set = lift(['1', '2', '2', '3').toSet().value() // Set(['1', '2', '3'])
 ```
 
-<a name="array.update"></a>
-### Array.update
-
-Make mutable modifications to a draft Array then return a new Array.  
-See [update for Array](#update-for-array)  
-
-The method is also accessible on Array wrappers for convenience:  
-
-```ts
-import {lift} from 'space-lift'
-
-const array = [{a: 1}, {a: 2}]
-
-const updated = lift(array).update(draft => {
-  draft[0].a = 10
-}).value()
-```
-
 <a name="array.updateAt"></a>
 ### Array.updateAt
 
@@ -448,43 +429,130 @@ Pipes this Array with an arbitrary transformation function.
 
 ```ts
 import {lift} from 'space-lift'
-const updated = lift([1, 0, 3]).pipe(Boolean).value() // [true, false, true]
+const updated = lift([1, 0, 3]).pipe(JSON.stringify) // '[1, 0, 3]'
 ```
 
 <a name="api.object"></a>
 ## Object
 
 * [add](#object.add)
-* [assoc](#object.assoc)
-* [contains](#object.contains)
-* [dissoc](#object.dissoc)
-* [filter](#object.filter)
-* [get](#object.get)
-* [is](#object.is)
 * [isEmpty](#object.isEmpty)
 * [keys](#object.keys)
 * [mapValues](#object.mapValues)
+* [pipe](#object.pipe)
 * [remove](#object.remove)
-* [set](#object.set)
-* [toArray](#object.toArray)
 * [values](#object.values)
+* [toArray](#object.toArray)
+* [toMap](#object.toMap)
+
+<a name="object.add"></a>
+### Object.add
+
+Adds a new key/value to this object. This creates a new type.  
+To add a nullable key to an object while preserving its type, use [update](#api.update) instead.  
+
+```ts
+import {lift} from 'space-lift'
+
+const updated = lift({a: 1, b: 2}).add(c, 3).value() // {a: 1, b: 2, c: 3}
+```
+
+<a name="object.isEmpty"></a>
+### Object.isEmpty
+
+Returns whether this object contains no keys.
+
+```ts
+import {lift} from 'space-lift'
+
+const isEmpty = lift({a: 1, b: 2}).isEmpty() // false
+```
+
+<a name="object.keys"></a>
+### Object.keys
+
+Creates an Array of all this object's keys, in no particular order.  
+If the keys are a subtype of string, the Array will be typed with the proper key union type.  
+
+```ts
+import {lift} from 'space-lift'
+
+const isEmpty = lift({a: 1, b: 2}).keys().value() // ['a', 'b']
+```
 
 <a name="object.mapValues"></a>
 ### Object.mapValues
 
-Maps this Object values using a mapper function.
+Maps this Object values using a mapper function.  
+This is mostly useful for objects with a single value type.  
 
 ```ts
 import {lift} from 'space-lift'
+
 const mappedValues = lift({
-    chan1: [1, 2, 3],
-    chan2: [10, 11, 12]
-  })
-  .mapValues(numbers => numbers.map(n => n * 2))
-  .value() // { chan1: [2, 4, 6], chan2: [20, 22, 24] }
+  chan1: [1, 2, 3],
+  chan2: [10, 11, 12]
+})
+.mapValues(numbers => numbers.map(n => n * 2))
+.value() // { chan1: [2, 4, 6], chan2: [20, 22, 24] }
 ```
 
-TODO: Complete detail and examples
+<a name="object.pipe"></a>
+### Object.pipe
+
+Pipes this Object with an arbitrary transformation function.  
+
+```ts
+import {lift} from 'space-lift'
+
+const updated = lift({a: 1}).pipe(JSON.stringify) // '{"a": 1}'
+```
+
+<a name="object.remove"></a>
+### Object.remove
+
+Removes a key/value from this object and return a new object (and type)  
+To delete a (nullable) key from an object while preserving its type, use "update()" instead.  
+
+```ts
+import {lift} from 'space-lift'
+
+const updated = lift({a: 1, b: 2, c: 3}).add('c').value() // {a: 1, b: 2}
+```
+
+<a name="object.values"></a>
+### Object.values
+
+Creates an Array with all these object's values.  
+
+```ts
+import {lift} from 'space-lift'
+
+const updated = lift({a: 1, b: 2, c: 3}).values().value() // [1, 2, 3]
+```
+
+<a name="object.toArray"></a>
+### Object.toArray
+
+Converts this Object to an Array of tuples.  
+Similar to Object.entries() but retains the type of keys.  
+
+```ts
+import {lift} from 'space-lift'
+
+const updated = lift({a: 1, b: 2, c: 3}).toArray().value() // [['a', 1], ['b', 2], ['c', 3]]
+```
+
+<a name="object.toMap"></a>
+### Object.toMap
+
+Transforms this Object to a Map where the keys are the string typed keys of this Object.  
+
+```ts
+import {lift} from 'space-lift'
+
+const updated = lift({a: 1, b: 2, c: 3}).toMap().value() // Map([['a', 1], ['b', 2], ['c', 3]])
+```
 
 <a name="api.map"></a>
 ## Map
@@ -499,10 +567,12 @@ Returns the first element in this Map or undefined.
 
 ```ts
 import {lift} from 'space-lift'
+
 const map = new Map([
   [1, { id: 1, name: 'Walter' }],
   [2, { id: 2, name: 'Jesse' }]
 ])
+
 const first = lift(map).first() // { id: 1, name: 'Walter' }
 ```
 
@@ -513,10 +583,12 @@ Returns the last element in this Map or undefined.
 
 ```ts
 import {lift} from 'space-lift'
+
 const map = new Map([
   [1, { id: 1, name: 'Walter' }],
   [2, { id: 2, name: 'Jesse' }]
 ])
+
 const first = lift(map).last() // { id: 2, name: 'Jesse' }
 ```
 

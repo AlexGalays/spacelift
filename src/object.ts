@@ -35,13 +35,15 @@ export class ObjectWrapper<T extends object> {
 
   /**
    * Creates an Array of all this object's keys, in no particular order.
+   * If the keys are a subtype of string, the Array will be typed with the proper key union type.
    */
-  keys(): ArrayWrapper<Array<keyof T>> {
-    return this.pipe(o => Object.keys(o) as (keyof T)[])
+  keys(): ArrayWrapper<Array<KeyAsString<keyof T>>> {
+    return this.pipe(o => Object.keys(o)) as any
   }
 
   /**
    * Maps this Object's values.
+   * This is mostly useful for objects with a single value type.
    */
   mapValues<V>(mapFunction: (value: T[keyof T]) => V): ObjectWrapper<Record<keyof T, V>> {
     return this.toArray().reduce<any>({}, (result, [key, value]) => {
@@ -67,14 +69,6 @@ export class ObjectWrapper<T extends object> {
    */
   values(): ArrayWrapper<Array<T[keyof T]>> {
     return this.pipe(Object.values)
-  }
-
-  /**
-   * Make mutable modifications to a draft then return a new Object.
-   * Example: lift({a: 1}).update(draft => {draft.a = 10})
-   */
-  update(updateFunction: (draft: Draft<T>) => NoReturn) {
-    return this.pipe(o => update(o, updateFunction))
   }
 
   /**

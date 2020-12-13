@@ -285,14 +285,6 @@ export class ArrayWrapper<T extends ReadonlyArray<unknown>> {
   }
 
   /**
-   * Make mutable modifications to a draft Array then return a new Array.
-   * Example: lift([{a: 1}]).update(draft => {draft[0]!.a = 10})
-   */
-  update(updateFunction: (draft: Draft<ReadonlyArray<T[number]>>) => NoReturn) {
-    return this.pipe(o => update(o, updateFunction))
-  }
-
-  /**
    * Updates an item at the specified index.
    */
   updateAt(index: number, updater: (item: T[number]) => Wrapper<T[number]>): ArrayWrapper<T>

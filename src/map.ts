@@ -89,13 +89,6 @@ export class MapWrapper<K, V, M extends ReadonlyMap<K, V>> {
     return this.collect((key, value) => [key, mapFunction(value)])
   }
 
-  /**
-   * Make mutable modifications to a draft then return a new Map.
-   */
-  update(updateFunction: (draft: Draft<ReadonlyMap<K, V>>) => NoReturn) {
-    return this.pipe(o => update(o, updateFunction))
-  }
-
   pipe = pipe
 
   toArray() {

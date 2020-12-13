@@ -243,40 +243,6 @@ describe('Map', () => {
     expect(result).not.toBe(map)
   })
 
-  it('can be deeply updated', () => {
-    const map = new Map([
-      [1, { id: 1, name: 'aa' }],
-      [2, { id: 2, name: 'bb' }]
-    ])
-    const map2 = immutable(map)
-
-    const result = lift(map)
-      .update(m => {
-        const value = m.get(2)
-        if (value) value.name = `${value.name}$`
-      })
-      .value()
-
-    const result2 = lift(map2)
-      .update(m => {
-        const value = m.get(2)
-        if (value) value.name = `${value.name}$`
-      })
-      .value()
-
-    // Type assertion
-    const _result: typeof map = result
-    const _result2: typeof map2 = result2
-
-    expect(result).toEqual(
-      new Map([
-        [1, { id: 1, name: 'aa' }],
-        [2, { id: 2, name: 'bb$' }]
-      ])
-    )
-    expect(result).not.toBe(map)
-  })
-
   it('can map its values', () => {
     const map = new Map([
       [1, { id: 1, name: 'aa' }],

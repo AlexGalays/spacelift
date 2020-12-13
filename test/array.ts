@@ -245,22 +245,26 @@ describe('Array', () => {
     const arr2 = immutable(arr)
 
     const updated = lift(arr)
-      .update(draft => {
-        const item = draft[1]
-        if (item) item.label = 'TWO'
+      .pipe(arr =>
+        update(arr, draft => {
+          const item = draft[1]
+          if (item) item.label = 'TWO'
 
-        expect(draft).toEqual([
-          { id: 1, label: 'one' },
-          { id: 2, label: 'TWO' }
-        ])
-      })
+          expect(draft).toEqual([
+            { id: 1, label: 'one' },
+            { id: 2, label: 'TWO' }
+          ])
+        })
+      )
       .value()
 
     const updated2 = lift(arr2)
-      .update(draft => {
-        const item = draft[1]
-        if (item) item.label = 'TWO'
-      })
+      .pipe(arr =>
+        update(arr, draft => {
+          const item = draft[1]
+          if (item) item.label = 'TWO'
+        })
+      )
       .value()
 
     expect(updated).toEqual([

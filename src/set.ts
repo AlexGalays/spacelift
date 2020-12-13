@@ -71,14 +71,6 @@ export class SetWrapper<T, S extends ReadonlySet<T>> {
     return this.filter(item => !other.has(item))
   }
 
-  /**
-   * Make mutable modifications to a draft Set then return a new Set.
-   * Example: lift([{a: 1}]).update(draft => {draft[0]!.a = 10})
-   */
-  update(updateFunction: (draft: Draft<S>) => NoReturn) {
-    return this.pipe(o => update(o, updateFunction))
-  }
-
   toArray() {
     return this.pipe(s => [...s])
   }

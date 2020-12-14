@@ -554,11 +554,109 @@ import {lift} from 'space-lift'
 const updated = lift({a: 1, b: 2, c: 3}).toMap().value() // Map([['a', 1], ['b', 2], ['c', 3]])
 ```
 
+
+
 <a name="api.map"></a>
 ## Map
 
+* [set](#map.set)
+* [delete](#map.delete)
+* [clear](#map.clear)
+* [collect](#map.collect)
+* [filter](#map.filter)
 * [first](#map.first)
 * [last](#map.last)
+* [mapValues](#map.mapValues)
+* [pipe](#map.pipe)
+* [toArray](#map.toArray)
+* [toObject](#map.toObject)
+
+<a name="map.set"></a>
+### Map.set
+
+Sets a new key/value.  
+
+```ts
+import {lift} from 'space-lift'
+
+const map = new Map([
+  ['a', 1],
+  ['b', 2]
+])
+
+const updated = lift(map).set('c', 3).value() // Map([['a', 1], ['b', 2], ['c', 3]])
+```
+
+<a name="map.delete"></a>
+### Map.delete
+
+Deletes a key/value.  
+
+```ts
+import {lift} from 'space-lift'
+
+const map = new Map([
+  ['a', 1],
+  ['b', 2]
+])
+
+const updated = lift(map).delete('b').value() // Map([['a', 1]])
+```
+
+<a name="map.clear"></a>
+### Map.clear
+
+Clears the map.  
+
+```ts
+import {lift} from 'space-lift'
+
+const map = new Map([
+  ['a', 1],
+  ['b', 2]
+])
+
+const updated = lift(map).clear().value() // Map([])
+```
+
+<a name="map.collect"></a>
+### Map.collect
+
+Maps this Map's keys and values, unless void or undefined is returned, in which case the entry is filtered.  
+This is effectively a `filter` + `map` combined in one.  
+
+```ts
+import {lift, update} from 'space-lift'
+
+const map = new Map([
+  [1, { id: 1, name: 'aa' }],
+  [2, { id: 2, name: 'bb' }]
+])
+
+const updated = lift(map).collect((key, value) => {
+  if (key === 2) return
+  return [
+    key * 10,
+    update(value, v => { v.name = `${v.name}$` })
+  ]
+}).value() // Map([[10, {id: 2, name: 'bb$'}]])
+```
+
+<a name="map.filter"></a>
+### Map.filter
+
+Filters this Map's keys and values by aplying a predicate to all values and refine its type.  
+
+```ts
+import {lift} from 'space-lift'
+
+const map = new Map([
+  ['a', 1],
+  ['b', 2]
+])
+
+const updated = lift(map).filter((key, value) => key === 1).value() // Map([['a', 1]])
+```
 
 <a name="map.first"></a>
 ### Map.first
@@ -592,7 +690,75 @@ const map = new Map([
 const first = lift(map).last() // { id: 2, name: 'Jesse' }
 ```
 
-TODO: Complete detail and examples
+<a name="map.mapValues"></a>
+### Map.mapValues
+
+Maps this map's values.  
+
+```ts
+import {lift} from 'space-lift'
+
+const map = new Map([
+  ['a', 1],
+  ['b', 2]
+])
+
+const updated = lift(map).filter(value => value * 2).value() // Map([['a', 2], ['b', 4]])
+```
+
+<a name="map.pipe"></a>
+### Map.pipe
+
+Pipes this Map with an arbitrary transformation function.  
+
+```ts
+import {lift} from 'space-lift'
+
+const map = new Map([
+  ['a', 1],
+  ['b', 2]
+])
+
+const yay = lift(map).pipe(m => m.toString()) // '[object Map]' 
+```
+
+<a name="map.toArray"></a>
+### Map.toArray
+
+Transforms this Map into an Array of [key, value] tuples.  
+
+```ts
+import {lift} from 'space-lift'
+
+const map = new Map([
+  ['a', 1],
+  ['b', 2]
+])
+
+const array = lift(map).toArray().value() // [ ['a', 1], ['b', 2] ]
+```
+
+<a name="map.toObject"></a>
+### Map.toObject
+
+Transforms this Map into an Object.  
+Only available if this Map's keys are a subtype of string or number.  
+
+```ts
+import {lift} from 'space-lift'
+
+const map = new Map([
+  ['a', 1],
+  ['b', 2]
+])
+
+const array = lift(map).toObject().value() // { 'a': 1, 'b': 2 }
+```
+
+<a name="api.set"></a>
+## Set
+
+TODO
 
 <a name="api.update"></a>
 ## update

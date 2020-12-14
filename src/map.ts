@@ -43,6 +43,7 @@ export class MapWrapper<K, V, M extends ReadonlyMap<K, V>> {
 
   /**
    * Maps this Map's keys and values, unless void or undefined is returned, in which case the entry is filtered.
+   * This is effectively a filter + map combined in one.
    */
   collect<KK, VV>(
     iterator: (key: K, value: V) => [KK, VV] | undefined | void
@@ -89,12 +90,22 @@ export class MapWrapper<K, V, M extends ReadonlyMap<K, V>> {
     return this.collect((key, value) => [key, mapFunction(value)])
   }
 
+  /**
+   * Pipes this Map with an arbitrary transformation function.
+   */
   pipe = pipe
 
+  /**
+   * Transforms this Map into an Array of [key, value] tuples.
+   */
   toArray() {
     return this.pipe(m => [...m])
   }
 
+  /**
+   * Transforms this Map into an Object.
+   * Only available if this Map's keys are a subtype of string or number.
+   */
   toObject<KK extends string | number>(
     this: MapWrapper<KK, V, any>
   ): ObjectWrapper<Record<KK, V | undefined>> {

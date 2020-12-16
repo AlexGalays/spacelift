@@ -1008,20 +1008,20 @@ the list of all possible values, an object with all enum keys and the derived ty
 ```ts
   import { createEnum } from 'space-lift/es/enum'
 
-  const enumeration = createEnum('green', 'orange', 'red')
+  const color = createEnum('green', 'orange', 'red')
 
   // We can use the derived type
-  type StopLightColor = typeof enumeration.T
+  export type Color = typeof color.T
 
   // We can list all enum values as a Set.
-  enumeration.values // Set(['green', 'orange', 'red'])
+  color.values // Set(['green', 'orange', 'red'])
 
-  // We can access each value of the enum directly
-  const color = enumeration.enum
+  // We can access each value of the enum directly if that's useful
+  export const Color = color.enum
 
   const redish: StopLightColor = 'red'
-  const greenish: StopLightColor = color.green
-  const orange: 'orange' = color.orange
+  const greenish: StopLightColor = Color.green
+  const orange: 'orange' = Color.orange
   orange // 'orange'
 ```
 

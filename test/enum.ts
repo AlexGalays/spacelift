@@ -20,4 +20,22 @@ describe('enum', () => {
     const orange: 'orange' = color.orange
     expect(orange).toBe('orange')
   })
+
+  test('can create an enum from an array of strings (readme example)', () => {
+    const color = createEnum('green', 'orange', 'red')
+
+    // We can use the derived type
+    type Color = typeof color.T
+
+    // We can list all enum values as a Set to manipulate them.
+    color.values // Set(['green', 'orange', 'red'])
+
+    // We can access each value of the enum directly if that's useful
+    const Color = color.enum
+
+    const redish: Color = 'red'
+    const greenish: Color = Color.green
+    const orange: 'orange' = Color.orange
+    orange // 'orange'
+  })
 })

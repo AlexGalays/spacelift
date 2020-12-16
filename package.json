@@ -1,7 +1,8 @@
 {
   "name": "space-lift",
-  "version": "0.8.7",
-  "description": "Idiomatic TS array, object utils, Option, Result monads",
+  "version": "1.0.0",
+  "description": "TypeScript Array, Object, Map, Set, Union, Enum utils",
+  "sideEffects": true,
 
   "main": "commonjs/index.js",
   "module": "es/index.js",
@@ -9,29 +10,26 @@
 
   "files": [
     "es",
-    "commonjs",
-    "wrapper.d.ts"
+    "commonjs"
   ],
 
   "scripts": {
     "build": "npm run build-commonjs && npm run build-es",
-    "build-es": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core,es2015.iterable' --outDir ./es --declaration --strict --suppressImplicitAnyIndexErrors --module es6 --moduleResolution node",
-    "build-commonjs": "tsc src/**/*.ts src/*.ts --lib 'es5,es2015.core,es2015.iterable' --outDir ./commonjs --declaration --strict --suppressImplicitAnyIndexErrors",
-    "test": "jest",
+    "build-es": "tsc src/*.ts --target 'es2015' --lib 'es5,es2015.core,es2015.iterable' --outDir ./es --declaration --strict --suppressImplicitAnyIndexErrors --module es6 --moduleResolution node",
+    "build-commonjs": "tsc src/*.ts --target 'es2015' --lib 'es5,es2015.core,es2015.iterable' --outDir ./commonjs --declaration --strict --suppressImplicitAnyIndexErrors --module commonjs --moduleResolution node",
+    "pretest": "npm run build",
+    "test-compilation-errors": "node test/testCompilationErrors",
+    "test": "jest && npm run test-compilation-errors",
     "watch-test": "jest --watch",
     "prepublish": "npm run build"
   },
 
-  "dependencies": {
-    "immupdate": "1.3.0"
-  },
-
   "devDependencies": {
-    "typescript": "3.1.1",
-    "jest": "23.6.0",
-    "ts-jest": "23.10.4",
-    "@types/jest": "23.3.9",
-    "@types/node": "10.12.9"
+    "typescript": "4.0.3",
+    "jest": "26.6.1",
+    "ts-jest": "26.4.2",
+    "@types/jest": "26.0.15",
+    "@types/node": "14.14.2"
   },
 
   "repository": {
@@ -47,7 +45,7 @@
     "url": "http://www.opensource.org/licenses/mit-license.php"
   }],
   "homepage": "https://github.com/AlexGalays/spacelift",
-  "keywords": ["typescript", "ts", "TS", "std lib", "collection", "underscore", "monad", "option", "maybe", "result"],
+  "keywords": ["TypeScript", "ts", "TS", "std lib", "collection", "underscore", "array", "object", "Map", "Set"],
 
   "jest": {
     "transform": {
@@ -57,10 +55,21 @@
     "testMatch": [
       "<rootDir>/test/*.ts"
     ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/test/shouldNotCompile.ts"
+    ],
     "globals": {
       "ts-jest": {
         "babelConfig": false
       }
     }
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "printWidth": 110,
+    "semi": false,
+    "singleQuote": true,
+    "arrowParens": "avoid",
+    "trailingComma": "none"
   }
 }

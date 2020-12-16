@@ -1,16 +1,49 @@
-import lift from './lift'
+import { pipe } from './lift'
+export { lift } from './lift'
 
-export default lift
-export { ArrayOps, ObjectOps, NumberOps, StringOps, DateOps, Wrapper, getValue } from './lift'
-export { update, deepUpdate, DELETE } from 'immupdate'
-export { Option, None, Some } from './option'
-export { Result, Ok, Err } from './result'
+export { update, toDraft } from './immupdate'
+export { range } from './array'
+export { createUnion } from './union'
+export { createEnum } from './enum'
+export { identity, noop } from './function'
 
-export { range } from './array/range'
-export { fromArrayLike } from './array/fromArrayLike'
-export { tuple } from './array/tuple'
-export { Set } from './object/set'
-export { memoize } from './function/memoize'
-
-import * as isType from './object/is'
+import * as isType from './is'
 export const is = isType
+
+import { setArrayPipe } from './array'
+import { setObjectPipe } from './object'
+import { setMapPipe } from './map'
+import { setSetPipe } from './set'
+
+setArrayPipe(pipe)
+setObjectPipe(pipe)
+setMapPipe(pipe)
+setSetPipe(pipe)
+
+export function immutable<T>(obj: T): Immutable<T> {
+  return obj as any
+}
+
+export type Immutable<T> = T extends ImmutablePrimitive
+  ? T
+  : T extends Array<infer U>
+  ? ImmutableArray<U>
+  : T extends Map<infer K, infer V>
+  ? ImmutableMap<K, V>
+  : T extends Set<infer M>
+  ? ImmutableSet<M>
+  : ImmutableObject<T>
+
+type ImmutablePrimitive = undefined | null | boolean | string | number | Function
+type ImmutableArray<T> = ReadonlyArray<Immutable<T>>
+type ImmutableMap<K, V> = ReadonlyMap<Immutable<K>, Immutable<V>>
+type ImmutableSet<T> = ReadonlySet<Immutable<T>>
+type ImmutableObject<T> = { readonly [K in keyof T]: Immutable<T[K]> }
+
+export type Result<T, E = unknown> = { ok: true; value: T } | { ok: false; error: E }
+export function Ok<T>(value: T): Result<T, never> {
+  return { ok: true, value }
+}
+export function Err<E>(error: E): Result<never, E> {
+  return { ok: false, error }
+}

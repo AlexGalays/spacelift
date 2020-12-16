@@ -7,14 +7,14 @@ export function createEnum<T extends string>(
 ): {
   T: T
   enum: { [K in T]: K }
-  values: T[]
+  values: ReadonlySet<T>
 } {
   const enumeration: any = {}
 
   values.forEach(v => (enumeration[v] = v))
-  
+
   return {
     enum: enumeration,
-    values
+    values: new Set(values)
   } as any
 }

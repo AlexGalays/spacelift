@@ -1,112 +1,75 @@
-import {
-  Wrapper,
-  ArrayOpsConstructor, ArrayOps as IArrayOps,
-  ObjectOpsConstructor, ObjectOps as IObjectOps,
-  NumberOpsConstructor, NumberOps as INumberOps,
-  StringOpsConstructor, StringOps as IStringOps,
-  DateOpsConstructor, DateOps as IDateOps
-} from '../wrapper'
+import { ArrayWrapper } from './array'
+import { MapWrapper } from './map'
+import { ObjectWrapper } from './object'
+import { SetWrapper } from './set'
+import { Wrapper, isWrapper } from './wrapper'
+import * as is from './is'
 
-import { iteratorSymbol, singleValueIterator } from './iterator'
+export type Lifted<T> = undefined extends T
+  ? never
+  : null extends T
+  ? never
+  : T extends Wrapper<infer W>
+  ? LiftedValue<W>
+  : LiftedValue<T>
 
-export { Wrapper } from '../wrapper'
+type AtomicObject = Function | Promise<any> | Date | RegExp | Boolean | Number | String
 
+type LiftedValue<T> = null extends T
+  ? never
+  : undefined extends T
+  ? never
+  : T extends AtomicObject
+  ? T
+  : T extends ReadonlyArray<any>
+  ? ArrayWrapper<T>
+  : T extends ReadonlyMap<infer K, infer V>
+  ? MapWrapper<K, V, T>
+  : T extends ReadonlySet<infer E>
+  ? SetWrapper<E, T>
+  : T extends object
+  ? ObjectWrapper<T>
+  : never
 
-export interface Lift {
-  /** Wraps a Number to provide a richer API. Unwrap with .value() **/
-  (obj: number): NumberOps
+interface Lift {
+  <T>(obj: ArrayWrapper<ReadonlyArray<T>>): ArrayWrapper<ReadonlyArray<T>>
+  <T extends object>(obj: ObjectWrapper<T>): ObjectWrapper<T>
+  <K, V, M extends ReadonlyMap<K, V>>(obj: MapWrapper<K, V, M>): MapWrapper<K, V, M>
+  <T, S extends ReadonlySet<T>>(obj: SetWrapper<T, S>): SetWrapper<T, S>
 
-  /** Wraps a String to provide a richer API. Unwrap with .value() **/
-  (obj: string): StringOps
-
-  /** Wraps a Date to provide a richer API. Unwrap with .value() **/
-  (obj: Date): DateOps
+  /** lift won't wrap primitives and some other non container-like objects */
+  <T extends AtomicObject>(obj: T): T
 
   /** Wraps an Array to provide a richer API. Unwrap with .value() **/
-  <T>(obj: ReadonlyArray<T>): ArrayOps<T>
+  <T>(obj: T[]): ArrayWrapper<T[]>
+  /** Wraps a readonly Array to provide a richer API. Unwrap with .value() **/
+  <T>(obj: ReadonlyArray<T>): ArrayWrapper<ReadonlyArray<T>>
 
-  /** Wraps a plain Object to provide a richer API. Unwrap with .value() **/
-  <T extends {}>(obj: T): ObjectOps<T>
+  /** Wraps a Map to provide a richer API. Unwrap with .value() **/
+  <K, V>(obj: Map<K, V>): MapWrapper<K, V, Map<K, V>>
+  /** Wraps a readonly Map to provide a richer API. Unwrap with .value() **/
+  <K, V>(obj: ReadonlyMap<K, V>): MapWrapper<K, V, ReadonlyMap<K, V>>
+
+  /** Wraps a Set to provide a richer API. Unwrap with .value() **/
+  <T>(obj: Set<T>): SetWrapper<T, Set<T>>
+  /** Wraps a readonly Set to provide a richer API. Unwrap with .value() **/
+  <T>(obj: ReadonlySet<T>): SetWrapper<T, ReadonlySet<T>>
+
+  /** Wraps an Object to provide a richer API. Unwrap with .value() **/
+  <T extends object>(obj: T): ObjectWrapper<T>
 }
 
-
-const lift: Lift = function(obj: any): any {
-  if (obj instanceof Array) return new ArrayOps(obj)
-  if (obj instanceof Date) return new DateOps(obj)
-
-  if (typeof obj === 'string') return new StringOps(obj)
-  if (typeof obj === 'number') return new NumberOps(obj)
-
-  return new ObjectOps(obj)
+export const lift: Lift = function (obj: any): any {
+  if (isWrapper(obj)) return obj
+  if (is.object(obj)) return new ObjectWrapper(obj)
+  if (obj instanceof Array) return new ArrayWrapper(obj)
+  if (obj instanceof Map) return new MapWrapper(obj)
+  if (obj instanceof Set) return new SetWrapper(obj)
+  return obj
 }
 
-export default lift
+export type Pipe = typeof pipe
 
-
-export function getValue<A>(input: A | Wrapper<A>): A {
-  return input && input['_isLiftWrapper']
-    ? (input as Wrapper<A>).value()
-    : input as A
+export function pipe<T, R>(this: Wrapper<T>, func: (object: T) => R): Lifted<R> {
+  return lift(func(this.value()) as any)
 }
-
-
-function makeOps(): {} {
-  class Ops {
-    constructor(private _value: any) {}
-    _isLiftWrapper = true
-    value() { return this._value }
-  }
-
-  Ops.prototype[iteratorSymbol] = singleValueIterator(self => self._value)
-
-  return Ops
-}
-
-
-//--------------------------------------
-//  Array
-//--------------------------------------
-
-export type ArrayOps<A> = IArrayOps<A>
-export const ArrayOps = makeOps() as ArrayOpsConstructor
-
-ArrayOps.prototype[iteratorSymbol] = function() {
-  let i = 0
-  const self = this as any
-
-  return {
-    next() {
-      return i < self._value.length
-        ? { value: self._value[i++], done: false }
-        : { done: true }
-    }
-  }
-}
-
-//--------------------------------------
-//  Object
-//--------------------------------------
-
-export type ObjectOps<A> = IObjectOps<A>
-export const ObjectOps = makeOps() as ObjectOpsConstructor
-
-//--------------------------------------
-//  Number
-//--------------------------------------
-
-export type NumberOps = INumberOps
-export const NumberOps = makeOps() as NumberOpsConstructor
-
-//--------------------------------------
-//  String
-//--------------------------------------
-
-export type StringOps = IStringOps
-export const StringOps = makeOps() as StringOpsConstructor
-
-//--------------------------------------
-//  Date
-//--------------------------------------
-
-export type DateOps = IDateOps
-export const DateOps = makeOps() as DateOpsConstructor

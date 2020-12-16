@@ -12,7 +12,7 @@ Design goals
 - 100% immutable, no magic, no overwhelming polymorphism or dynamic operators
 - Fun to use
 - Correctness and first-class typescript typings
-- Tiny and performant (`space-lift` weights `8.2 kB` minified for roughly the same scope as `lodash` (`70.0 kB`) AND `immerjs` (`15.6 kB`)) and no amount of tree shaking can save you from heavy abstractions imported by all modules.  
+- Tiny and performant (`space-lift` weights `7.2 kB` minified for roughly the same scope as `lodash` (`70.0 kB`) AND `immerjs` (`15.6 kB`)) and no amount of tree shaking can save you from heavy abstractions imported by all modules.  
 - Small set of functions, configurable with lambdas
 - Cover 95% of frontend data transformation needs without becoming a bloated lib just to cover the remaining 5%
 

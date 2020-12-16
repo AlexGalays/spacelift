@@ -1,7 +1,7 @@
 {
   "name": "space-lift",
-  "version": "1.0.0-beta.14",
-  "description": "Idiomatic TypeScript Array, Object, Map, Set, Union, Enum utils",
+  "version": "1.0.0",
+  "description": "TypeScript Array, Object, Map, Set, Union, Enum utils",
   "sideEffects": true,
 
   "main": "commonjs/index.js",
@@ -45,7 +45,7 @@
     "url": "http://www.opensource.org/licenses/mit-license.php"
   }],
   "homepage": "https://github.com/AlexGalays/spacelift",
-  "keywords": ["TypeScript", "ts", "TS", "std lib", "collection", "underscore", "array", "object", "Pap", "Set"],
+  "keywords": ["TypeScript", "ts", "TS", "std lib", "collection", "underscore", "array", "object", "Map", "Set"],
 
   "jest": {
     "transform": {

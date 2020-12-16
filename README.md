@@ -1019,8 +1019,8 @@ the list of all possible values, an object with all enum keys and the derived ty
   // We can access each value of the enum directly if that's useful
   export const Color = color.enum
 
-  const redish: StopLightColor = 'red'
-  const greenish: StopLightColor = Color.green
+  const redish: Color = 'red'
+  const greenish: Color = Color.green
   const orange: 'orange' = Color.orange
   orange // 'orange'
 ```

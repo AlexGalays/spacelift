@@ -13,4 +13,15 @@ describe('is', () => {
     const filtered = arr.filter(is.defined)
     filtered.forEach(n => n.toExponential())
   })
+
+  it('can be used to refine an union to a precise Array type', () => {
+    const union: Array<{ a: string }> | string = [{ a: 'aa' }]
+
+    if (is.array(union)) {
+      // Type assertion
+      union[0].a.toLowerCase()
+    } else {
+      fail()
+    }
+  })
 })

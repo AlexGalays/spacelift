@@ -51,6 +51,7 @@ export class ArrayWrapper<T extends ReadonlyArray<unknown>> {
 
   /**
    * Maps this Array's items, unless void or undefined is returned, in which case the item is filtered.
+   * This is effectively a `filter` + `map` combined in one.
    */
   collect<B>(
     iterator: (item: T[number], index: number) => B | undefined | void

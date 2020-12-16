@@ -90,20 +90,6 @@ describe('Set', () => {
     expect(updated).toEqual(new Set([1]))
   })
 
-  it('can be cleared', () => {
-    const set = new Set([1, 2])
-    const set2 = immutable(set)
-
-    const updated = lift(set).clear().value()
-    const updated2 = lift(set2).clear().value()
-
-    // Type assertion
-    const _updated: Set<number> = updated
-    const _updated2: ReadonlySet<number> = updated2
-
-    expect(updated).toEqual(new Set())
-  })
-
   it('can use collect()', () => {
     const set = new Set([1, 2])
     const set2 = immutable(set)

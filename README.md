@@ -26,6 +26,10 @@ Design goals
   * [Map](#api.map)
   * [Set](#api.set)
   * [update](#api.update)
+    * [update for Object](#api.update.object)
+    * [update for Map](#api.update.map)
+    * [update for Set](#api.update.set)
+    * [update for Array](#api.update.array)
   * [createEnum](#api.enum)
   * [createUnion](#api.union)
   * [Result](#api.result)
@@ -183,6 +187,7 @@ const count = lift([1, 2, 3]).count(n => n > 1) // 2
 ### Array.collect
 
 Maps this Array's items, unless void or undefined is returned, in which case the item is filtered.  
+This is effectively a `filter` + `map` combined in one.  
 
 ```ts
 import {lift} from 'space-lift'
@@ -561,7 +566,6 @@ const updated = lift({a: 1, b: 2, c: 3}).toMap().value() // Map([['a', 1], ['b',
 
 * [set](#map.set)
 * [delete](#map.delete)
-* [clear](#map.clear)
 * [collect](#map.collect)
 * [filter](#map.filter)
 * [first](#map.first)
@@ -601,22 +605,6 @@ const map = new Map([
 ])
 
 const updated = lift(map).delete('b').value() // Map([['a', 1]])
-```
-
-<a name="map.clear"></a>
-### Map.clear
-
-Clears the map.  
-
-```ts
-import {lift} from 'space-lift'
-
-const map = new Map([
-  ['a', 1],
-  ['b', 2]
-])
-
-const updated = lift(map).clear().value() // Map([])
 ```
 
 <a name="map.collect"></a>
@@ -758,7 +746,140 @@ const array = lift(map).toObject().value() // { 'a': 1, 'b': 2 }
 <a name="api.set"></a>
 ## Set
 
-TODO
+* [add](#set.add)
+* [addAll](#set.addAll)
+* [delete](#set.delete)
+* [collect](#set.collect)
+* [filter](#set.filter)
+* [intersection](#set.intersection)
+* [difference](#set.difference)
+* [pipe](#set.pipe)
+* [toArray](#set.toArray)
+
+<a name="set.add"></a>
+### Set.add
+
+Adds a new value to this Set.  
+
+```ts
+import {lift} from 'space-lift'
+
+const set = new Set([1, 2, 3])
+
+const updated = lift(set).add(4).add(3).value() // Set([1, 2, 3, 4])
+```
+
+<a name="set.addAll"></a>
+### Set.addAll
+
+Adds all items from the passed iterable to this Set.   
+
+```ts
+import {lift} from 'space-lift'
+
+const set = new Set([1, 2, 3])
+
+const updated = lift(set).addAll([4, 5, 3]).value() // Set([1, 2, 3, 4, 5])
+```
+
+<a name="set.delete"></a>
+### Set.delete
+
+Deletes one value from this Set.  
+
+```ts
+import {lift} from 'space-lift'
+
+const set = new Set([1, 2, 3])
+
+const updated = lift(set).delete(2).value() // Set([1, 3])
+```
+
+<a name="set.collect"></a>
+### Set.collect
+
+Maps this Set's items, unless void or undefined is returned, in which case the item is filtered.  
+This is effectively a `filter` + `map` combined in one.  
+
+```ts
+import {lift} from 'space-lift'
+
+const set = new Set([1, 2, 3])
+
+const updated = lift(set).collect(num => {
+  if (num === 2) return
+  return num * 2
+}).value() // Set([2, 6])
+```
+
+<a name="set.filter"></a>
+### Set.filter
+
+Filters this Set's items by aplying a predicate to all values and refine its type.  
+
+```ts
+import {lift} from 'space-lift'
+
+const set = new Set([1, 2, 3])
+
+const updated = lift(set).filter(num => num !== 2).value() // Set([1, 3])
+```
+
+<a name="set.intersection"></a>
+### Set.intersection
+
+Returns the Set of all items of this Set that are also found in the passed Set.  
+
+```ts
+import {lift} from 'space-lift'
+
+const set = new Set([1, 2, 3])
+const otherSet = new Set([2, 3, 4])
+
+const intersection = lift(set).intersection(otherSet).value() // Set([2, 3])
+```
+
+<a name="set.difference"></a>
+### Set.difference
+
+Returns the Set of all items of this Set that are not found in the passed Set.  
+
+```ts
+import {lift} from 'space-lift'
+
+const set = new Set([1, 2, 3])
+const otherSet = new Set([2, 3, 4])
+
+const diff = lift(set).difference(otherSet).value() // Set([1])
+```
+
+<a name="set.pipe"></a>
+### Set.pipe
+
+Pipes this Set with an arbitrary transformation function.  
+
+```ts
+import {lift} from 'space-lift'
+
+const set = new Set([1, 2, 3])
+
+const yay = lift(set).pipe(s => s.toString()) // '[object Set]' 
+```
+
+<a name="set.toArray"></a>
+### Set.toArray
+
+Transforms this Set into an Array. The insertion order is kept.  
+
+```ts
+import {lift} from 'space-lift'
+
+const set = new Set([1, 2, 3])
+
+const array = lift(set).toArray().value() // [1, 2, 3]
+```
+
+
 
 <a name="api.update"></a>
 ## update
@@ -773,6 +894,7 @@ TODO
 - Remember that if you iterate through keys, values, etc drafts will **NOT** be created by default. Call one of the draft creating methods within the loop to perform the updates conditionally.
 - As long as you keep accessing drafts, the update can be done at any level of a tree.
 
+<a name="api.update.object"></a>
 ### update for Object
 
 Accessing a draft object property is the only `Object` operation that **will create a draft**
@@ -801,6 +923,7 @@ const updated = update(obj, draft => {
 })
 ```
 
+<a name="api.update.map"></a>
 ### update for Map
 
 All regular methods are available.  
@@ -824,12 +947,14 @@ const updated = update(map, draft => {
 })
 ```
 
+<a name="api.update.set"></a>
 ### update for Set
 
 All regular `Set` methods are available.  
 None of the `Set` draft methods **will create a draft** as a `Set` never hands value over.  
 Still, it's useful to update an immutable `Set` whether it's found nested in a tree or not and Sets are most of the time only useful for primitives values that wouldn't be drafted.  
 
+<a name="api.update.array"></a>
 ### update for Array
 
 Most Array methods are available but some are removed to make working with Arrays more pleasant:  

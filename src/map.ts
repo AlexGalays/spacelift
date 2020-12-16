@@ -33,15 +33,6 @@ export class MapWrapper<K, V, M extends ReadonlyMap<K, V>> {
   }
 
   /**
-   * Clears the map.
-   */
-  clear() {
-    const result = this._clone()
-    result.clear()
-    return new MapWrapper(result)
-  }
-
-  /**
    * Maps this Map's keys and values, unless void or undefined is returned, in which case the entry is filtered.
    * This is effectively a filter + map combined in one.
    */

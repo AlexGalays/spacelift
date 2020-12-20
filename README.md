@@ -280,7 +280,7 @@ Reduces this Array into a single value, using a starting value.
 
 ```ts
 import {lift} from 'space-lift'
-const count = lift([1, 2, 3).reduce(0, (count, n) => count + n) // 6
+const count = lift([1, 2, 3]).reduce(0, (count, n) => count + n) // 6
 ```
 
 <a name="array.get"></a>
@@ -290,7 +290,7 @@ Returns the item found at the provided index or undefined.
 
 ```ts
 import {lift} from 'space-lift'
-const secondItem = lift([1, 2, 3).get(1) // 2
+const secondItem = lift([1, 2, 3]).get(1) // 2
 ```
 
 <a name="array.groupBy"></a>
@@ -321,7 +321,7 @@ Inserts an item at a specified index.
 
 ```ts
 import {lift} from 'space-lift'
-const updated = lift(['1', '2', '3').insert(1, '20').value() // [1, 20, 2, 3]
+const updated = lift(['1', '2', '3']).insert(1, '20').value() // [1, 20, 2, 3]
 ```
 
 <a name="array.last"></a>
@@ -331,7 +331,7 @@ Returns the item found at the last index or undefined.
 
 ```ts
 import {lift} from 'space-lift'
-const last = lift(['1', '2', '3').last() // '3'
+const last = lift(['1', '2', '3']).last() // '3'
 ```
 
 <a name="array.map"></a>
@@ -351,7 +351,7 @@ Removes the item found at the specified index.
 
 ```ts
 import {lift} from 'space-lift'
-const updated = lift(['1', '2', '3').removeAt(1).value() // ['1', '3']
+const updated = lift(['1', '2', '3']).removeAt(1).value() // ['1', '3']
 ```
 
 <a name="array.reverse"></a>
@@ -361,7 +361,7 @@ Reverses the Array.
 
 ```ts
 import {lift} from 'space-lift'
-const updated = lift(['1', '2', '3').reverse().value() // ['3', '2', '1']
+const updated = lift(['1', '2', '3']).reverse().value() // ['3', '2', '1']
 ```
 
 <a name="array.sort"></a>
@@ -394,7 +394,7 @@ Takes the first 'count' items from this Array.
 
 ```ts
 import {lift} from 'space-lift'
-const updated = lift(['1', '2', '3').take(2).value() // ['1', '2']
+const updated = lift(['1', '2', '3']).take(2).value() // ['1', '2']
 ```
 
 <a name="array.takeRight"></a>
@@ -404,7 +404,7 @@ Takes the last 'count' items from this Array.
 
 ```ts
 import {lift} from 'space-lift'
-const updated = lift(['1', '2', '3').takeRight(2).value() // ['2', '3']
+const updated = lift(['1', '2', '3']).takeRight(2).value() // ['2', '3']
 ```
 
 <a name="array.toSet"></a>
@@ -414,7 +414,7 @@ Converts this Array to a Set.
 
 ```ts
 import {lift} from 'space-lift'
-const set = lift(['1', '2', '2', '3').toSet().value() // Set(['1', '2', '3'])
+const set = lift(['1', '2', '2', '3']).toSet().value() // Set(['1', '2', '3'])
 ```
 
 <a name="array.updateAt"></a>
@@ -424,7 +424,7 @@ Updates an item at the specified index.
 
 ```ts
 import {lift} from 'space-lift'
-const updated = lift(['1', '2', '2', '3').updateAt(1, '20').value() // ['1', '20', '2', '3']
+const updated = lift(['1', '2', '2', '3']).updateAt(1, '20').value() // ['1', '20', '2', '3']
 ```
 
 <a name="array.pipe"></a>

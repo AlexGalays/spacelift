@@ -71,6 +71,29 @@ describe('Array', () => {
     expect(result).toEqual(['1', '3'])
   })
 
+  it('can collect its items to refine their types', () => {
+    type A = { type: 'a'; a: number }
+    type B = { type: 'b'; b: string }
+    type Union = A | B
+    const isA = (u: Union): u is A => u.type === 'a'
+
+    const arr: Union[] = [
+      { type: 'a', a: 10 },
+      { type: 'a', a: 20 },
+      { type: 'b', b: '30' }
+    ]
+
+    const result = lift(arr)
+      .collect(item => {
+        if (isA(item)) return undefined
+        return item
+      })
+      .value()
+
+    // Type assertion
+    const _result: Array<B> = result
+  })
+
   it('can be flatMapped', () => {
     const arr = [1, 2, 3]
     const arr2 = immutable(arr)

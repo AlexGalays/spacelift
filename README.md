@@ -522,7 +522,7 @@ To delete a (nullable) key from an object while preserving its type, use "update
 ```ts
 import {lift} from 'space-lift'
 
-const updated = lift({a: 1, b: 2, c: 3}).add('c').value() // {a: 1, b: 2}
+const updated = lift({a: 1, b: 2, c: 3}).remove('c').value() // {a: 1, b: 2}
 ```
 
 <a name="object.values"></a>

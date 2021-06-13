@@ -1,3 +1,4 @@
+import { pipe } from 'lift'
 import { lift, createUnion, immutable } from '..'
 import { update } from '../src/immupdate'
 
@@ -34,6 +35,52 @@ describe('Map', () => {
       ])
     )
     expect(result).not.toBe(map)
+  })
+
+  it('can set a key/value if it is not already set', () => {
+    const map = new Map([
+      [1, { id: 1, name: 'aa' }],
+      [2, { id: 2, name: 'bb' }]
+    ])
+
+    const map2 = immutable(map)
+
+    const result = lift(map)
+      .setDefaultValue(3, { id: 3, name: 'cc' })
+      .setDefaultValue(2, { id: 2, name: 'zz' })
+      .value()
+    const result2 = lift(map2)
+      .setDefaultValue(3, { id: 3, name: 'cc' })
+      .setDefaultValue(2, { id: 2, name: 'zz' })
+      .value()
+    const result3 = lift(map)
+      .setDefaultValue(3, { id: 3, name: 'cc' })
+      .updateValue(3, draft => {
+        draft.name = 'zz'
+      })
+      .value()
+
+    // Type assertion
+    const _result: typeof map = result
+    const _result2: typeof map2 = result2
+    const _result3: typeof map = result3
+
+    expect(result).toEqual(
+      new Map([
+        [1, { id: 1, name: 'aa' }],
+        [2, { id: 2, name: 'bb' }],
+        [3, { id: 3, name: 'cc' }]
+      ])
+    )
+    expect(result3).toEqual(
+      new Map([
+        [1, { id: 1, name: 'aa' }],
+        [2, { id: 2, name: 'bb' }],
+        [3, { id: 3, name: 'zz' }]
+      ])
+    )
+    expect(result).not.toBe(map)
+    expect(result3).not.toBe(map)
   })
 
   it('can delete a key/value', () => {

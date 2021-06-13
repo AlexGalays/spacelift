@@ -33,6 +33,7 @@ Design goals
   * [createEnum](#api.enum)
   * [createUnion](#api.union)
   * [Result](#api.result)
+  * [toDraft](#api.toDraft)]
 * [Auto unwrap](#autounwrap)
 
 
@@ -572,6 +573,8 @@ const updated = lift({a: 1, b: 2, c: 3}).toMap().value() // Map([['a', 1], ['b',
 * [last](#map.last)
 * [mapValues](#map.mapValues)
 * [pipe](#map.pipe)
+* [setDefaultValue](#map.setDefaultValue)
+* [updateValue](#map.updateValue)
 * [toArray](#map.toArray)
 * [toObject](#map.toObject)
 
@@ -708,6 +711,41 @@ const map = new Map([
 ])
 
 const yay = lift(map).pipe(m => m.toString()) // '[object Map]' 
+```
+
+<a name="map.setDefaultValue"></a>
+### Map.setDefaultValue
+
+If this key is missing, set a default value.
+
+```ts
+import {lift} from 'space-lift'
+
+const map = new Map([
+  ['a', 1],
+  ['b', 2]
+])
+
+const map = lift(map)
+  .setDefaultValue('c', 3)
+  .setDefaultValue('b', 10)
+  .value() // Map([['a', 1], ['b', 2], ['c', 3]])
+```
+
+<a name="map.updateValue"></a>
+### Map.updateValue
+
+Same as [update(map, draft => draft.updateValue](#api.update.map.updateValue), exposed here for convenience and readability as it's often used immediately after `setDefaultValue`.
+
+```ts
+import {lift} from 'space-lift'
+
+const map = new Map([
+  ['a', {name: 'a'}],
+  ['b', {name: 'b'}]
+])
+
+const map = lift(map).updateValue('b', draft => { draft.name = 'c' }).value()
 ```
 
 <a name="map.toArray"></a>
@@ -927,7 +965,9 @@ const updated = update(obj, draft => {
 ### update for Map
 
 All regular methods are available.  
-`get` is the only `Map` draft method that **will create a draft** for the returned value.  
+
+- `get` will **will create a draft** for the returned value.  
+- `setDefaultValue` **will create a draft**
 
 #### Map - Updating an existing value
 
@@ -946,6 +986,25 @@ const updated = update(map, draft => {
   value.name = 'Bob'
 })
 ```
+
+<a name="api.update.map.updateValue">
+#### Map - Using updateValue
+
+If the key is found, run the drafted value through an update function.
+For primitives, the update function must return a new value whereas for objects, the drafted value can be modified directly.
+
+```ts
+import {update} from 'space-lift'
+
+const map = new Map([
+  [1, { id: 1, name: 'jon' }],
+  [2, { id: 2, name: 'Julia' }]
+])
+
+const updated = update(map, draft =>
+  draft.updateValue(2, value => { value.name = 'Julia' }))
+```
+
 
 <a name="api.update.set"></a>
 ### update for Set
@@ -966,15 +1025,7 @@ Most Array methods are available but some are removed to make working with Array
 - `push`: Replaced by `append`.
 - `map` is not removed but `updateIf` is added as the conceptual, mutable equivalent.
 
-As a result, the interface of a draft Array is not fully compatible with `Array`/`ReadonlyArray` and you must use `toDraft` if you want to assign a regular Array to a draft Array:  
-
-```ts
-import {update, toDraft} from 'space-lift'
-
-const updated = update({arr: [1, 2, 3]}, draft => {
-  draft.arr = toDraft([4, 5, 6])
-})
-```
+As a result, the interface of a draft Array is not fully compatible with `Array`/`ReadonlyArray` and you must use [toDraft](#api.toDraft) if you want to assign a regular Array to a draft Array.  
 
 - Accessing an Array element by index **will create a draft** (be careful with this if you somehow end up manually iterating the Array)
 - `updateIf` **will create a draft** for each item satisfying its predicate.  
@@ -1084,6 +1135,20 @@ const ok = Ok(10) // {ok: true, value: 10}
 const err = Err('oops') // {ok: false, error: 'oops'}
 ```
 
+<a name="api.toDraft"></a>
+### toDraft
+
+TS currently has a limitation where this library must type its getter the same as its setters. Thus, if you want to `assign` an entirely new value that contains a type not compatible
+with its drafted type (so anything but primitives and objects) you will need to use `toDraft`:  
+
+```ts
+import {update, toDraft} from 'space-lift'
+
+const updated = update({arr: [1, 2, 3]}, draft => {
+  draft.arr = toDraft([4, 5, 6])
+})
+```
+This limitation might be fixed one day: [TS ticket](https://github.com/microsoft/TypeScript/issues/43826)
 
 <a name="autounwrap"></a>
 # Auto unwrap

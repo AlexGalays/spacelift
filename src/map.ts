@@ -1,6 +1,6 @@
 import { ObjectWrapper } from './object'
-import { Draft, NoReturn, update } from './immupdate'
 import type { Pipe } from './lift'
+import { Draft, NoReturn, AtomicObject, update } from './immupdate'
 
 /** A Map wrapper providing extra functionalities and more chaining opportunities */
 export class MapWrapper<K, V, M extends ReadonlyMap<K, V>> {
@@ -85,6 +85,25 @@ export class MapWrapper<K, V, M extends ReadonlyMap<K, V>> {
    * Pipes this Map with an arbitrary transformation function.
    */
   pipe = pipe
+
+  /**
+   * If this key is missing, set a default value.
+   */
+  setDefaultValue(key: K, value: V): MapWrapper<K, V, M> {
+    if (this._value.has(key)) return this
+    return this.set(key, value) as any
+  }
+
+  /**
+   * If the key is found, run the drafted value through an update function.
+   * For primitives, the update function must return a new value whereas for objects, the drafted value can be modified directly.
+   */
+  updateValue(
+    key: K,
+    updater: (value: Draft<V>) => V extends AtomicObject ? V : NoReturn
+  ): MapWrapper<K, V, M> {
+    return this.pipe(m => update(m, draft => draft.updateValue(key, updater))) as any
+  }
 
   /**
    * Transforms this Map into an Array of [key, value] tuples.

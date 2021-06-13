@@ -1,37 +1,34 @@
 {
   "name": "space-lift",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TypeScript Array, Object, Map, Set, Union, Enum utils",
   "sideEffects": true,
-
   "main": "commonjs/index.js",
   "module": "es/index.js",
   "typings": "commonjs/index.d.ts",
-
   "files": [
     "es",
     "commonjs"
   ],
-
   "scripts": {
     "build": "npm run build-commonjs && npm run build-es",
-    "build-es": "tsc src/*.ts --target 'es2015' --lib 'es5,es2015.core,es2015.iterable' --outDir ./es --declaration --strict --suppressImplicitAnyIndexErrors --module es6 --moduleResolution node",
-    "build-commonjs": "tsc src/*.ts --target 'es2015' --lib 'es5,es2015.core,es2015.iterable' --outDir ./commonjs --declaration --strict --suppressImplicitAnyIndexErrors --module commonjs --moduleResolution node",
+    "build-es": "tsc src/*.ts --target 'es2015' --lib 'dom,es5,es2015.core,es2015.iterable' --outDir ./es --declaration --strict --suppressImplicitAnyIndexErrors --module es6 --moduleResolution node",
+    "build-commonjs": "tsc src/*.ts --target 'es2015' --lib 'dom,es5,es2015.core,es2015.iterable' --outDir ./commonjs --declaration --strict --suppressImplicitAnyIndexErrors --module commonjs --moduleResolution node",
     "pretest": "npm run build",
     "test-compilation-errors": "node test/testCompilationErrors",
     "test": "jest && npm run test-compilation-errors",
     "watch-test": "jest --watch",
     "prepublish": "npm run build"
   },
-
   "devDependencies": {
-    "typescript": "4.0.3",
+    "typescript": "4.3.2",
     "jest": "26.6.1",
     "ts-jest": "26.4.2",
+    "leaflet": "1.7.1",
     "@types/jest": "26.0.15",
-    "@types/node": "14.14.2"
+    "@types/node": "14.14.2",
+    "@types/leaflet": "1.7.0"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AlexGalays/spacelift.git"
@@ -40,18 +37,33 @@
     "name": "Alexandre Galays",
     "url": "https://github.com/AlexGalays/"
   },
-  "licenses": [{
-    "type": "MIT",
-    "url": "http://www.opensource.org/licenses/mit-license.php"
-  }],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
   "homepage": "https://github.com/AlexGalays/spacelift",
-  "keywords": ["TypeScript", "ts", "TS", "std lib", "collection", "underscore", "array", "object", "Map", "Set"],
-
+  "keywords": [
+    "TypeScript",
+    "ts",
+    "TS",
+    "std lib",
+    "collection",
+    "underscore",
+    "array",
+    "object",
+    "Map",
+    "Set"
+  ],
   "jest": {
     "transform": {
       "^.+\\.ts$": "ts-jest"
     },
-    "moduleFileExtensions": ["js", "ts"],
+    "moduleFileExtensions": [
+      "js",
+      "ts"
+    ],
     "testMatch": [
       "<rootDir>/test/*.ts"
     ],

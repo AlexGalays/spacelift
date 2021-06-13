@@ -37,7 +37,7 @@ function makeDraft(
     : null
 
   const draft = new Proxy(obj, {
-    get: (_, key: Key) => {
+    get: (_, key: any) => {
       // If we explicitely override or add this method, use it.
       if (proxiedMethods && proxiedMethods[key]) return proxiedMethods[key]
 
@@ -58,11 +58,11 @@ function makeDraft(
       }
       return childDraft
     },
-    set: (_, key: Key, newValue) =>
+    set: (_, key: any, newValue) =>
       mutateObj(() => {
         obj[key] = newValue
       }, key),
-    deleteProperty: (_, key: Key) =>
+    deleteProperty: (_, key: any) =>
       mutateObj(() => {
         delete obj[key]
       }, key)
@@ -120,6 +120,18 @@ function proxiedMapMethods(
     clear: () => mutateMap(() => getMap().clear(), allKeys),
     delete: (key: Key) => {
       mutateMap(() => getMap().delete(key), key)
+    },
+    updateValue: (key: Key, updateFunction: Function) => {
+      if (!getMap().has(key)) return
+
+      // .get() already creates a draft for this value, if applicable.
+      const value = methods.get(key)
+
+      mutateMap(() => {
+        const maybeUpdatedValue = updateFunction(value)
+        // If a value was returned, it means no draft was modified directly and we must set it.
+        if (maybeUpdatedValue !== undefined) getMap().set(key, maybeUpdatedValue)
+      }, key)
     }
   }
 
@@ -245,12 +257,18 @@ interface DraftMap<K, V> extends Omit<Map<K, V>, 'get'> {
    * If the key is found, returns the drafted value, else return undefined.
    */
   get(key: K): Draft<V> | undefined
+
+  /**
+   * If the key is found, run the drafted value through an update function.
+   * For primitives, the update function must return a new value whereas for objects, the drafted value can be modified directly.
+   */
+  updateValue(key: K, updater: (value: Draft<V>) => V extends AtomicObject ? V : NoReturn): void
 }
 
 interface DraftSet<E> extends Set<E> {}
 
 /** Types that should never be drafted */
-type AtomicObject = Function | Promise<any> | Date | RegExp | Boolean | Number | String
+export type AtomicObject = Function | Promise<any> | Date | RegExp | Boolean | Number | String
 
 type IsTuple<T extends ReadonlyArray<any>> = T extends never[]
   ? true
@@ -277,14 +295,14 @@ export type Draft<T> = T extends AtomicObject
   : T
 
 /**
- * Safe type-cast from a regular array to an array draft.
- * Use this if you want to assign an Array wholesale instead of mutating an existing one.
+ * Type-cast from a regular type to its draft type.
+ * Use this if you want to assign a regular value wholesale instead of mutating an existing one.
  */
 // We need this because Typescript doesn't yet allow one to type reads and writes differently:
-// https://github.com/microsoft/TypeScript/issues/2521
-// If we had this ability, we could type the getter as DraftArray and the setter as DraftArray | ReadonlyArray.
-export function toDraft<T>(array: ReadonlyArray<T>): DraftArray<T> {
-  return array as any
+// https://github.com/microsoft/TypeScript/issues/43826
+// If we had this ability, we could type the getter as Draft<T> and the setter as T.
+export function toDraft<T>(obj: T): Draft<T> {
+  return obj as any
 }
 
 // To prevent mistakes, we explicitly forbid implicit return values from functions that should only mutate an input.

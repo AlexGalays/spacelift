@@ -1,5 +1,6 @@
 import { update, toDraft } from '../src/immupdate'
 import { immutable, Immutable } from '..'
+import L from 'leaflet'
 
 describe('immupdate', () => {
   describe('Object', () => {
@@ -13,6 +14,72 @@ describe('immupdate', () => {
       expect(updated).toBe(obj)
       expect(updated.a).toBe(obj.a)
       expect(updated.b).toBe(obj.b)
+    })
+
+    it('can assign a brand new object', () => {
+      const obj = immutable({
+        a: { b: 33 }
+      })
+
+      const updated = update(obj, draft => {
+        draft.a = { b: 66 }
+      })
+
+      expect(updated).not.toBe(obj)
+      expect(updated.a).not.toBe(obj.a)
+      expect(updated.a.b).toBe(66)
+    })
+
+    it('can assign a brand new class instance', () => {
+      class Datum {
+        constructor(public d: number) {}
+      }
+
+      interface Obj {
+        a: {
+          b?: Datum
+        }
+      }
+
+      const obj: Obj = {
+        a: { b: new Datum(33) }
+      }
+
+      const updated = update(obj, draft => {
+        draft.a.b = new Datum(66)
+      })
+
+      expect(updated).not.toBe(obj)
+      expect(updated.a).not.toBe(obj.a)
+      expect(updated.a.b!.d).toBe(66)
+    })
+
+    it('can replace a complex interface (leaflet Marker) by using toDraft()', () => {
+      const obj = {
+        a: { b: L.marker([0, 0]) }
+      }
+
+      const updated = update(obj, draft => {
+        draft.a = { b: toDraft(L.marker([1, 1])) }
+      })
+
+      expect(updated).not.toBe(obj)
+      expect(updated.a).not.toBe(obj.a)
+      expect(typeof updated.a.b.isTooltipOpen).toBe('function')
+    })
+
+    it('can replace a complex interface by using toDraft()', () => {
+      const obj = {
+        a: { b: [1, 1] }
+      }
+
+      const updated = update(obj, draft => {
+        draft.a = toDraft({ b: [2, 2] })
+      })
+
+      expect(updated).not.toBe(obj)
+      expect(updated.a).not.toBe(obj.a)
+      expect(updated.a.b).toEqual([2, 2])
     })
 
     it('should not modify the original object', () => {
@@ -281,6 +348,73 @@ describe('immupdate', () => {
       expect(updated.get(1)).toBe(map.get(1))
     })
 
+    it('can update a value of type object', () => {
+      const map = immutable(
+        new Map([
+          [1, { id: 1, name: 'jon' }],
+          [2, { id: 2, name: 'Julia' }]
+        ])
+      )
+
+      const updated = update(map, draft => {
+        draft.updateValue(2, person => {
+          person.name = 'Bob'
+        })
+
+        // Noop because this key doesn't exist
+        draft.updateValue(3, person => {
+          person.name = 'Bob'
+        })
+
+        expect(draft.get(2)).toEqual({ id: 2, name: 'Bob' })
+
+        expect([...draft.entries()]).toEqual([
+          [1, { id: 1, name: 'jon' }],
+          [2, { id: 2, name: 'Bob' }]
+        ])
+      })
+
+      expect(updated).toEqual(
+        new Map([
+          [1, { id: 1, name: 'jon' }],
+          [2, { id: 2, name: 'Bob' }]
+        ])
+      )
+
+      // This value hasn't been touched at all.
+      expect(updated.get(1)).toBe(map.get(1))
+    })
+
+    it('can update a value of type number', () => {
+      const map = immutable(
+        new Map([
+          [1, 10],
+          [2, 20]
+        ])
+      )
+
+      const updated = update(map, draft => {
+        draft.updateValue(2, count => count + 1)
+
+        // Noop because this key doesn't exist
+        draft.updateValue(3, count => count + 1)
+
+        expect(draft.get(2)).toBe(21)
+
+        expect([...draft.entries()]).toEqual([
+          [1, 10],
+          [2, 21]
+        ])
+      })
+
+      expect(updated).toEqual(
+        new Map([
+          [1, 10],
+          [2, 21]
+        ])
+      )
+    })
+
     it('can call has()', () => {
       const map = new Map([
         [1, { id: 1, name: 'jon' }],
@@ -325,7 +459,7 @@ describe('immupdate', () => {
       expect(updated.map.get(1)).toBe(obj.map.get(1))
     })
 
-    it('can update a Map object value', () => {
+    it('can update a field of a Map object value', () => {
       const map = immutable(
         new Map([
           [1, { id: 1, name: 'jon' }],
@@ -412,7 +546,7 @@ describe('immupdate', () => {
       })
 
       const updated = update(obj, draft => {
-        draft.map = new Map()
+        draft.map = toDraft(new Map())
         draft.map.set(1, { id: 1, name: 'John' })
         draft.map.get(1)!.name = 'Alicia'
       })

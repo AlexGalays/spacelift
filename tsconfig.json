@@ -1,17 +1,13 @@
 {
-	"compilerOptions": {
-		"target": "ES2015",
-		"strict": true,
-		"baseUrl": "src",
-		"esModuleInterop": true,
-		"moduleResolution": "node",
-		"lib": [
-			"dom",
-			"es5",
-			"es2015.core",
-			"es2015.iterable"
-		]
-	},
-	"compileOnSave": false,
-	"include": ["src/**/*", "test/*"],
+  "compilerOptions": {
+    "target": "ES2015",
+    "strict": true,
+    "baseUrl": "src",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "lib": ["dom", "es5", "es2015.core", "es2015.iterable"]
+  },
+  "compileOnSave": false,
+  "include": ["src/**/*", "test/*"]
 }

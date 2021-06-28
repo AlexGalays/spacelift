@@ -42,6 +42,21 @@ export class ObjectWrapper<T extends object> {
   }
 
   /**
+   * Maps one of this Object values, by key.
+   * This is similar to remove('key').add('key', newValue) but is less error prone.
+   * This can change the type of the object.
+   */
+  mapValue<K extends keyof T, V>(
+    key: K,
+    mapFunction: (value: T[K]) => V
+  ): ObjectWrapper<{ [K2 in keyof T]: K2 extends K ? V : T[K] }> {
+    return this.pipe(o => ({
+      ...o,
+      [key]: mapFunction(o[key])
+    })) as any
+  }
+
+  /**
    * Maps this Object's values.
    * This is mostly useful for objects with a single value type.
    */

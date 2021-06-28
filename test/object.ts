@@ -29,6 +29,18 @@ describe('Object', () => {
     expect(result2).toEqual({ a: 1, b: 2, e: true, g: [3, 4] })
   })
 
+  it('can map a value to a new type', () => {
+    const obj = { a: 1, b: 2 }
+    const result = lift(obj)
+      .mapValue('b', v => `${v * 2}`)
+      .value()
+
+    // Type assertion
+    const _obj: { a: number; b: string } = result
+
+    expect(result).toEqual({ a: 1, b: '4' })
+  })
+
   it('can convert is keys to an Array', () => {
     const obj: Record<string, number> = { a: 1, b: 2, c: 3 }
     const result = lift(obj).keys().sort().value()

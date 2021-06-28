@@ -444,6 +444,7 @@ const updated = lift([1, 0, 3]).pipe(JSON.stringify) // '[1, 0, 3]'
 * [add](#object.add)
 * [isEmpty](#object.isEmpty)
 * [keys](#object.keys)
+* [mapValue](#object.mapValue)
 * [mapValues](#object.mapValues)
 * [pipe](#object.pipe)
 * [remove](#object.remove)
@@ -484,6 +485,24 @@ If the keys are a subtype of string, the Array will be typed with the proper key
 import {lift} from 'space-lift'
 
 const isEmpty = lift({a: 1, b: 2}).keys().value() // ['a', 'b']
+```
+
+<a name="object.mapValue"></a>
+### Object.mapValue
+
+Maps one of this Object values, by key.  
+This is similar to remove('key').add('key', newValue) but is less error prone.  
+This can change the type of the object.  
+
+```ts
+import {lift} from 'space-lift'
+
+const mappedValues = lift({
+  a: 1,
+  b: 2
+})
+.mapValue('b', num => `${num * 2}`)
+.value() // { a: 1, b: '4' }
 ```
 
 <a name="object.mapValues"></a>

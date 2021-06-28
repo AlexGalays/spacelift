@@ -30,15 +30,17 @@ describe('Object', () => {
   })
 
   it('can map a value to a new type', () => {
-    const obj = { a: 1, b: 2 }
+    type Union = 'a' | 'b' | 'c'
+
+    const obj = { a: 1, b: 2, c: 'c' } as { a: number; b: number; c: Union }
     const result = lift(obj)
       .mapValue('b', v => `${v * 2}`)
       .value()
 
     // Type assertion
-    const _obj: { a: number; b: string } = result
+    const _obj: { a: number; b: string; c: Union } = result
 
-    expect(result).toEqual({ a: 1, b: '4' })
+    expect(result).toEqual({ a: 1, b: '4', c: 'c' })
   })
 
   it('can convert is keys to an Array', () => {

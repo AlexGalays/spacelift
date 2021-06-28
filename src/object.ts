@@ -49,7 +49,7 @@ export class ObjectWrapper<T extends object> {
   mapValue<K extends keyof T, V>(
     key: K,
     mapFunction: (value: T[K]) => V
-  ): ObjectWrapper<{ [K2 in keyof T]: K2 extends K ? V : T[K] }> {
+  ): ObjectWrapper<{ [K2 in keyof T]: K2 extends K ? V : T[K2] }> {
     return this.pipe(o => ({
       ...o,
       [key]: mapFunction(o[key])

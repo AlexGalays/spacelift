@@ -1,6 +1,6 @@
 {
   "name": "space-lift",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "TypeScript Array, Object, Map, Set, Union, Enum utils",
   "sideEffects": true,
   "main": "commonjs/index.js",

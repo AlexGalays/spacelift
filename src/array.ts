@@ -151,7 +151,7 @@ export class ArrayWrapper<T extends ReadonlyArray<unknown>> {
 
     for (let i = 0; i < arr.length; i++) {
       const item = arr[i]
-      result.push.apply(result, (item as unknown) as A[])
+      result.push.apply(result, item as unknown as A[])
     }
 
     return new ArrayWrapper(result) as any
@@ -187,6 +187,29 @@ export class ArrayWrapper<T extends ReadonlyArray<unknown>> {
     })
 
     return new MapWrapper(groups) as any
+  }
+
+  /**
+   * Creates a new Array where each sub array contains at most 'bySize' elements.
+   */
+  grouped(bySize: number): ArrayWrapper<T[]> {
+    return this.pipe(arr => {
+      const result: T[][] = []
+      let current: T[] = []
+
+      for (let i = 0; i < arr.length; i++) {
+        if (current.length < bySize) {
+          current.push(arr[i] as any)
+        }
+
+        if (current.length === bySize || i === arr.length - 1) {
+          result.push(current)
+          current = []
+        }
+      }
+
+      return result
+    }) as any
   }
 
   /**

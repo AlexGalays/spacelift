@@ -470,6 +470,36 @@ describe('Array', () => {
     expect(result).toEqual([4, 5, 6])
   })
 
+  it('can create a new Array, with grouped sub arrays', () => {
+    const result = lift([1, 2, 3, 4, 5, 6]).grouped(2).value()
+    const result2 = lift([1, 2, 3, 4, 5]).grouped(2).value()
+    const result3 = lift([1, 2, 3, 4, 5]).grouped(3).value()
+    const result4 = lift([{ name: 'a' }, { name: 'b' }, { name: 'c' }, { name: 'd' }])
+      .grouped(2)
+      .value()
+
+    // Type assertion
+    const _result: number[][] = result
+    const _result2: number[][] = result2
+    const _result3: number[][] = result3
+    const _result4: Array<Array<{ name: string }>> = result4
+
+    expect(result).toEqual([
+      [1, 2],
+      [3, 4],
+      [5, 6]
+    ])
+    expect(result2).toEqual([[1, 2], [3, 4], [5]])
+    expect(result3).toEqual([
+      [1, 2, 3],
+      [4, 5]
+    ])
+    expect(result4).toEqual([
+      [{ name: 'a' }, { name: 'b' }],
+      [{ name: 'c' }, { name: 'd' }]
+    ])
+  })
+
   it('can create a Map, grouping all items by key', () => {
     const arr = [
       { age: 10, name: 'jon' },

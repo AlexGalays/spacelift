@@ -130,6 +130,7 @@ const sortedPeople = lift(people)
 * [reduce](#array.reduce)
 * [get](#array.get)
 * [groupBy](#array.groupBy)
+* [grouped](#array.grouped)
 * [insert](#array.insert)
 * [last](#array.last)
 * [map](#array.map)
@@ -313,6 +314,19 @@ const people = [
 
 // Map<number, Array<{age: number, name: string}>>
 const peopleByAge = lift(people).groupBy(p => p.age).value()
+```
+
+<a name="array.grouped"></a>
+### Array.grouped
+
+Creates a new Array where each sub array contains at most 'bySize' elements.
+
+```ts
+import {lift} from 'space-lift'
+const numbers = [1, 2, 3, 4, 5, 6, 7]
+
+// [[1, 2], [3, 4], [5, 6], [7]]
+const groupedNumbers = lift(numbers).grouped(2).value()
 ```
 
 <a name="array.insert"></a>
